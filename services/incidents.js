@@ -9,7 +9,8 @@ import {
     saveInc,
 } from '../data/DAO/incidents.js'
 import  {
-    DELAIS_CLOTURE,
+    DELAIS_CLOTURE_AUTO,
+    DELAIS_VISIBILITE_INC_CLOTURE,
 } from './lib_serveur.js'
 import {
     jrnApresSignal,
@@ -23,12 +24,16 @@ import Presta from '../data/models/presta.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
 
+const retirerVieux = (inc) => {
+    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date > DELAIS_VISIBILITE_INC_CLOTURE }
+    else { return true }
+}
 
 // get
 const getIncAll = (request, response) => {
         // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
+        // tous les incidents => jusqu'à 1 mois après clôture
     const {session} = request
-//    const presta = new Presta
     if (session.isId == true && (session.profil == 3 || session.profil == 4)) {
         incListWithDetails()
         .then(incList => {
@@ -36,24 +41,33 @@ const getIncAll = (request, response) => {
                 userByUuid(session.uuid)
                 .then(userList =>prestaById(userList[0].ut_presta))
                 .then(presta => incList.filter(inc => inc.inc_presta === presta.presta_id))
+                .then(incList => incList.filter(inc =>retirerVieux(inc))) 
                 .then(incList => response.send(incList))
             }
-            else  response.send(incList)
+            else {
+                response.send(incList.filter(inc =>retirerVieux(inc)))
+            }
         })
         .catch((err)=>{response.status(500).json(err)})
     }
 }
 const getIncByUser = (request, response) =>  {
+        // mes demandes => jusqu'à 1 mois après clôture
     const {session} = request
     if (session.isId == true) {
         incListWithDetails()
         .then(list =>{return list.filter(line => line.inc_signal_ut === session.uuid) })
+        .then(incList => {return incList.filter(inc => {
+            if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
+            else {return inc}
+        })})
         .then(list => response.send(list))
         .catch((err)=>{response.status(500).json(err)})
     }
 }
 
 const getIncByPresta = (request, response) =>  {
+        // suivi incidents => status 'enAttente' et 'enCours'
     const {session} = request
     let user = new User
     if (session.isId == true &&
@@ -64,6 +78,7 @@ const getIncByPresta = (request, response) =>  {
         .then(() => incListWithDetails())
         // récup inc de cet employeur 
         .then(incList => {return incList.filter(inc => inc.inc_presta === user.ut_presta)})
+        .then(incList => {return incList.filter(inc => inc.inc_fin_date === null)})
         .then(incList => response.send(incList))
         .catch((err)=>{response.status(500).json(err)})
     }
@@ -156,7 +171,7 @@ const reAffectation = (request, response) => {
         .then(inc => {
             inc.inc_affect_date = new Date()
             inc.inc_affect_ut = user.ut_uuid
-            saveInc(inc)
+            return saveInc(inc)
         })
         .then(inc => {
             jrnApresAffectation(inc, user, true)
@@ -230,7 +245,7 @@ const clotOldInc = (request, response) => {
         incListWithDetails()
         .then(incList => incList.filter(inc => 
             inc.inc_fin_date !== null && inc.inc_cloture_date === null))
-        .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE))
+        .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE_AUTO))
         .then(incList => {
             console.log(incList)
             incList.forEach(inc => {

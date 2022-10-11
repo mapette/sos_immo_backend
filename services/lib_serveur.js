@@ -35,12 +35,14 @@ function addDaysToDate(dep, nbDays){
     return     dep.setDate(dep.getDate() + nbDays);
 }
 
-const DELAIS_CLOTURE = 172800000 // 48 heures
+const DELAIS_CLOTURE_AUTO = 172800000 // 48 heures
+const DELAIS_VISIBILITE_INC_CLOTURE = 2592000000 // 30 jours
 
 export {
     genUuid,
     genMdp, 
     hash, 
     addDaysToDate, 
-    DELAIS_CLOTURE,
+    DELAIS_CLOTURE_AUTO,
+    DELAIS_VISIBILITE_INC_CLOTURE,
 }
