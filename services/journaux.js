@@ -1,7 +1,6 @@
 import {
     NewLine, 
     jrnByInc,
-    jrnImmExclude,
 } from '../data/DAO/journaux.js'
 
 const updateJrn = (request, response) => {
@@ -9,7 +8,7 @@ const updateJrn = (request, response) => {
     if (session.isId == true) {
         NewLine({
             jrn_inc : body.jrn_inc,
-            jrn_msg :  body.jrn_msg,
+            jrn_msg : body.jrn_msg,
             jrn_imm : body.jrn_imm === 'true',
         })
         .then(line => response.send({ jrn_id: line.insertId }))
@@ -23,7 +22,7 @@ const getJrnByInc = (request, response) => {
    // .then(jrnList => console.log(jrnList))
     .then(jrnList => {
         if (params.infoImmoInclude === 'false'){
-            return jrnImmExclude(jrnList)
+           return jrnList.filter(line => line.jrn_imm === 0)
         }
         else return jrnList
     })

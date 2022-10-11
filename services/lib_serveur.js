@@ -30,8 +30,17 @@ const hash = (id, mdp) =>  {
     return MD5(id + mdp)
 }
 
+function addDaysToDate(dep, nbDays){        
+    // ajouter nbDay à une date dep
+    return     dep.setDate(dep.getDate() + nbDays);
+}
+
+const DELAIS_CLOTURE = 172800000 // 48 heures
+
 export {
     genUuid,
     genMdp, 
-    hash,  
+    hash, 
+    addDaysToDate, 
+    DELAIS_CLOTURE,
 }

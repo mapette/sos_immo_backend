@@ -20,6 +20,13 @@ const userLogin = (data) => {
 }
 
 // get
+
+const OneUserWithoutDetails = (mail) => {
+    return Utilisateurs.findAll({
+       where: {ut_mail : mail}
+    })
+}
+
 const userList = () => {
     return Utilisateurs.sync({alter:false}).then(()=>{
         return db.query(`
@@ -44,13 +51,6 @@ const userByUuid = (uuid) => {
     }) 
 }
 
-const userByPresta = (liste, presta) => {
-    return liste.filter(user => user.ut_presta === presta)
-}
-const userByProfil = (liste, profil) => {
-    return liste.filter(user => user.hab_profil === profil)
-}
-
 // maj
 const saveUser = (data) => {
     return data.save()
@@ -60,8 +60,7 @@ export  {
    userLogin, 
    userList,
    userByUuid,
-   userByPresta,
-   userByProfil,
+   OneUserWithoutDetails,
    saveUser,
 
 }

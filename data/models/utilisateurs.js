@@ -1,5 +1,7 @@
+import  {addDaysToDate} from './../../services/lib_serveur.js'
 import {DataTypes,} from 'sequelize'
 import db from '../../db/db.js'
+
 
 const Utilisateurs = db.define('utilisateurs',{
     ut_uuid : {
@@ -59,7 +61,7 @@ const Utilisateurs = db.define('utilisateurs',{
     ut_mdp_exp : {
         type : DataTypes.DATE,
         allowNull : true,
-        defaultValue: expMdp(90),
+        defaultValue: addDaysToDate(new Date(), 90),
     },
     hab_profil : {      // dernier en date
         type: DataTypes.VIRTUAL,
@@ -77,11 +79,5 @@ const Utilisateurs = db.define('utilisateurs',{
     freezeTableName: true,
     timestamps: false,
 })
-
-function expMdp(days){
-    var res = new Date();
-    res.setDate(res.getDate() + days);
-    return res;
-}
 
 export default Utilisateurs

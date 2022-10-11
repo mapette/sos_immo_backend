@@ -1,4 +1,13 @@
-import {saveUser, userLogin} from '../data/DAO/utilisateurs.js'
+import  {
+    genMdp,
+    hash,
+    addDaysToDate,
+} from './lib_serveur.js'
+import {
+    saveUser,
+    userLogin,
+    OneUserWithoutDetails
+} from '../data/DAO/utilisateurs.js'
 
 const accueil = (request, response) => {
     const {session} = request
@@ -28,17 +37,37 @@ const login = (request, response) => {
 
 const UserBySession = (request, response) => response.send({ id: request.session.ut })
 
+const UserByMail = (request, response) =>{
+    const {body} = request
+    OneUserWithoutDetails(body.mail)
+    .then(listUser => listUser[0])
+    .then(user => {
+        if (user !== undefined){
+            if (body.type === 'id'){
+                console.log('identifiant envoyé à l\'adresse mail ', body.mail)
+                response.send({ result: user.ut_id })
+            }
+            else{
+                let mdp = genMdp()
+                user.ut_mdp = hash(user.ut_id,mdp),
+                user.ut_mdp_exp = addDaysToDate(new Date(),0)
+                saveUser(user)
+                console.log('mot de passe à changer à la prochaine connexion => ', mdp)
+                response.send({ result: mdp })
+            }
+        //    
+         }
+        else{
+       //     console.log('pas content')
+            response.send({ result: 'erreur' })
+        }
+    })
+}
+
 const changeMdp = (request, response) => {
     const {session,body} = request
     console.log('body',body)
     console.log('session',session)
-    /*
-    login.change_mdp({
-        ut_id: request.session.ut,
-        ut_mdp: request.body.mdp,
-        ut_newmdp: request.body.newmdp
-    }, response)
-    */
     userLogin({
         id: session.ut,
         mdp: body.mdp,
@@ -61,6 +90,7 @@ export  {
     login,
     accueil,
     UserBySession,
+    UserByMail,
     changeMdp,
 }
 

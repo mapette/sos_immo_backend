@@ -6,8 +6,6 @@ import  {
 import {
     userList,
     userByUuid,
-    userByPresta,
-    userByProfil,
     saveUser,
 } from '../data/DAO/utilisateurs.js'
 import {
@@ -33,31 +31,18 @@ const getOneUser = (request, response) => {
         .catch((err)=>{response.status(500).json(err)})
     }
 }
-/*
-const getUserHab = (request, response) => {
-    const {session} = request
-    if (session.isId == true & session.profil == 4) {
-        serv_hab.habByUserUuid(request,response)
-    }
-}
-*/
+
 const getUserListByCatAndPresta = (request, response) => {
     const {session, params} = request
     if (session.isId == true & (session.profil == 3 | session.profil == 4)) {
-        console.log('params',params)
         userList(request)
-        .then(userList => userByPresta(userList,parseInt(params.presta_id)))
-        .then(userList => userByProfil(userList,parseInt(params.cat)))
+        .then(userList => { return userList.filter(user => user.ut_presta === parseInt(params.presta_id)) })
+        .then(userList => { return userList.filter(user => user.hab_profil === parseInt(params.cat)) })
         .then(userList => response.send(userList))
         .catch((err)=> console.log(err)) 
     }
 }
 
-/* (request, response) => {
-  if (request.session.isId == true & (request.session.profil == 3 | request.session.profil == 4)) {
-      serv_ut.getUserListByCatAndPresta(request,response)
-  }
-})*/
 
 // maj
 const creaOneUser = (request, response) => {
@@ -74,6 +59,7 @@ const creaOneUser = (request, response) => {
             ut_tel : body.ut_tel,
             ut_mail: body.ut_mail,
             ut_mdp : hash(body.ut_id,mdp),
+            ut_mdp_exp : addDaysToDate(new Date(),0),  
             ut_admin_deb : session.ut,
         })
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)

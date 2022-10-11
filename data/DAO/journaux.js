@@ -11,13 +11,7 @@ const jrnByInc = (inc_id) => {
     })
 }
 
-const jrnImmExclude = (jrn) => {
-    return jrn.filter(line => line.jrn_imm === 0)
-}
-
 export  {
     NewLine, 
     jrnByInc,
-    jrnImmExclude,
- 
  }

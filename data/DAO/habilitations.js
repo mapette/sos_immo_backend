@@ -12,10 +12,6 @@ const habByUserUuid = (uuid) => {
     })
 }
 
-const activeUserOnly = (data) => {
-    return data.filter((element) => element.hab_profil !== 0)
-}
-
 const habByUuid = (uuid) => {
     return Habilitations.findByPk(uuid)
 }
@@ -28,7 +24,6 @@ const saveHab = (data) => {
 export  {
     newHab,
     habByUserUuid,
-    activeUserOnly,
     habByUuid,
     saveHab,
 

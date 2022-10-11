@@ -23,29 +23,11 @@ const incListWithDetails = () => {
     })
 }
 
-const incDetailsById = (listInc, id) => {      // qd listWithDetails
-    return listInc.filter(line => line.inc_id === id)
-}
-const incByUserUuid = (listInc, uuid) => {
-    return listInc.filter(line => line.inc_signal_ut === uuid)
-}
-const incByPresta = (incList, presta) => {
-    return incList.filter(line => line.inc_presta === presta)
-}
-const oldIncList =  (listInc) => {  
-    const tropTard = 172800000 // 48 heures
-    return listInc.filter(line => new Date() - line.inc_fin_date < tropTard)
-}
-
 
 export  {
     newInc, 
     saveInc,
     incById,
     incListWithDetails,
-    incByUserUuid,
-    incDetailsById,
-    incByPresta,
-    oldIncList,
  
  }

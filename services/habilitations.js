@@ -4,16 +4,16 @@ import  {
 import {
     habByUserUuid,
     habByUuid,
-    activeUserOnly,
     saveHab,
     newHab,
 } from '../data/DAO/habilitations.js'
 
 const getUserHab = (request, response) => {
     const {session} = request
+    console.log('test filter')
     if (session.isId == true & session.profil == 4) {
         habByUserUuid(request.params.uuid)
-        .then(userList => activeUserOnly(userList))
+        .then(userList => {return userList.filter((element) => element.hab_profil !== 0)})
         .then(userList => response.send(userList))
         .catch((err)=>{response.status(500).json(err)})
     }

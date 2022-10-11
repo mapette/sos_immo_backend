@@ -5,14 +5,12 @@ import {NewLine,} from '../data/DAO/journaux.js'
 import {
     incById,
     incListWithDetails,
-    oldIncList,
-    incByUserUuid,
-    incDetailsById,
-    incByPresta,
     newInc,
     saveInc,
 } from '../data/DAO/incidents.js'
-
+import  {
+    DELAIS_CLOTURE,
+} from './lib_serveur.js'
 import {
     jrnApresSignal,
     jrnApresAffectation,
@@ -28,19 +26,28 @@ import User from '../data/models/utilisateurs.js'
 
 // get
 const getIncAll = (request, response) => {
+        // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
     const {session} = request
-    if (session.isId == true) {
+//    const presta = new Presta
+    if (session.isId == true && (session.profil == 3 || session.profil == 4)) {
         incListWithDetails()
-        .then(list => response.send(list))
+        .then(incList => {
+            if(session.profil == 3){
+                userByUuid(session.uuid)
+                .then(userList =>prestaById(userList[0].ut_presta))
+                .then(presta => incList.filter(inc => inc.inc_presta === presta.presta_id))
+                .then(incList => response.send(incList))
+            }
+            else  response.send(incList)
+        })
         .catch((err)=>{response.status(500).json(err)})
-   
     }
 }
 const getIncByUser = (request, response) =>  {
     const {session} = request
     if (session.isId == true) {
         incListWithDetails()
-        .then(list => incByUserUuid(list, session.uuid))
+        .then(list =>{return list.filter(line => line.inc_signal_ut === session.uuid) })
         .then(list => response.send(list))
         .catch((err)=>{response.status(500).json(err)})
     }
@@ -56,7 +63,7 @@ const getIncByPresta = (request, response) =>  {
         .then(userList => user = userList[0])
         .then(() => incListWithDetails())
         // récup inc de cet employeur 
-        .then(incList => incByPresta(incList, user.ut_presta))
+        .then(incList => {return incList.filter(inc => inc.inc_presta === user.ut_presta)})
         .then(incList => response.send(incList))
         .catch((err)=>{response.status(500).json(err)})
     }
@@ -66,14 +73,14 @@ const getOneInc = (request, response) =>  {
     const {session, params} = request
     if (session.isId == true) {
         incListWithDetails()
-        .then(list => incDetailsById(list, parseInt(params.id)))
-        .then(list => response.send(list[0]))
+        .then(incList => {return incList.filter(inc => inc.inc_id ===  parseInt(params.id))})
+        .then(incList => response.send(incList[0]))
         .catch((err)=>{response.status(500).json(err)})
     }
 }
 
 // création 
-const creaOneSignal = (request, response) => {
+const creaOneInc = (request, response) => {
     let presta = new Presta
     let tinc = new Tinc
     let user = new User
@@ -82,12 +89,15 @@ const creaOneSignal = (request, response) => {
         userByUuid(session.uuid)
         .then(userList => user = userList[0])
         .then(() => {return tincById(body.tinc)})
-        .then(tinc =>{ 
+        .then(typeInc =>{ 
             tinc = typeInc
             return prestaById(tinc.tinc_presta) 
         })
         .then(prestataire =>{
             presta = prestataire
+            console.log('user',user.ut_id)
+            console.log('tinc',tinc.tinc_id)
+            console.log('presta',presta.presta_id)
             return newInc({
                 inc_emp : parseInt(body.emp),
                 inc_tinc : tinc.tinc_id,
@@ -214,21 +224,22 @@ const clotInc = (request, response) => {
     }
 }
 
-
 const clotOldInc = (request, response) => {
     const {session,} = request     
     if (session.isId == true && session.profil == 4) {
         incListWithDetails()
-        .then(incList => oldIncList(incList))
+        .then(incList => incList.filter(inc => 
+            inc.inc_fin_date !== null && inc.inc_cloture_date === null))
+        .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE))
         .then(incList => {
-            incList.forEach(element => {
-                element.inc_cloture_date = new Date()
-                saveInc(element)
+            console.log(incList)
+            incList.forEach(inc => {
+                inc.inc_cloture_date = new Date()
                 NewLine({
-                    jrn_inc : element.inc_id,
+                    jrn_inc : inc.inc_id,
                     jrn_msg : 'Intervention clôturée automatiquement',
                 })
-                console.log(element.inc_id)
+                saveInc(inc)
             });
             response.send(incList)
         })
@@ -241,7 +252,7 @@ export  {
     getIncByPresta,
     getOneInc,
     getIncByUser,
-    creaOneSignal, 
+    creaOneInc, 
   //  relanceSignal,    // usage interne
     autoAffectation,  
     reAffectation, 
