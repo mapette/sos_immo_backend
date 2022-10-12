@@ -46,39 +46,38 @@ const getUserListByCatAndPresta = (request, response) => {
 
 // maj
 const creaOneUser = (request, response) => {
-    const {session} = request
+    const { session, body } = request
     if (session.isId == true & session.profil == 4) {
-        const {body} = request
         let mdp = genMdp()
         const user = Utilisateurs.build({
-            ut_uuid : genUuid(), 
+            ut_uuid: genUuid(),
             ut_id: body.ut_id,
-            ut_nom : body.ut_nom,
+            ut_nom: body.ut_nom,
             ut_prenom: body.ut_prenom,
-            ut_presta : body.ut_presta,
-            ut_tel : body.ut_tel,
+            ut_presta: body.ut_presta,
+            ut_tel: body.ut_tel,
             ut_mail: body.ut_mail,
-            ut_mdp : hash(body.ut_id,mdp),
-            ut_mdp_exp : addDaysToDate(new Date(),0),  
-            ut_admin_deb : session.ut,
+            ut_mdp: hash(body.ut_id, mdp),
+            ut_mdp_exp: addDaysToDate(new Date(), 0),
+            ut_admin_deb: session.ut,
         })
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
-        .then(newHab({
-                hab_uuid : genUuid(),
-                hab_ut : user.ut_uuid,
-                hab_profil :  parseInt(body.hab_profil),
-                hab_date_deb : new Date(),
-                hab_date_exp : null,
+            .then(newHab({
+                hab_uuid: genUuid(),
+                hab_ut: user.ut_uuid,
+                hab_profil: parseInt(body.hab_profil),
+                hab_date_deb: new Date(),
+                hab_date_exp: null,
             })
-        )
-        .then(response.send({ mdp: mdp }))
-        .catch((err)=>{response.status(500).json(err)})
+            )
+            .then(response.send({ mdp: mdp }))
+            .catch((err) => { response.status(500).json(err) })
     }
 }
 
 const updateOneUser = (request, response) => {
-    const {session,body} = request
+    const { session, body } = request
     if (session.isId == true & session.profil == 4) {
         userByUuid(body.ut_uuid) // retourne 1 liste d'1 seul élément
         .then(user => user[0])      // extrait l'élément

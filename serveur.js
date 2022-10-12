@@ -47,12 +47,15 @@ import {
 } from './services/login.js'
 import {
   getAllPresta,
+  getPrestaById,
+  creaOnePresta,
+  updateOnePresta,
 } from './services/presta.js'
 import {
-  creaOneUser,
   getAllUsers,
   getOneUser,
   getUserListByCatAndPresta,
+  creaOneUser,
   updateOneUser,
   deleteOneUser,
 } from './services/utilisateurs.js'
@@ -88,15 +91,21 @@ app.post('/forgotPw',UserByMail)
 app.post('/change_mdp', changeMdp)
 
 //////////// gestion utilisateurs ////////////
-app.post('/crea_user', creaOneUser)
-app.get('/get_presta', getAllPresta)
 app.get('/get_users', getAllUsers)
 app.get('/get_user/:uuid', getOneUser)
 app.get('/get_habByUser/:uuid', getUserHab)
 app.get('/get_usersByCatAndPresta/:cat/:presta_id',getUserListByCatAndPresta)
 
+app.post('/crea_user', creaOneUser)
 app.post('/update_user', updateOneUser)
 app.get('/delete_user/:uuid', deleteOneUser)
+
+//////////// gestion prestataires ////////////
+app.get('/get_presta', getAllPresta)
+app.get('/get_presta/:id', getPrestaById)
+
+app.post('/crea_presta', creaOnePresta)
+app.post('/update_presta', updateOnePresta)
 
 //////////// incidents ////////////
 app.get('/get_inc', getIncAll)

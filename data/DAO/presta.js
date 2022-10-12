@@ -10,7 +10,12 @@ const prestaById = (id) => {
 }
 
 
+const savePresta = (data) => {
+    return data.save()
+}
+
 export  {
     prestaList, 
     prestaById,
+    savePresta,
  }

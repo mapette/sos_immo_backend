@@ -78,7 +78,14 @@ const getIncByPresta = (request, response) =>  {
         .then(() => incListWithDetails())
         // récup inc de cet employeur 
         .then(incList => {return incList.filter(inc => inc.inc_presta === user.ut_presta)})
-        .then(incList => {return incList.filter(inc => inc.inc_fin_date === null)})
+        .then(incList => {
+            if(session.profil == 2){
+               return incList.filter(inc => inc.inc_fin_date === null 
+                                            && (inc.inc_affect_date === null ||
+                                            inc.inc_affect_ut === session.uuid))
+            }
+            else {return incList.filter(inc => inc.inc_fin_date === null)}
+        })
         .then(incList => response.send(incList))
         .catch((err)=>{response.status(500).json(err)})
     }
