@@ -2,6 +2,7 @@ import  {
     genMdp,
     genUuid,
     hash,
+    addDaysToDate,
 } from './lib_serveur.js'
 import {
     userList,
@@ -61,6 +62,7 @@ const creaOneUser = (request, response) => {
             ut_mdp_exp: addDaysToDate(new Date(), 0),
             ut_admin_deb: session.ut,
         })
+        console.log(user)
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
             .then(newHab({
@@ -103,29 +105,29 @@ const updateOneUser = (request, response) => {
 }
 
 const deleteOneUser = (request, response) => {
-    const {session, params} = request
+    const { session, params } = request
     if (session.isId == true & session.profil == 4) {
-        getUserByUuid(params.uuid) // retourne 1 liste d'1 seul élément
-        .then(user => user[0])      // extrait l'élément
-        .then(user => {
-            user.ut_date_exp =  new Date()
-            user.ut_admin_exp = session.ut
-            user.ut_mdp = null
-            user.ut_mdp_exp =  new Date()
-            return saveUser(user)
-        })
-        .then(user => changeProfil({
-            ut_uuid : user.ut_uuid,
-            hab_uuid : user.hab_uuid,
-            profil : 0,
-        }))
-        .then(response.send({status:'delete'}))
-        .catch((err)=>{response.status(500).json(err)})
+        userByUuid(params.uuid) // retourne 1 liste d'1 seul élément
+            .then(user => user[0])      // extrait l'élément
+            .then(user => {
+                user.ut_date_exp = new Date()
+                user.ut_admin_exp = session.ut
+                user.ut_mdp = null
+                user.ut_mdp_exp = new Date()
+                return saveUser(user)
+            })
+            .then(user => changeProfil({
+                ut_uuid: user.ut_uuid,
+                hab_uuid: user.hab_uuid,
+                profil: 0,
+            }))
+            .then(response.send({ status: 'delete' }))
+            .catch((err) => { response.status(500).json(err) })
     }
 }
 
 
-export  {
+export {
     getAllUsers,
     getOneUser,
     // getUserHab,

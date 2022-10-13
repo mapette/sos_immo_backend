@@ -25,7 +25,7 @@ import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
 
 const retirerVieux = (inc) => {
-    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date > DELAIS_VISIBILITE_INC_CLOTURE }
+    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
     else { return true }
 }
 
@@ -57,10 +57,7 @@ const getIncByUser = (request, response) =>  {
     if (session.isId == true) {
         incListWithDetails()
         .then(list =>{return list.filter(line => line.inc_signal_ut === session.uuid) })
-        .then(incList => {return incList.filter(inc => {
-            if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
-            else {return inc}
-        })})
+        .then(incList => incList.filter(inc =>retirerVieux(inc))) 
         .then(list => response.send(list))
         .catch((err)=>{response.status(500).json(err)})
     }

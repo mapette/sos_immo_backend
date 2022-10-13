@@ -39,7 +39,6 @@ const creaOnePresta = (request, response) => {
 const updateOnePresta = (request, response) => {
     const { session, body } = request
     if (session.isId == true & session.profil == 4) {
-        console.log('coucou')
         prestaById(body.presta_id)
             .then(presta => {
                 presta.presta_nom = body.presta_nom
