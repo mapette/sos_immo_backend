@@ -21,16 +21,18 @@ export {
 //gestion des cookies
 import session from 'express-session'
 app.use(session({
-    secret: 'keyboard cat',
-    cookie: { maxAge: 60000000 } // 1000 minutes
-    // cookie: { maxAge: 3000 } // 3 secondes
+  secret: 'keyboard cat',
+  cookie: { maxAge: 600000 }, // 10 minutes
+  rolling: true,
+  // cookie: { maxAge: 6000000 }, // 100 minutes
+  // cookie: { maxAge: 30000 } // 3 secondes
 }))
 
 // évite les pbmes de sécurité pour les envois front->back
 import cors from 'cors'
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
+  origin: 'http://localhost:3000',
+  credentials: true,
 }))
 
 import db from './db/db.js'

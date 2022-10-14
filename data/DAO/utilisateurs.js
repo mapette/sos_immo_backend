@@ -20,7 +20,6 @@ const userLogin = (data) => {
 }
 
 // get
-
 const OneUserWithoutDetails = (mail) => {
     return Utilisateurs.findAll({
        where: {ut_mail : mail}

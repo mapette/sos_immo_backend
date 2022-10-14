@@ -2,16 +2,27 @@ import {
     NewLine, 
     jrnByInc,
 } from '../data/DAO/journaux.js'
+import {
+    userByUuid,
+} from '../data/DAO/utilisateurs.js'
+import User from '../data/models/utilisateurs.js'
 
 const updateJrn = (request, response) => {
     const {session, body} = request
     if (session.isId == true) {
-        NewLine({
-            jrn_inc : body.jrn_inc,
-            jrn_msg : body.jrn_msg,
-            jrn_imm : body.jrn_imm === 'true',
+        let user = new User
+        console.log('body',body)
+        userByUuid(session.uuid)
+        .then(userList => userList[0])
+        .then(user => {
+            NewLine({
+                jrn_inc : body.jrn_inc,
+                jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' - ' + body.jrn_msg,
+                jrn_imm : body.jrn_imm,
+            })
+            .then(line => response.send({ jrn_id: line.insertId }))
         })
-        .then(line => response.send({ jrn_id: line.insertId }))
+        
     }
 }
 
@@ -41,7 +52,7 @@ const jrnApresSignal = (inc, user, presta, msgInfo) => {
     if (msgInfo !== ''){
         NewLine({
             jrn_inc : inc.inc_id,
-            jrn_msg : msgInfo,
+            jrn_msg : user.ut_prenom + ' ' + user.ut_prenom + ' - ' + msgInfo,
         })
     }
      // jrn 3 - attribution presta
@@ -93,7 +104,7 @@ function jnrAprescloture(inc, user, msgInfo) {
     if (msgInfo!== undefined){     // msg donc relance
         NewLine({
             jrn_inc : inc.inc_id,
-            jrn_msg : 'Relance demandée - Motif : ' + msgInfo,
+            jrn_msg : 'Relance demandée par ' + user.ut_prenom + ' ' + user.ut_nom + ' - Motif : ' + msgInfo,
         })
     }
     NewLine({

@@ -62,7 +62,6 @@ const creaOneUser = (request, response) => {
             ut_mdp_exp: addDaysToDate(new Date(), 0),
             ut_admin_deb: session.ut,
         })
-        console.log(user)
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
             .then(newHab({

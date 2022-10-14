@@ -58,7 +58,6 @@ const UserByMail = (request, response) =>{
         //    
          }
         else{
-       //     console.log('pas content')
             response.send({ result: 'erreur' })
         }
     })
@@ -66,8 +65,6 @@ const UserByMail = (request, response) =>{
 
 const changeMdp = (request, response) => {
     const {session,body} = request
-    console.log('body',body)
-    console.log('session',session)
     userLogin({
         id: session.ut,
         mdp: body.mdp,

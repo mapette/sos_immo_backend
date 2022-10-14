@@ -114,9 +114,9 @@ const creaOneInc = (request, response) => {
         })
         .then(prestataire =>{
             presta = prestataire
-            console.log('user',user.ut_id)
-            console.log('tinc',tinc.tinc_id)
-            console.log('presta',presta.presta_id)
+            // console.log('user',user.ut_id)
+            // console.log('tinc',tinc.tinc_id)
+            // console.log('presta',presta.presta_id)
             return newInc({
                 inc_emp : parseInt(body.emp),
                 inc_tinc : tinc.tinc_id,

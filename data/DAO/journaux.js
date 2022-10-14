@@ -1,6 +1,7 @@
 import Journaux from '../models/journaux.js'
 
 const NewLine = (line) => {
+    console.log(line)
     return Journaux.create(line)
 }
 
