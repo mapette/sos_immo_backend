@@ -16,11 +16,23 @@ const empListNewInc = () => {
             model: Emplacements,
         })
     })
+}
 
+const empListWithDetails = () => {
+    return Emplacements.sync({alter:false}).then(()=>{
+        return db.query(`
+        SELECT emp_id, emp_etage, emp_nom, emp_temp, temp_nom
+        FROM emplacements, types_emp
+        WHERE temp_id = emp_temp
+        ORDER BY emp_etage DESC, emp_nom`,
+        {type: Sequelize.QueryTypes.SELECT,
+            model: Emplacements,
+        })
+    })
 }
 
 
 export  {
     empListNewInc,
- 
+    empListWithDetails,
  }

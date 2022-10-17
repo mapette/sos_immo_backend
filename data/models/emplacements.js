@@ -20,16 +20,12 @@ const Emplacements = db.define('emplacements',{
         type : DataTypes.INTEGER.UNSIGNED,
         allowNull : false,
     },
-    tinc_id : {
+    temp_nom : {
          type: DataTypes.VIRTUAL,
-    },
-    tinc_nom : {
-        type: DataTypes.VIRTUAL,
     },
     presta_libelle : {
         type: DataTypes.VIRTUAL,
     },
-               //emp_id, emp_etage, emp_nom, tinc_id, tinc_nom, presta_libelle
 },{
     freezeTableName: true,
     timestamps: false,

@@ -79,6 +79,7 @@ import {
 } from './services/incidents.js'
 import {
   getAllEmp,
+  getAllEmpAndTinc,
 } from './services/emplacements.js'
 import {
   getJrnByInc,
@@ -109,6 +110,13 @@ app.get('/get_presta/:id', getPrestaById)
 app.post('/crea_presta', creaOnePresta)
 app.post('/update_presta', updateOnePresta)
 
+//////////// gestion emplacement ////////////
+app.get('/get_emp', getAllEmp)
+// app.get('/get_presta/:id', getPrestaById)
+
+// app.post('/crea_presta', creaOnePresta)
+// app.post('/update_presta', updateOnePresta)
+
 //////////// incidents ////////////
 app.get('/get_inc', getIncAll)
 app.get('/get_incByUser', getIncByUser)
@@ -117,7 +125,7 @@ app.get('/get_inc_journal/:id/:infoImmoInclude', getJrnByInc)
 app.post('/update_comm', updateJrn)
 
 //////////// incidents usagers ////////////
-app.get('/get_emp', getAllEmp)
+app.get('/get_emp', getAllEmpAndTinc)
 app.post('/crea_inc',creaOneInc)
 app.get('/clotureInc/:inc_id', clotInc)
 // insatisfaction : commentaire + relance

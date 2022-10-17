@@ -50,7 +50,6 @@ const UserByMail = (request, response) =>{
             else{
                 let mdp = genMdp()
                 user.ut_mdp = hash(user.ut_id,mdp),
-                user.ut_mdp_exp = addDaysToDate(new Date(),0)
                 saveUser(user)
                 console.log('mot de passe à changer à la prochaine connexion => ', mdp)
                 response.send({ result: mdp })
