@@ -9,7 +9,7 @@ const Emplacements = db.define('emplacements',{
         allowNull : false,
     },
     emp_etage : {
-        type : DataTypes.INTEGER.UNSIGNED,
+        type : DataTypes.STRING,
         allowNull : false,
     },
     emp_nom : {

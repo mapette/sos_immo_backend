@@ -31,8 +31,17 @@ const empListWithDetails = () => {
     })
 }
 
+const empById = (id) => {
+    return Emplacements.findByPk(id)
+}
+
+const saveEmp = (data) => {
+    return data.save()
+}
 
 export  {
     empListNewInc,
     empListWithDetails,
- }
+    empById,
+    saveEmp,
+}

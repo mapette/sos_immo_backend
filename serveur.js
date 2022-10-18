@@ -79,7 +79,11 @@ import {
 } from './services/incidents.js'
 import {
   getAllEmp,
+  getOneEmp,
+  creaOneEmp,
+  updateOneEmp,
   getAllEmpAndTinc,
+  getAllTemp,
 } from './services/emplacements.js'
 import {
   getJrnByInc,
@@ -112,10 +116,11 @@ app.post('/update_presta', updateOnePresta)
 
 //////////// gestion emplacement ////////////
 app.get('/get_emp', getAllEmp)
-// app.get('/get_presta/:id', getPrestaById)
+app.get('/get_emp/:id', getOneEmp)
+app.get('/get_temp', getAllTemp)
 
-// app.post('/crea_presta', creaOnePresta)
-// app.post('/update_presta', updateOnePresta)
+app.post('/crea_emp', creaOneEmp)
+app.post('/update_emp', updateOneEmp)
 
 //////////// incidents ////////////
 app.get('/get_inc', getIncAll)
