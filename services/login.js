@@ -1,7 +1,6 @@
 import  {
     genMdp,
     hash,
-    addDaysToDate,
 } from './lib_serveur.js'
 import {
     saveUser,
@@ -53,8 +52,7 @@ const UserByMail = (request, response) =>{
                 saveUser(user)
                 console.log('mot de passe à changer à la prochaine connexion => ', mdp)
                 response.send({ result: mdp })
-            }
-        //    
+            }   
          }
         else{
             response.send({ result: 'erreur' })
