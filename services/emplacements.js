@@ -11,42 +11,42 @@ import {
 
 //// emplacements ////
 const getAllEmp = (request, response) => {
-    const {session,} = request
-    if (session.isId === true && session.profil === 4) {
+    const { session, } = request
+    if (session.isId === true) {
         empListWithDetails()
-        .then(empList => response.send(empList))
-        .catch((err)=> console.log(err))
+            .then(empList => response.send(empList))
+            .catch((err) => console.log(err))
     }
 }
 
-const getOneEmp= (request, response) => {
-    const {session,params,} = request
+const getOneEmp = (request, response) => {
+    const { session, params, } = request
     if (session.isId === true && session.profil === 4) {
         empListWithDetails()
-        .then(empList => empList.filter(emp => emp.emp_id === parseInt(params.id)))
-        .then(empList => response.send(empList[0]))
-        .catch((err)=> console.log(err))
+            .then(empList => empList.filter(emp => emp.emp_id === parseInt(params.id)))
+            .then(empList => response.send(empList[0]))
+            .catch((err) => console.log(err))
     }
 }
 
 const getAllEmpAndTinc = (request, response) => {
-    const {session,} = request
+    const { session, } = request
     if (session.isId == true) {
         empListNewInc()
-        .then(empList => response.send(empList))
-        .catch((err)=> console.log(err))
+            .then(empList => response.send(empList))
+            .catch((err) => console.log(err))
     }
 }
 
 const creaOneEmp = (request, response) => {
     const {session, body} = request
-    console.log('coucou',body)
     if (session.isId == true & session.profil == 4) {
         const emp = Emplacements.build({
             emp_nom: body.emp_nom,
             emp_etage: body.emp_etage,
             emp_temp : body.emp_temp,
         })
+        //(console.log(request))
         saveEmp(emp)
             .then(response.send({  msg: 'ok' }))
             .catch((err) => { response.status(500).json(err) })

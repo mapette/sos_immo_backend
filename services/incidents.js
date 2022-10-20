@@ -33,22 +33,22 @@ const retirerVieux = (inc) => {
 const getIncAll = (request, response) => {
         // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
         // tous les incidents => jusqu'à 1 mois après clôture
-    const {session} = request
-    if (session.isId == true && (session.profil == 3 || session.profil == 4)) {
-        incListWithDetails()
-        .then(incList => {
-            if(session.profil == 3){
-                userByUuid(session.uuid)
-                .then(userList =>prestaById(userList[0].ut_presta))
-                .then(presta => incList.filter(inc => inc.inc_presta === presta.presta_id))
-                .then(incList => incList.filter(inc =>retirerVieux(inc))) 
-                .then(incList => response.send(incList))
-            }
-            else {
-                response.send(incList.filter(inc =>retirerVieux(inc)))
-            }
-        })
-        .catch((err)=>{response.status(500).json(err)})
+        const {session} = request
+        if (session.isId == true && (session.profil == 3 || session.profil == 4)) {
+            incListWithDetails()
+            .then(incList => {
+                if(session.profil == 3){
+                    userByUuid(session.uuid)
+                    .then(userList =>prestaById(userList[0].ut_presta))
+                    .then(presta => incList.filter(inc => inc.inc_presta === presta.presta_id))
+                    .then(incList => incList.filter(inc =>retirerVieux(inc))) 
+                    .then(incList => response.send(incList))
+                }
+                else {
+                    response.send(incList.filter(inc =>retirerVieux(inc)))
+                }
+            })
+            .catch((err)=>{response.status(500).json(err)})
     }
 }
 const getIncByUser = (request, response) =>  {
@@ -90,6 +90,7 @@ const getIncByPresta = (request, response) =>  {
 
 const getOneInc = (request, response) =>  {
     const {session, params} = request
+    console.log(request)
     if (session.isId == true) {
         incListWithDetails()
         .then(incList => {return incList.filter(inc => inc.inc_id ===  parseInt(params.id))})
@@ -162,7 +163,7 @@ const autoAffectation = (request, response) => {
     }
 }
 
-const reAffectation = (request, response) => {
+const affectation = (request, response) => {
     let user = new User
     const {session, params} = request      
     if (session.isId == true && (session.profil == 3 | session.profil == 4)) {
@@ -271,7 +272,7 @@ export  {
     creaOneInc, 
   //  relanceSignal,    // usage interne
     autoAffectation,  
-    reAffectation, 
+    affectation, 
     attribution,
     finInc,
     clotInc,

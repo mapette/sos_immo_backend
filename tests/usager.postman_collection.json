@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "9e90369c-6e30-4b24-9b8b-37d2791be56a",
+		"name": "usager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "lsala",
+							"type": "default"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "120b51604eb96584e7eea87d5d2b82baa0cb54ba",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "ut_id",
+							"value": "lsala",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste complete emp/tinc",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/get_empNewInc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"get_empNewInc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creation incident",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "emp",
+							"value": "37",
+							"type": "default"
+						},
+						{
+							"key": "tinc",
+							"value": "11",
+							"type": "default"
+						},
+						{
+							"key": "info",
+							"value": "que la force soit avec nous",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/crea_inc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"crea_inc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste incidents usager",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/get_incByUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"get_incByUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "detail incident",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/get_inc_details/132",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"get_inc_details",
+						"132"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "journal sans comm techno",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/get_inc_journal/132/false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"get_inc_journal",
+						"132",
+						"false"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

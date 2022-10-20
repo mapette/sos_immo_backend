@@ -9,6 +9,7 @@ import User from '../data/models/utilisateurs.js'
 
 const updateJrn = (request, response) => {
     const {session, body} = request
+    console.log(body)
     if (session.isId == true) {
         let user = new User
         console.log('body',body)
@@ -22,7 +23,6 @@ const updateJrn = (request, response) => {
             })
             .then(line => response.send({ jrn_id: line.insertId }))
         })
-        
     }
 }
 

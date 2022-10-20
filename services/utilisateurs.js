@@ -18,9 +18,12 @@ import {
 import Utilisateurs from '../data/models/utilisateurs.js'
 
 const getAllUsers = (request, response) => {
-    userList(request)
-    .then(userList => response.send(userList))
-    .catch((err)=> console.log(err)) 
+    const {session} = request
+    if (session.isId == true) {
+        userList(request)
+        .then(userList => response.send(userList))
+        .catch((err)=> console.log(err)) 
+    }
 }
 
 // get

@@ -6,7 +6,7 @@ import Utilisateurs from '../models/utilisateurs.js'
 const userLogin = (data) => {
     return Utilisateurs.sync({alter:false}).then(()=>{
         return db.query(`
-            SELECT ut_nom, ut_prenom, ut_id, ut_uuid, ut_mdp_exp 
+            SELECT ut_nom, ut_prenom, ut_id, ut_uuid, ut_mdp_exp, 
                 hab_uuid, hab_profil 
             FROM habilitations, utilisateurs
             WHERE ut_id = :id AND ut_mdp = :mdp 

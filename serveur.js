@@ -71,7 +71,7 @@ import {
   getIncByUser,
   getIncByPresta,
   autoAffectation,
-  reAffectation,
+  affectation,
   attribution,
   finInc,
   clotInc,
@@ -91,7 +91,7 @@ import {
 } from './services/journaux.js'
 
 //////      login     //////
-app.get('/get_accueil', accueil)   
+app.get('/accueil', accueil)   
 app.post('/login', login)
 app.get('/get_userBySession',UserBySession)
 app.post('/forgotPw',UserByMail)
@@ -130,7 +130,7 @@ app.get('/get_inc_journal/:id/:infoImmoInclude', getJrnByInc)
 app.post('/update_comm', updateJrn)
 
 //////////// incidents usagers ////////////
-app.get('/get_emp', getAllEmpAndTinc)
+app.get('/get_empNewInc', getAllEmpAndTinc)
 app.post('/crea_inc',creaOneInc)
 app.get('/clotureInc/:inc_id', clotInc)
 // insatisfaction : commentaire + relance
@@ -142,7 +142,7 @@ app.get('/clotureInc', clotOldInc)
 app.get('/get_incByPresta', getIncByPresta)
 
 app.get('/affectation/:inc_id', autoAffectation)
-app.get('/affectation/:inc_id/:techno_id/:reaffect', reAffectation)
+app.get('/affectation/:inc_id/:techno_id', affectation)
 app.get('/attribution/:inc_id/:presta_id', attribution)
 app.get('/finIntervention/:inc_id', finInc)
 
