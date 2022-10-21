@@ -1,4 +1,4 @@
-import MD5 from 'sha1'
+import sha1 from 'sha1'
 import uuid from 'uuidv4'
 
 const genUuid = () =>  {
@@ -27,7 +27,7 @@ const genMdp = () => {
 }
 
 const hash = (id, mdp) =>  {
-    return MD5(id + mdp)
+    return sh1(id + mdp)
 }
 
 function addDaysToDate(dep, nbDays){        
