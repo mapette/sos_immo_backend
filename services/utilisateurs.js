@@ -2,7 +2,6 @@ import  {
     genMdp,
     genUuid,
     hash,
-    addDaysToDate,
 } from './lib_serveur.js'
 import {
     userList,

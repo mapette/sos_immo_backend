@@ -1,0 +1,47 @@
+{
+	"id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
+	"values": [
+		{
+			"key": "usager_id",
+			"value": "usager",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "usager_mdp",
+			"value": "1af490f76701dbded1d4f9673f7788d56e5c23d9",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "new_inc_id",
+			"value": {
+				"id": 146
+			},
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "technicien_id",
+			"value": "techno",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "technicen_mdp",
+			"value": "1c2e78b1fc4d7a5f57e3b834c6f693066276248d",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "inc",
+			"value": "146",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "My Workspace Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-10-21T11:07:33.239Z",
+	"_postman_exported_using": "Postman/9.31.0"
+}

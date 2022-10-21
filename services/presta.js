@@ -31,7 +31,8 @@ const creaOnePresta = (request, response) => {
             presta_libelle: body.presta_libelle,
         })
         savePresta(presta)
-            .then(response.send({  msg: 'ok' }))
+            .then(newPresta => response.send({id : newPresta.presta_id}))
+        // .then(response.send({  msg: 'ok' }))
             .catch((err) => { response.status(500).json(err) })
     }
 }

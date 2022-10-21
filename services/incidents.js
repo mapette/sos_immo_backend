@@ -23,6 +23,7 @@ import {
 import Presta from '../data/models/presta.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
+import { cp } from 'fs'
 
 const retirerVieux = (inc) => {
     if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
@@ -124,7 +125,8 @@ const creaOneInc = (request, response) => {
         })
         .then(incident =>{
             jrnApresSignal(incident, user, presta, body.info)
-            response.send({ status: true })
+            response.send({id : incident.inc_id})
+           // response.send({ status: true })
         })
        .catch((err)=>{response.status(500).json(err)})
     }
@@ -147,10 +149,11 @@ const relanceSignal = (inc, user, msg) => {
 const autoAffectation = (request, response) => {
     let user = new User
     const {session, params} = request
+    console.log(params,session)
     if (session.isId == true && session.profil == 2) {
         userByUuid(session.uuid)
         .then(userList => user = userList[0])
-        .then(() => incById(params.inc_id))
+        .then(() => incById(parseInt(params.inc_id)))
         .then(inc => {
             inc.inc_affect_date = new Date()
             inc.inc_affect_ut = user.ut_uuid
@@ -220,46 +223,47 @@ const finInc = (request, response) => {
 }
 
 const clotInc = (request, response) => {
-    const {session, params, body} = request   
+    const { session, params, body } = request
     let user = User
-    let inc_id
-    if (session.isId == true ) {
-        if (params.inc_id !== undefined) { inc_id = params.inc_id }
-        else { inc_id = body.inc_id }
+    let inc_id = 0
+    if (session.isId == true) {
+        if (Object.keys(params).length === 0) { inc_id = body.inc_id }  // post => prendre body
+        else { inc_id = parseInt(params.inc_id) }                       // get => prendre params
         userByUuid(session.uuid)
-        .then(userList => user = userList[0])
-        .then(() => incById(inc_id))
-        .then(inc => {
-            inc.inc_cloture_date = new Date()
-            return saveInc(inc)
-        })
-        .then(inc => {
-            jnrAprescloture(inc, user, body.info)
-            relanceSignal(inc, user, body.info)
-            response.send({ status: true })
-        })
+            .then(userList => user = userList[0])
+            .then(() => incById(inc_id))
+            .then(inc => {
+                console.log('inc', inc)
+                inc.inc_cloture_date = new Date()
+                return saveInc(inc)
+            })
+            .then(inc => {
+                console.log('fini')
+                jnrAprescloture(inc, user, body.info)
+                if (Object.keys(params).length === 0) { relanceSignal(inc, user, body.info) }   // post => relance
+                response.send({ status: true })
+            })
     }
 }
 
 const clotOldInc = (request, response) => {
-    const {session,} = request     
+    const { session, } = request
     if (session.isId == true && session.profil == 4) {
         incListWithDetails()
-        .then(incList => incList.filter(inc => 
-            inc.inc_fin_date !== null && inc.inc_cloture_date === null))
-        .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE_AUTO))
-        .then(incList => {
-            console.log(incList)
-            incList.forEach(inc => {
-                inc.inc_cloture_date = new Date()
-                NewLine({
-                    jrn_inc : inc.inc_id,
-                    jrn_msg : 'Intervention clôturée automatiquement',
-                })
-                saveInc(inc)
-            });
-            response.send(incList)
-        })
+            .then(incList => incList.filter(inc =>
+                inc.inc_fin_date !== null && inc.inc_cloture_date === null))
+            .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE_AUTO))
+            .then(incList => {
+                incList.forEach(inc => {
+                    inc.inc_cloture_date = new Date()
+                    NewLine({
+                        jrn_inc: inc.inc_id,
+                        jrn_msg: 'Intervention clôturée automatiquement',
+                    })
+                    saveInc(inc)
+                });
+                response.send(incList)
+            })
     }
 }
 
@@ -270,7 +274,6 @@ export  {
     getOneInc,
     getIncByUser,
     creaOneInc, 
-  //  relanceSignal,    // usage interne
     autoAffectation,  
     affectation, 
     attribution,
