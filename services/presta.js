@@ -32,8 +32,7 @@ const creaOnePresta = (request, response) => {
         })
         savePresta(presta)
             .then(newPresta => response.send({id : newPresta.presta_id}))
-        // .then(response.send({  msg: 'ok' }))
-            .catch((err) => { response.status(500).json(err) })
+            .catch(err =>  response.status(500).json(err) )
     }
 }
 
@@ -45,7 +44,8 @@ const updateOnePresta = (request, response) => {
                 presta.presta_nom = body.presta_nom
                 presta.presta_libelle = body.presta_libelle
                 return savePresta(presta)
-            }).then(response.send({ msg: 'ok' }))
+            })
+            .then(presta => response.send({ id: presta.presta_id }))
             .catch((err) => { response.status(500).json(err) })
     }
 }

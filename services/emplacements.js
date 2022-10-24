@@ -46,9 +46,8 @@ const creaOneEmp = (request, response) => {
             emp_etage: body.emp_etage,
             emp_temp : body.emp_temp,
         })
-        //(console.log(request))
         saveEmp(emp)
-            .then(response.send({  msg: 'ok' }))
+            .then(emp => response.send({ id: emp.emp_id }))
             .catch((err) => { response.status(500).json(err) })
     }
 }
@@ -62,11 +61,12 @@ const updateOneEmp = (request, response) => {
                 emp.emp_nom = body.emp_nom
                 emp.emp_temp = body.emp_temp
                 return saveEmp(emp)
-            }).then(response.send({ msg: 'ok' }))
+            })
+            .then(emp => response.send({ id: emp.emp_id }))
             .catch((err) => { response.status(500).json(err) })
-
     }
 }
+
 
 //// types d'emplacement ////
 const getAllTemp = (request, response) => {

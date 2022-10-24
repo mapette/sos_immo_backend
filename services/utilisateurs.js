@@ -98,7 +98,8 @@ const updateOneUser = (request, response) => {
                     profil : parseInt(body.hab_profil),
                 })
             }
-        }).then (response.send({ msg:'ok' }))
+        })
+        .then(user => response.send({ user: user.ut_id }))
         .catch((err)=>{response.status(500).json(err)})
     
     }

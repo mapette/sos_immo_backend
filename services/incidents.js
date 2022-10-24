@@ -23,7 +23,6 @@ import {
 import Presta from '../data/models/presta.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
-import { cp } from 'fs'
 
 const retirerVieux = (inc) => {
     if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
@@ -91,7 +90,6 @@ const getIncByPresta = (request, response) =>  {
 
 const getOneInc = (request, response) =>  {
     const {session, params} = request
-    console.log(request)
     if (session.isId == true) {
         incListWithDetails()
         .then(incList => {return incList.filter(inc => inc.inc_id ===  parseInt(params.id))})
@@ -126,7 +124,6 @@ const creaOneInc = (request, response) => {
         .then(incident =>{
             jrnApresSignal(incident, user, presta, body.info)
             response.send({id : incident.inc_id})
-           // response.send({ status: true })
         })
        .catch((err)=>{response.status(500).json(err)})
     }

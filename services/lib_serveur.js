@@ -27,7 +27,7 @@ const genMdp = () => {
 }
 
 const hash = (id, mdp) =>  {
-    return sh1(id + mdp)
+    return sha1(id + mdp)
 }
 
 function addDaysToDate(dep, nbDays){        
