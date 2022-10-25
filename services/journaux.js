@@ -20,6 +20,7 @@ const updateJrn = (request, response) => {
                 jrn_inc : body.jrn_inc,
                 jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' - ' + body.jrn_msg,
                 jrn_imm : body.jrn_imm,
+                jrn_date : new Date(),
             })
             .then(line => response.send({ jrn_id: line.insertId }))
         })
@@ -43,6 +44,7 @@ const getJrnByInc = (request, response) => {
 
 // maj
 const jrnApresSignal = (inc, user, presta, msgInfo) => {
+    console.log('presta',presta)
     // jrn 1 - création signalement
     NewLine({
         jrn_inc : inc.inc_id,
@@ -69,6 +71,7 @@ const jrnApresAffectation = (inc, user, reacfect) => {
         NewLine({
             jrn_inc : inc.inc_id,
             jrn_msg : 'Pris en charge par notre technicien',
+            jrn_date : new Date(),
         })
     }
      // jrn 2 - affectation
@@ -76,6 +79,7 @@ const jrnApresAffectation = (inc, user, reacfect) => {
         jrn_inc : inc.inc_id,
         jrn_msg : 'Affectation ' + user.ut_prenom + ' ' + user.ut_nom,
         jrn_imm : true,
+        jrn_date : new Date(),
     })
 }
 
@@ -84,19 +88,22 @@ const jrnApresAttribution = (inc, presta) => {
         jrn_inc : inc.inc_id,
         jrn_msg : 'Attribution ' + presta.presta_nom,
         jrn_imm : true,
+        jrn_date : new Date(),
     })
 }
 
 const jnrApresFin = (inc, user) => {
     NewLine({
         jrn_inc : inc.inc_id,
-        jrn_msg : 'Intervention terminée'
+        jrn_msg : 'Intervention terminée',
+        jrn_date : new Date(),
     })
 
     NewLine({
         jrn_inc : inc.inc_id,
         jrn_msg : 'Fin intervention : ' + user.ut_prenom + ' ' + user.ut_nom,
         jrn_imm : true,
+        jrn_date : new Date(),
     })
 }
 
@@ -105,11 +112,13 @@ function jnrAprescloture(inc, user, msgInfo) {
         NewLine({
             jrn_inc : inc.inc_id,
             jrn_msg : 'Relance demandée par ' + user.ut_prenom + ' ' + user.ut_nom + ' - Motif : ' + msgInfo,
+            jrn_date : new Date(),
         })
     }
     NewLine({
         jrn_inc : inc.inc_id,
         jrn_msg : 'Intervention clôturée : ' + user.ut_prenom + ' ' + user.ut_nom,
+        jrn_date : new Date(),
     })
 }
 

@@ -23,6 +23,7 @@ import {
 import Presta from '../data/models/presta.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
+import Incidents from '../data/models/incidents.js'
 
 const retirerVieux = (inc) => {
     if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
@@ -128,19 +129,23 @@ const creaOneInc = (request, response) => {
        .catch((err)=>{response.status(500).json(err)})
     }
 }
-const relanceSignal = (inc, user, msg) => {
-    newInc({
-        inc_emp : inc.inc_emp,
-        inc_tinc : inc.inc_tinc,
-        inc_presta : inc.inc_presta,
-        inc_signal_ut : inc.inc_signal_ut,
-    })
-    .then(newinc =>  {
-        let msgRelance = "Relance de l'incident " + inc.inc_id + ". Motif : " + msg
-        jrnApresSignal(newinc, user, prestaById(inc.inc_tinc), msgRelance)
-      })
-}
 
+const relanceSignal = (ancInc, user, msg) => {
+    let nouvInc = new Incidents
+    newInc({
+        inc_emp: ancInc.inc_emp,
+        inc_tinc: ancInc.inc_tinc,
+        inc_presta: ancInc.inc_presta,
+        inc_signal_ut: ancInc.inc_signal_ut,
+        inc_signal_date: new Date(),
+    })
+        .then(incident => nouvInc = incident)
+        .then(() =>  prestaById(nouvInc.inc_presta))
+        .then(presta => {
+            let msgRelance = "Relance de l'incident " + nouvInc.inc_id + ". Motif : " + msg
+            jrnApresSignal(nouvInc, user, presta, msgRelance)
+        })
+}
 
 // affectation - attribution
 const autoAffectation = (request, response) => {
