@@ -61,7 +61,7 @@ const creaOneUser = (request, response) => {
             ut_tel: body.ut_tel,
             ut_mail: body.ut_mail,
             ut_mdp: hash(body.ut_id, mdp),
-            ut_admin_deb: session.ut,
+            // ut_admin_deb: session.ut,
         })
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
