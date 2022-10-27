@@ -9,16 +9,13 @@ import User from '../data/models/utilisateurs.js'
 
 const updateJrn = (request, response) => {
     const {session, body} = request
-    console.log(body)
     if (session.isId == true) {
-        let user = new User
-        console.log('body',body)
         userByUuid(session.uuid)
         .then(userList => userList[0])
         .then(user => {
             NewLine({
                 jrn_inc : body.jrn_inc,
-                jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' - ' + body.jrn_msg,
+                jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg,
                 jrn_imm : body.jrn_imm,
                 jrn_date : new Date(),
             })
@@ -77,7 +74,7 @@ const jrnApresAffectation = (inc, user, reacfect) => {
      // jrn 2 - affectation
     NewLine({
         jrn_inc : inc.inc_id,
-        jrn_msg : 'Affectation ' + user.ut_prenom + ' ' + user.ut_nom,
+        jrn_msg : 'Affectation : ' + user.ut_prenom + ' ' + user.ut_nom,
         jrn_imm : true,
         jrn_date : new Date(),
     })
@@ -86,7 +83,7 @@ const jrnApresAffectation = (inc, user, reacfect) => {
 const jrnApresAttribution = (inc, presta) => {
     NewLine({
         jrn_inc : inc.inc_id,
-        jrn_msg : 'Attribution ' + presta.presta_nom,
+        jrn_msg : 'Attribution : ' + presta.presta_nom,
         jrn_imm : true,
         jrn_date : new Date(),
     })
@@ -117,7 +114,7 @@ function jnrAprescloture(inc, user, msgInfo) {
     }
     NewLine({
         jrn_inc : inc.inc_id,
-        jrn_msg : 'Intervention clôturée : ' + user.ut_prenom + ' ' + user.ut_nom,
+        jrn_msg : 'Intervention clôturée par ' + user.ut_prenom + ' ' + user.ut_nom,
         jrn_date : new Date(),
     })
 }
