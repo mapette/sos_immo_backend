@@ -28,7 +28,6 @@ const updateJrn = (request, response) => {
 const getJrnByInc = (request, response) => {
     const {params} = request
     jrnByInc(parseInt(params.id))
-   // .then(jrnList => console.log(jrnList))
     .then(jrnList => {
         if (params.infoImmoInclude === 'false'){
            return jrnList.filter(line => line.jrn_imm === 0)
@@ -41,17 +40,16 @@ const getJrnByInc = (request, response) => {
 
 // maj
 const jrnApresSignal = (inc, user, presta, msgInfo) => {
-    console.log('presta',presta)
     // jrn 1 - création signalement
     NewLine({
         jrn_inc : inc.inc_id,
-        jrn_msg : 'Signalement de ' + user.ut_prenom + ' ' + user.ut_prenom +  ' (tél ' + user.ut_tel + ')',
+        jrn_msg : 'Signalement de ' + user.ut_prenom + ' ' + user.ut_nom +  ' (tél ' + user.ut_tel + ')',
     })
      // jrn 2 - info usager - le cas échéant
     if (msgInfo !== ''){
         NewLine({
             jrn_inc : inc.inc_id,
-            jrn_msg : user.ut_prenom + ' ' + user.ut_prenom + ' - ' + msgInfo,
+            jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' : ' + msgInfo,
         })
     }
      // jrn 3 - attribution presta
@@ -108,7 +106,7 @@ function jnrAprescloture(inc, user, msgInfo) {
     if (msgInfo!== undefined){     // msg donc relance
         NewLine({
             jrn_inc : inc.inc_id,
-            jrn_msg : 'Relance demandée par ' + user.ut_prenom + ' ' + user.ut_nom + ' - Motif : ' + msgInfo,
+            jrn_msg : 'Relance demandée par ' + user.ut_prenom + ' ' + user.ut_nom + ' : Motif : ' + msgInfo,
             jrn_date : new Date(),
         })
     }

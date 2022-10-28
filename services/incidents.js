@@ -119,6 +119,7 @@ const creaOneInc = (request, response) => {
                 inc_emp : parseInt(body.emp),
                 inc_tinc : tinc.tinc_id,
                 inc_presta : presta.presta_id,
+                inc_signal_date : new Date(),
                 inc_signal_ut : user.ut_uuid,
             })
         })
@@ -151,7 +152,6 @@ const relanceSignal = (ancInc, user, msg) => {
 const autoAffectation = (request, response) => {
     let user = new User
     const {session, params} = request
-    console.log(params,session)
     if (session.isId == true && session.profil == 2) {
         userByUuid(session.uuid)
         .then(userList => user = userList[0])
@@ -235,12 +235,10 @@ const clotInc = (request, response) => {
             .then(userList => user = userList[0])
             .then(() => incById(inc_id))
             .then(inc => {
-                console.log('inc', inc)
                 inc.inc_cloture_date = new Date()
                 return saveInc(inc)
             })
             .then(inc => {
-                console.log('fini')
                 jnrAprescloture(inc, user, body.info)
                 if (Object.keys(params).length === 0) { relanceSignal(inc, user, body.info) }   // post => relance
                 response.send({ status: true })

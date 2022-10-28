@@ -10,7 +10,6 @@ import {
 
 const getUserHab = (request, response) => {
     const {session} = request
-    console.log('test filter')
     if (session.isId == true & session.profil == 4) {
         habByUserUuid(request.params.uuid)
         .then(userList => {return userList.filter((element) => element.hab_profil !== 0)})
@@ -20,7 +19,6 @@ const getUserHab = (request, response) => {
 }
 
 const changeProfil = (data, response) => {
-    console.log('data', data)
     // récupérer ancien hab
     habByUuid(data.hab_uuid)
     .then(hab => {
