@@ -4,28 +4,18 @@ app.use(express.json())
 app.use(express.static('../sos_immo/public'))
 app.use(express.urlencoded({ extended: true }))
 
-app.get('/users', (req,res)=>{
-  res.status(200).json({
-    users : [{
-      name:'sophie',
-      age:49,
-    }]
-  })
-})
-
 export {
   app,
 }
-
 
 //gestion des cookies
 import session from 'express-session'
 app.use(session({
   secret: 'keyboard cat',
   cookie: { maxAge: 600000 }, // 10 minutes
-  rolling: true,
   // cookie: { maxAge: 6000000 }, // 100 minutes
   // cookie: { maxAge: 30000 } // 3 secondes
+  rolling: true,
 }))
 
 // évite les pbmes de sécurité pour les envois front->back
@@ -37,8 +27,10 @@ app.use(cors({
 
 import db from './db/db.js'
 db.sync()
-const port = 3001
-app.listen(port)
+//const port = 3001
+//app.listen(port)    
+//app.listen(port,'0.0.0.0')
+app.listen(process.env.portSosImmo,'0.0.0.0')
 
 import {
   accueil,
