@@ -143,7 +143,7 @@ const relanceSignal = (ancInc, user, msg) => {
         .then(incident => nouvInc = incident)
         .then(() =>  prestaById(nouvInc.inc_presta))
         .then(presta => {
-            let msgRelance = "Relance de l'incident " + nouvInc.inc_id + ". Motif : " + msg
+            let msgRelance = "Relance de l'incident " + ancInc.inc_id + ". Motif : " + msg
             jrnApresSignal(nouvInc, user, presta, msgRelance)
         })
 }

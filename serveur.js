@@ -79,7 +79,8 @@ import {
 } from './services/emplacements.js'
 import {
   getJrnByInc,
-  updateJrn,
+  updateJrnUsager,
+  updateJrnTechno,
 } from './services/journaux.js'
 
 //////      login     //////
@@ -119,7 +120,8 @@ app.get('/get_inc', getIncAll)
 app.get('/get_incByUser', getIncByUser)
 app.get('/get_inc_details/:id', getOneInc)
 app.get('/get_inc_journal/:id/:infoImmoInclude', getJrnByInc)
-app.post('/update_comm', updateJrn)
+app.post('/update_jrn_usager', updateJrnUsager)
+app.post('/update_jrn_techno', updateJrnTechno)
 
 //////////// incidents usagers ////////////
 app.get('/get_empNewInc', getAllEmpAndTinc)

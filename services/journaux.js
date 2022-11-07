@@ -5,50 +5,73 @@ import {
 import {
     userByUuid,
 } from '../data/DAO/utilisateurs.js'
-import User from '../data/models/utilisateurs.js'
 
-const updateJrn = (request, response) => {
-    const {session, body} = request
+const updateJrnUsager = (request, response) => {
+    const { session, body } = request
+    console.log()
     if (session.isId == true) {
         userByUuid(session.uuid)
-        .then(userList => userList[0])
-        .then(user => {
-            NewLine({
-                jrn_inc : body.jrn_inc,
-                jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg,
-                jrn_imm : body.jrn_imm,
-                jrn_date : new Date(),
+            .then(userList => userList[0])
+            .then(user => {
+                NewLine({
+                    jrn_inc: body.jrn_inc,
+                    jrn_msg: user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg,
+                    jrn_imm: body.jrn_imm,
+                    jrn_date: new Date(),
+                })
+                    .then(line => response.send({ jrn_id: line.insertId }))
             })
-            .then(line => response.send({ jrn_id: line.insertId }))
-        })
+    }
+}
+const updateJrnTechno = (request, response) => {
+    const { session, body } = request
+    if (session.isId == true && session.profil != 1) {
+        userByUuid(session.uuid)
+            .then(userList => userList[0])
+            .then(user => {
+                const msg = () => {
+                    if (body.jrn_imm) {
+                        return user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg
+                    }
+                    else { return 'votre technicien : ' + body.jrn_msg }
+                }
+                NewLine({
+                    jrn_inc: body.jrn_inc,
+                    jrn_msg: msg(),
+                    jrn_imm: body.jrn_imm,
+                    jrn_date: new Date(),
+                })
+                    .then(line => response.send({ jrn_id: line.insertId }))
+            })
     }
 }
 
+
 // get
 const getJrnByInc = (request, response) => {
-    const {params} = request
+    const { params } = request
     jrnByInc(parseInt(params.id))
-    .then(jrnList => {
-        if (params.infoImmoInclude === 'false'){
-           return jrnList.filter(line => line.jrn_imm === 0)
-        }
-        else return jrnList
-    })
-    .then(jrnList => response.send(jrnList))
-    .catch((err)=>{response.status(500).json(err)})
+        .then(jrnList => {
+            if (params.infoImmoInclude === 'false') {
+                return jrnList.filter(line => line.jrn_imm === 0)
+            }
+            else return jrnList
+        })
+        .then(jrnList => response.send(jrnList))
+        .catch((err) => { response.status(500).json(err) })
 }
 
 // maj
 const jrnApresSignal = (inc, user, presta, msgInfo) => {
     // jrn 1 - création signalement
     NewLine({
-        jrn_inc : inc.inc_id,
-        jrn_msg : 'Signalement de ' + user.ut_prenom + ' ' + user.ut_nom +  ' (tél ' + user.ut_tel + ')',
+        jrn_inc: inc.inc_id,
+        jrn_msg: 'Signalement de ' + user.ut_prenom + ' ' + user.ut_nom + ' (tél ' + user.ut_tel + ')',
     })
-     // jrn 2 - info usager - le cas échéant
-    if (msgInfo !== ''){
+    // jrn 2 - info usager - le cas échéant
+    if (msgInfo !== '') {
         NewLine({
-            jrn_inc : inc.inc_id,
+            jrn_inc: inc.inc_id,
             jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' : ' + msgInfo,
         })
     }
@@ -93,7 +116,6 @@ const jnrApresFin = (inc, user) => {
         jrn_msg : 'Intervention terminée',
         jrn_date : new Date(),
     })
-
     NewLine({
         jrn_inc : inc.inc_id,
         jrn_msg : 'Fin intervention : ' + user.ut_prenom + ' ' + user.ut_nom,
@@ -120,7 +142,8 @@ function jnrAprescloture(inc, user, msgInfo) {
 
 export  {
     getJrnByInc,
-    updateJrn,
+    updateJrnUsager,
+    updateJrnTechno,
     jrnApresSignal, 
     jrnApresAffectation,
     jrnApresAttribution,

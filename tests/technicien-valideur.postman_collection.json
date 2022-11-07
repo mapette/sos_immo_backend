@@ -65,14 +65,14 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3001/update_comm",
+					"raw": "http://localhost:3001/update_jrn",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3001",
 					"path": [
-						"update_comm"
+						"update_jrn"
 					]
 				}
 			},
