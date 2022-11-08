@@ -1,7 +1,7 @@
 import sha1 from 'sha1'
 import uuid from 'uuidv4'
 
-const genUuid = () =>  {
+const genUuid = () => {
     return uuid.uuid()
 }
 
@@ -26,13 +26,13 @@ const genMdp = () => {
     return mdp;
 }
 
-const hash = (id, mdp) =>  {
+const hash = (id, mdp) => {
     return sha1(id + mdp)
 }
 
-function addDaysToDate(dep, nbDays){        
+function addDaysToDate(dep, nbDays) {
     // ajouter nbDay à une date dep
-    return     dep.setDate(dep.getDate() + nbDays);
+    return dep.setDate(dep.getDate() + nbDays);
 }
 
 const DELAIS_CLOTURE_AUTO = 172800000 // 48 heures
@@ -40,9 +40,9 @@ const DELAIS_VISIBILITE_INC_CLOTURE = 2592000000 // 30 jours
 
 export {
     genUuid,
-    genMdp, 
-    hash, 
-    addDaysToDate, 
+    genMdp,
+    hash,
+    addDaysToDate,
     DELAIS_CLOTURE_AUTO,
     DELAIS_VISIBILITE_INC_CLOTURE,
 }
