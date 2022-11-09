@@ -1,13 +1,16 @@
+import Emplacements from '../data/models/emplacements.js'
+import Temp from '../data/models/types_emp.js'
 import {
     empListWithDetails,
     empListNewInc,
     empById,
     saveEmp,
- } from '../data/DAO/emplacements.js'
- import Emplacements from '../data/models/emplacements.js'
- import {
+} from '../data/DAO/emplacements.js'
+import {
     tempList,
- } from '../data/DAO/temp.js'
+    tempById,
+    saveTemp,
+} from '../data/DAO/temp.js'
 
 //// emplacements ////
 const getAllEmp = (request, response) => {
@@ -70,20 +73,56 @@ const updateOneEmp = (request, response) => {
 
 //// types d'emplacement ////
 const getAllTemp = (request, response) => {
-    const {session,} = request
+    const { session, } = request
     if (session.isId === true && session.profil === 4) {
         tempList()
-        .then(list => response.send(list))
-        .catch((err)=> console.log(err))
+            .then(list => response.send(list))
+            .catch((err) => console.log(err))
     }
 }
 
+const getOneTemp = (request, response) => {
+    const { session, params, } = request
+    if (session.isId === true && session.profil === 4) {
+        tempById(params.id)
+            .then(temp => response.send(temp))
+            .catch((err) => console.log(err))
+    }
+}
+
+const creaOneTemp = (request, response) => {
+    const {session, body} = request
+    if (session.isId == true & session.profil == 4) {
+        const temp = Temp.build({
+            temp_nom: body.temp_nom,
+        })
+        saveTemp(temp)
+            .then(temp => response.send({ id: temp.temp_id }))
+            .catch((err) => { response.status(500).json(err) })
+    }
+}
+
+const updateOneTemp = (request, response) => {
+    const { session, body } = request
+    if (session.isId == true & session.profil == 4) {
+        tempById(body.temp_id)
+            .then(temp => {
+                temp.temp_nom = body.temp_nom
+                return saveTemp(temp)
+            })
+            .then(temp => response.send({ id: temp.temp_id }))
+            .catch((err) => { response.status(500).json(err) })
+    }
+}
 export  {
     getAllEmpAndTinc,
     getAllEmp, 
     getOneEmp,
     creaOneEmp,
     updateOneEmp,
-    getAllTemp, 
+    getAllTemp,
+    getOneTemp, 
+    creaOneTemp,
+    updateOneTemp,
 }
 

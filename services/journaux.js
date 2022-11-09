@@ -8,7 +8,6 @@ import {
 
 const updateJrnUsager = (request, response) => {
     const { session, body } = request
-    console.log()
     if (session.isId == true) {
         userByUuid(session.uuid)
             .then(userList => userList[0])

@@ -76,6 +76,9 @@ import {
   updateOneEmp,
   getAllEmpAndTinc,
   getAllTemp,
+  getOneTemp,
+  creaOneTemp,
+  updateOneTemp,
 } from './services/emplacements.js'
 import {
   getJrnByInc,
@@ -111,9 +114,12 @@ app.post('/update_presta', updateOnePresta)
 app.get('/get_emp', getAllEmp)
 app.get('/get_emp/:id', getOneEmp)
 app.get('/get_temp', getAllTemp)
+app.get('/get_temp/:id', getOneTemp)
 
 app.post('/crea_emp', creaOneEmp)
 app.post('/update_emp', updateOneEmp)
+app.post('/crea_temp', creaOneTemp)
+app.post('/update_temp', updateOneTemp)
 
 //////////// incidents ////////////
 app.get('/get_inc', getIncAll)
