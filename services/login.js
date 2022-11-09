@@ -7,7 +7,7 @@ import {
     userLogin,
     OneUserWithoutDetails
 } from '../data/DAO/utilisateurs.js'
-
+import {addDaysToDate } from './lib_serveur.js'
 const accueil = (request, response) => {
     const {session} = request
     if (session.uuid !== undefined) {
@@ -73,6 +73,7 @@ const changeMdp = (request, response) => {
         }
         else{
             user.ut_mdp = body.newmdp
+            user.ut_mdp_exp = addDaysToDate(new Date(),90)
             saveUser(user)
             response.send({ status: true })
         }

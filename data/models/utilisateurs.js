@@ -40,20 +40,11 @@ const Utilisateurs = db.define('utilisateurs',{
         allowNull : false,
         defaultValue: new Date(),
     },
-    // ut_admin_deb : {
-    //     type : DataTypes.STRING,
-    //     allowNull : false,
-    //     defaultValue: null,
-    // },
     ut_date_exp : {
         type : DataTypes.DATE,
         allowNull : true,
         defaultValue: null,
     },
-    // ut_admin_exp : {
-    //     type : DataTypes.STRING,
-    //     allowNull : true,
-    // },
     ut_mdp : {
         type : DataTypes.STRING,
         allowNull : true,
