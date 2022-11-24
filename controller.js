@@ -13,8 +13,6 @@ import session from 'express-session'
 app.use(session({
   secret: 'keyboard cat',
   cookie: { maxAge: 600000 }, // 10 minutes
-  // cookie: { maxAge: 6000000 }, // 100 minutes
-  // cookie: { maxAge: 30000 } // 3 secondes
   rolling: true,
 }))
 
