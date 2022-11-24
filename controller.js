@@ -31,21 +31,17 @@ db.sync()
 app.listen(process.env.portSosImmo,'0.0.0.0')
 
 import {
-  accueil,
-  login,
-  UserBySession,
-  UserByMail,
+  accueil, login,
+  UserBySession, UserByMail,
   changeMdp,
 } from './services/login.js'
 import {
-  getAllPresta,
-  getPrestaById,
+  getAllPresta, getPrestaById,
   creaOnePresta,
   updateOnePresta,
 } from './services/presta.js'
 import {
-  getAllUsers,
-  getOneUser,
+  getAllUsers, getOneUser,
   getUserListByCatAndPresta,
   creaOneUser,
   updateOneUser,
@@ -55,33 +51,24 @@ import {
   getUserHab,
 } from './services/habilitations.js'
 import {
-  getIncAll,
+  getIncAll, getOneInc,
+  getIncByUser, getIncByPresta,
   creaOneInc,
-  getOneInc,
-  getIncByUser,
-  getIncByPresta,
-  autoAffectation,
-  affectation,
-  attribution,
+  autoAffectation, affectation, attribution,
   finInc,
-  clotInc,
-  clotOldInc,
+  clotInc, clotOldInc,
 } from './services/incidents.js'
 import {
-  getAllEmp,
-  getOneEmp,
+  getAllEmp, getAllEmpAndTinc, getOneEmp,
   creaOneEmp,
   updateOneEmp,
-  getAllEmpAndTinc,
-  getAllTemp,
-  getOneTemp,
+  getAllTemp, getOneTemp,
   creaOneTemp,
   updateOneTemp,
 } from './services/emplacements.js'
 import {
   getJrnByInc,
-  updateJrnUsager,
-  updateJrnTechno,
+  updateJrnUsager, updateJrnTechno,
 } from './services/journaux.js'
 
 //////      login     //////
