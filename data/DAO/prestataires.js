@@ -1,4 +1,4 @@
-import Presta from '../models/presta.js'
+import Presta from '../models/prestataires.js'
 
 const prestaList = () => {
     return Presta.findAll()

@@ -1,7 +1,7 @@
 import {DataTypes, Op} from 'sequelize'
 import db from '../../db/db.js'
 
-const Presta = db.define('presta',{
+const Prestataires = db.define('presta',{
     presta_id : {
         type : DataTypes.INTEGER.UNSIGNED,
         primaryKey : true,
@@ -21,6 +21,6 @@ const Presta = db.define('presta',{
     timestamps: false,
 })
 
-export default Presta
+export default Prestataires
 
 

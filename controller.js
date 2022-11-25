@@ -38,7 +38,7 @@ import {
   getAllPresta, getPrestaById,
   creaOnePresta,
   updateOnePresta,
-} from './services/presta.js'
+} from './services/prestataires.js'
 import {
   getAllUsers, getOneUser,
   getUserListByCatAndPresta,

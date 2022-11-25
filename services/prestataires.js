@@ -2,8 +2,8 @@ import {
     prestaById,
     prestaList,
     savePresta,
-} from '../data/DAO/presta.js'
-import Presta from '../data/models/presta.js'
+} from '../data/DAO/prestataires.js'
+import Presta from '../data/models/prestataires.js'
 
 const getAllPresta = (request, response) => {
     const { session } = request

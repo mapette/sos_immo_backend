@@ -1,6 +1,6 @@
 import {userByUuid, } from '../data/DAO/utilisateurs.js'
 import {tincById,} from '../data/DAO/types_inc.js'
-import {prestaById,} from '../data/DAO/presta.js'
+import {prestaById,} from '../data/DAO/prestataires.js'
 import {NewLine,} from '../data/DAO/journaux.js'
 import {
     incById,
@@ -20,7 +20,7 @@ import {
     jnrAprescloture,
 } from '../services/journaux.js'
 
-import Presta from '../data/models/presta.js'
+import Prestataires from '../data/models/prestataires.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
 import Incidents from '../data/models/incidents.js'
@@ -189,7 +189,7 @@ const affectation = (request, response) => {
 
 const attribution = (request, response) => {
     const {session, params} = request  
-    let presta = Presta   
+    let presta = Prestataires   
     if (session.isId == true && (session.profil == 4)) {
         prestaById(params.presta_id)
         .then(newPresta => presta = newPresta)
