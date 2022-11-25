@@ -66,12 +66,14 @@ const jrnApresSignal = (inc, user, presta, msgInfo) => {
     NewLine({
         jrn_inc: inc.inc_id,
         jrn_msg: 'Signalement de ' + user.ut_prenom + ' ' + user.ut_nom + ' (tél ' + user.ut_tel + ')',
+        jrn_date : new Date(),
     })
     // jrn 2 - info usager - le cas échéant
     if (msgInfo !== '') {
         NewLine({
             jrn_inc: inc.inc_id,
             jrn_msg : user.ut_prenom + ' ' + user.ut_nom + ' : ' + msgInfo,
+            jrn_date : new Date(),
         })
     }
      // jrn 3 - attribution presta
@@ -79,6 +81,7 @@ const jrnApresSignal = (inc, user, presta, msgInfo) => {
          jrn_inc : inc.inc_id,
          jrn_msg : 'Attribution : ' + presta.presta_nom,
          jrn_imm : true,
+         jrn_date : new Date(),
      })
 }
 

@@ -15,7 +15,7 @@ const Journaux = db.define('journaux',{
     jrn_date : {
         type : DataTypes.DATE,
         allowNull : false,
-        defaultValue: new Date()
+    
     },
     jrn_msg : {
         type : DataTypes.STRING,

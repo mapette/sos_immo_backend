@@ -27,7 +27,6 @@ import db from './db/db.js'
 db.sync()
 //const port = 3001
 //app.listen(port)    
-//app.listen(port,'0.0.0.0')
 app.listen(process.env.portSosImmo,'0.0.0.0')
 
 import {

@@ -26,8 +26,6 @@ const Incidents = db.define('incidents',{
     },
     inc_signal_date : {
         type : DataTypes.DATE,
-        allowNull : false,
-        defaultValue: new Date(),
     },
     inc_affect_ut : {
         type : DataTypes.STRING,
