@@ -41,21 +41,13 @@ CREATE TABLE `utilisateurs` (
   `ut_tel` varchar(20) DEFAULT NULL,
   `ut_mail` varchar(50) NOT NULL,
   `ut_date_deb` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  `ut_admin_deb` varchar(15) DEFAULT NULL,
   `ut_date_exp` datetime DEFAULT NULL,
-  `ut_admin_exp` varchar(15) DEFAULT NULL,
   `ut_mdp` varchar(40) DEFAULT NULL, 
   `ut_mdp_exp` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ut_uuid`),
   UNIQUE KEY `ut_id_UNIQUE` (`ut_id`), 
   UNIQUE KEY `ut_mail_UNIQUE` (`ut_mail`),
   KEY `fk_ut_presta_idx` (`ut_presta`), 
-  KEY `fk_ut_admin_exp_idx` (`ut_admin_exp`), 
-  KEY `fk_ut_admin_deb_idx` (`ut_admin_deb`),
-  CONSTRAINT `fk_ut_admin_deb` FOREIGN KEY (`ut_admin_deb`) REFERENCES `utilisateurs` (`ut_id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION),
-  CONSTRAINT `fk_ut_admin_exp` FOREIGN KEY (`ut_admin_exp`) REFERENCES `utilisateurs` (`ut_id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION),
   CONSTRAINT `fk_ut_presta` FOREIGN KEY (`ut_presta`) REFERENCES `presta` (`presta_id`)
 )
 COMMENT='tous les utilisateurs (interne-presta)'
@@ -105,7 +97,7 @@ CREATE TABLE `incidents` (
    `inc_tinc` int NOT NULL,
    `inc_presta` int NOT NULL,
    `inc_signal_ut` varchar(36) NOT NULL,
-   `inc_signal_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `inc_signal_date` datetime NOT NULL,
    `inc_affect_ut` varchar(36) DEFAULT NULL,
    `inc_affect_date` datetime DEFAULT NULL,
    `inc_fin_date` datetime DEFAULT NULL,
@@ -127,7 +119,7 @@ COMMENT='incidents - signalement, affectation, fin d''intervention et clôture'
 CREATE TABLE `journaux` (
    `jrn_id` int NOT NULL AUTO_INCREMENT,
    `jrn_inc` int NOT NULL,
-   `jrn_date` datetime DEFAULT CURRENT_TIMESTAMP,
+   `jrn_date` datetime,
    `jrn_msg` varchar(100) DEFAULT NULL,
    `jrn_imm` tinyint DEFAULT '0',
    PRIMARY KEY (`jrn_id`),

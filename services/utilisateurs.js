@@ -61,7 +61,6 @@ const creaOneUser = (request, response) => {
             ut_tel: body.ut_tel,
             ut_mail: body.ut_mail,
             ut_mdp: hash(body.ut_id, mdp),
-            // ut_admin_deb: session.ut,
         })
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
@@ -112,7 +111,6 @@ const deleteOneUser = (request, response) => {
             .then(user => user[0])      // extrait l'élément
             .then(user => {
                 user.ut_date_exp = new Date()
-                user.ut_admin_exp = session.ut
                 user.ut_mdp = null
                 user.ut_mdp_exp = new Date()
                 return saveUser(user)
