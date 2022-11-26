@@ -99,7 +99,7 @@ const getOneInc = (request, response) =>  {
 
 // création 
 const creaOneInc = (request, response) => {
-    let presta = new Presta
+    let presta = new Prestataires
     let tinc = new Tinc
     let user = new User
     const {session,body} = request
