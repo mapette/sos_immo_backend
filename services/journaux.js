@@ -1,6 +1,5 @@
 import {
-    NewLine, 
-    jrnByInc,
+    NewLine, jrnByInc,
 } from '../data/DAO/journaux.js'
 import {
     userByUuid,
@@ -44,7 +43,6 @@ const updateJrnTechno = (request, response) => {
             })
     }
 }
-
 
 // get
 const getJrnByInc = (request, response) => {
@@ -141,7 +139,6 @@ function jnrAprescloture(inc, user, msgInfo) {
     })
 }
 
-
 export  {
     getJrnByInc,
     updateJrnUsager,
@@ -152,4 +149,3 @@ export  {
     jnrApresFin,
     jnrAprescloture,
 }
-

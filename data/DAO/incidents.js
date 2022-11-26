@@ -2,7 +2,6 @@ import {Sequelize, } from 'sequelize'
 import db from '../../db/db.js'
 import Incidents from '../models/incidents.js'
 
-
 const newInc = (inc) => {return Incidents.create(inc)}
 const saveInc = (data) => {return data.save()}
 
@@ -23,11 +22,10 @@ const incListWithDetails = () => {
     })
 }
 
-
 export  {
     newInc, 
     saveInc,
     incById,
     incListWithDetails,
- 
- }
+  }
+  

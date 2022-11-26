@@ -1,13 +1,11 @@
-import  {
-    genMdp,
-    hash,
+import {
+    genMdp, hash,
 } from './lib_serveur.js'
 import {
-    saveUser,
-    userLogin,
-    OneUserWithoutDetails
+    saveUser, userLogin, OneUserWithoutDetails
 } from '../data/DAO/utilisateurs.js'
-import {addDaysToDate } from './lib_serveur.js'
+import { addDaysToDate } from './lib_serveur.js'
+
 const accueil = (request, response) => {
     const {session} = request
     if (session.uuid !== undefined) {
@@ -88,4 +86,3 @@ export  {
     UserByMail,
     changeMdp,
 }
-

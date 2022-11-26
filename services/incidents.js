@@ -3,10 +3,8 @@ import {tincById,} from '../data/DAO/types_inc.js'
 import {prestaById,} from '../data/DAO/prestataires.js'
 import {NewLine,} from '../data/DAO/journaux.js'
 import {
-    incById,
-    incListWithDetails,
-    newInc,
-    saveInc,
+    incById,    incListWithDetails,
+    newInc,    saveInc,
 } from '../data/DAO/incidents.js'
 import  {
     DELAIS_CLOTURE_AUTO,
@@ -64,28 +62,28 @@ const getIncByUser = (request, response) =>  {
     }
 }
 
-const getIncByPresta = (request, response) =>  {
-        // suivi incidents => status 'enAttente' et 'enCours'
-    const {session} = request
+const getIncByPresta = (request, response) => {
+    // suivi incidents => status 'enAttente' et 'enCours'
+    const { session } = request
     let user = new User
     if (session.isId == true &&
-        (session.profil == 2 | session.profil == 3)){
+        (session.profil == 2 | session.profil == 3)) {
         // récup de l'employeur du demandeur 
         userByUuid(session.uuid)
-        .then(userList => user = userList[0])
-        .then(() => incListWithDetails())
-        // récup inc de cet employeur 
-        .then(incList => {return incList.filter(inc => inc.inc_presta === user.ut_presta)})
-        .then(incList => {
-            if(session.profil == 2){
-               return incList.filter(inc => inc.inc_fin_date === null 
-                                            && (inc.inc_affect_date === null ||
-                                            inc.inc_affect_ut === session.uuid))
-            }
-            else {return incList.filter(inc => inc.inc_fin_date === null)}
-        })
-        .then(incList => response.send(incList))
-        .catch((err)=>{response.status(500).json(err)})
+            .then(userList => user = userList[0])
+            .then(() => incListWithDetails())
+            // récup inc de cet employeur 
+            .then(incList => { return incList.filter(inc => inc.inc_presta === user.ut_presta) })
+            .then(incList => {
+                if (session.profil == 2) {
+                    return incList.filter(inc => inc.inc_fin_date === null
+                        && (inc.inc_affect_date === null ||
+                            inc.inc_affect_ut === session.uuid))
+                }
+                else { return incList.filter(inc => inc.inc_fin_date === null) }
+            })
+            .then(incList => response.send(incList))
+            .catch((err) => { response.status(500).json(err) })
     }
 }
 
@@ -281,4 +279,3 @@ export  {
     clotInc,
     clotOldInc,
 }
-

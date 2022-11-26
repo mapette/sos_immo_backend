@@ -1,7 +1,5 @@
-import  {
-    genMdp,
-    genUuid,
-    hash,
+import {
+    genMdp, genUuid, hash,
 } from './lib_serveur.js'
 import {
     userList,
@@ -125,7 +123,6 @@ const deleteOneUser = (request, response) => {
     }
 }
 
-
 export {
     getAllUsers,
     getOneUser,
@@ -134,5 +131,4 @@ export {
     creaOneUser,
     updateOneUser,
     deleteOneUser,
-
 }

@@ -8,6 +8,7 @@ npm install --save
 * session-express
 * cors
 * mysql2
+* uuidv4
 * sequelize-cli
 * jest
 

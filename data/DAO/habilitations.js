@@ -1,6 +1,5 @@
 import Habilitations from '../models/habilitations.js'
 
-
 const newHab = (hab) => {
     Habilitations.create(hab)
 }
@@ -20,13 +19,9 @@ const saveHab = (data) => {
     return data.save()
 }
 
-
 export  {
     newHab,
     habByUserUuid,
     habByUuid,
     saveHab,
-
  }
-
- 

@@ -4,7 +4,7 @@ import Utilisateurs from '../models/utilisateurs.js'
 
 // login
 const userLogin = (data) => {
-    return Utilisateurs.sync({alter:false}).then(()=>{
+    return Utilisateurs.sync({ alter: false }).then(() => {
         return db.query(`
             SELECT ut_nom, ut_prenom, ut_id, ut_uuid, ut_mdp_exp, 
                 hab_uuid, hab_profil 
@@ -12,10 +12,11 @@ const userLogin = (data) => {
             WHERE ut_id = :id AND ut_mdp = :mdp 
             AND hab_date_exp is null
             AND hab_ut = ut_uuid`,
-        {type: Sequelize.QueryTypes.SELECT,
-            model: Utilisateurs, 
-            replacements: {id: data.id, mdp: data.mdp},
-        })
+            {
+                type: Sequelize.QueryTypes.SELECT,
+                model: Utilisateurs,
+                replacements: { id: data.id, mdp: data.mdp },
+            })
     })
 }
 
@@ -61,8 +62,4 @@ export  {
    userByUuid,
    OneUserWithoutDetails,
    saveUser,
-
 }
-
-
-
