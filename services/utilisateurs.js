@@ -44,7 +44,6 @@ const getUserListByCatAndPresta = (request, response) => {
     }
 }
 
-
 // maj
 const creaOneUser = (request, response) => {
     const { session, body } = request
@@ -59,6 +58,7 @@ const creaOneUser = (request, response) => {
             ut_tel: body.ut_tel,
             ut_mail: body.ut_mail,
             ut_mdp: hash(body.ut_id, mdp),
+            ut_mdp_exp: new Date(),
         })
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
         saveUser(user)
