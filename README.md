@@ -18,3 +18,7 @@ npm install --save
 
 ### lancement : 
 * ligne de commande : nodemon serveur.js
+
+##### tests :
+* postman
+* scénarios : répertoire "tests"
