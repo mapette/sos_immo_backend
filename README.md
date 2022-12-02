@@ -2,7 +2,7 @@
 20220606 téléchargement nodejs
 cmd : node -v : v16.14.0
 
-### Librairies à installer : 
+## Librairies à installer : 
 npm install --save 
 * express 
 * session-express
@@ -12,13 +12,18 @@ npm install --save
 * sequelize-cli
 * jest
 
-### base de données MySql : 
+## base de données MySql : 
 * créer une database "sos_immo"
 * jouer les scripts contenus dans "creation_des_tables.sql"
 
-### lancement : 
+## variables d'environnement : 
+portSosImmo -> valeur 3001
+
+mySqlPw -> mot de passe de la base mySql
+
+## lancement : 
 * ligne de commande : nodemon serveur.js
 
-##### tests :
+### tests :
 * postman
 * scénarios : répertoire "tests"
