@@ -16,6 +16,7 @@ const getUserHab = (request, response) => {
     }
 }
 
+// non services primaires
 const changeProfil = (data, response) => {
     // récupérer ancien hab
     habByUuid(data.hab_uuid)

@@ -6,9 +6,14 @@ import {
 } from '../data/DAO/utilisateurs.js'
 import { addDaysToDate } from './lib_serveur.js'
 
-const accueil = (request, response) => {
+const welcome = (request, response) => {
+    // request (entrée) : cookie de session
+    // response (sortie) : identifiant de l'utilisateur
+    // définition de variable initialisée d'après request : cookie (session)
     const {session} = request
+    // test session en cours
     if (session.uuid !== undefined) {
+        // retourne au front d'identifiant de l'auteur de la session
         response.send({id: session.ut})
     }
 }
@@ -26,10 +31,17 @@ const login = (request, response) => {
             session.profil = user.hab_profil
             session.uuid = user.ut_uuid
             session.ut = user.ut_id
+            session.presta = user.ut_presta
         }
         response.send(user)
     })
     .catch((err)=> console.log(err)) 
+}
+
+const logout = (request, response) => {
+    const {session} = request
+    session.isId = false
+    response.send(session)
 }
 
 const UserBySession = (request, response) => response.send({ id: request.session.ut })
@@ -46,19 +58,17 @@ const UserByMail = (request, response) =>{
             }
             else{
                 let mdp = genMdp()
-                user.ut_mdp = hash(user.ut_id,mdp),
-                saveUser(user)
+                user.ut_mdp = hash(user.ut_id, mdp),
+                    saveUser(user)
                 console.log('mot de passe à changer à la prochaine connexion => ', mdp)
                 response.send({ result: mdp })
-            }   
-         }
-        else{
-            response.send({ result: 'erreur' })
+            }
         }
+        else response.send({ result: 'erreur' })
     })
 }
 
-const changeMdp = (request, response) => {
+const changePw = (request, response) => {
     const {session,body} = request
     userLogin({
         id: session.ut,
@@ -80,9 +90,9 @@ const changeMdp = (request, response) => {
 }
 
 export  {
-    login,
-    accueil,
+    login, logout,
+    welcome,
     UserBySession,
     UserByMail,
-    changeMdp,
+    changePw,
 }

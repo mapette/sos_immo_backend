@@ -1,12 +1,13 @@
-import  express from  'express'
+import express from 'express'
 const app = express()
 app.use(express.json())
 app.use(express.static('../sos_immo/public'))
 app.use(express.urlencoded({ extended: true }))
 
-export {
-  app,
-}
+export { app, }
+
+//import {PORT} from '.env.dev'
+// console.log(PORT)
 
 //gestion des cookies
 import session from 'express-session'
@@ -22,17 +23,20 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }))
-
+// if (actual_db = 'prod') {
+//   './db/db.js'
+// }
 import db from './db/db.js'
+// console.log(process.env.sos_immo_db)
 db.sync()
 //const port = 3001
 //app.listen(port)    
-app.listen(process.env.portSosImmo,'0.0.0.0')
+app.listen(process.env.portSosImmo, '0.0.0.0')
 
 import {
-  accueil, login,
+  welcome, login, logout,
   UserBySession, UserByMail,
-  changeMdp,
+  changePw,
 } from './services/login.js'
 import {
   getAllPresta, getPrestaById,
@@ -67,66 +71,67 @@ import {
 } from './services/emplacements.js'
 import {
   getJrnByInc,
-  updateJrnUsager, updateJrnTechno,
+  updateJrnUser, updateJrnTechno,
 } from './services/journaux.js'
 
-//////      login     //////
-app.get('/accueil', accueil)   
+//////      login - authentification     //////
+app.get('/welcome', welcome)
 app.post('/login', login)
-app.get('/get_userBySession',UserBySession)
-app.post('/forgotPw',UserByMail)
-app.post('/change_mdp', changeMdp)
+app.get('/logout', logout)
+app.post('/forgotPw', UserByMail)
+app.get('/user/get_session', UserBySession)
+app.post('/change_pw', changePw)
 
 //////////// gestion utilisateurs ////////////
-app.get('/get_users', getAllUsers)
-app.get('/get_user/:uuid', getOneUser)
-app.get('/get_habByUser/:uuid', getUserHab)
-app.get('/get_usersByCatAndPresta/:cat/:presta_id',getUserListByCatAndPresta)
+app.get('/user/get_all', getAllUsers)
+app.get('/user/get_one/:uuid', getOneUser)
+app.get('/user/get_author/:uuid', getUserHab)
+app.get('/user/get_byCatAndPresta/:cat/:presta_id', getUserListByCatAndPresta)
 
-app.post('/crea_user', creaOneUser)
-app.post('/update_user', updateOneUser)
-app.get('/delete_user/:uuid', deleteOneUser)
+app.post('/user/creation', creaOneUser)
+app.post('/user/update', updateOneUser)
+app.get('/user/delete/:uuid', deleteOneUser)
 
 //////////// gestion prestataires ////////////
 app.get('/get_presta', getAllPresta)
 app.get('/get_presta/:id', getPrestaById)
 
-app.post('/crea_presta', creaOnePresta)
-app.post('/update_presta', updateOnePresta)
+app.post('/presta/creation', creaOnePresta)
+app.post('/presta/update', updateOnePresta)
 
 //////////// gestion emplacement ////////////
-app.get('/get_emp', getAllEmp)
-app.get('/get_emp/:id', getOneEmp)
-app.get('/get_temp', getAllTemp)
-app.get('/get_temp/:id', getOneTemp)
+app.get('/emp/get_all', getAllEmp)
+app.get('/emp/get_one/:id', getOneEmp)
+app.get('/temp/get_all', getAllTemp)
+app.get('/temp/get_one/:id', getOneTemp)
 
-app.post('/crea_emp', creaOneEmp)
-app.post('/update_emp', updateOneEmp)
-app.post('/crea_temp', creaOneTemp)
-app.post('/update_temp', updateOneTemp)
+app.post('/emp/creation', creaOneEmp)
+app.post('/emp/update', updateOneEmp)
+app.post('/temp/creation', creaOneTemp)
+app.post('/temp/update', updateOneTemp)
 
 //////////// incidents ////////////
-app.get('/get_inc', getIncAll)
-app.get('/get_incByUser', getIncByUser)
-app.get('/get_inc_details/:id', getOneInc)
-app.get('/get_inc_journal/:id/:infoImmoInclude', getJrnByInc)
-app.post('/update_jrn_usager', updateJrnUsager)
-app.post('/update_jrn_techno', updateJrnTechno)
+app.get('/inc/get_all', getIncAll)
+app.get('/inc/get_byUser', getIncByUser)
+app.get('/inc/get_one/:id', getOneInc)
+app.get('/inc/get_jnr/:id/:infoImmoInclude', getJrnByInc)
+app.post('/jrn/update_user', updateJrnUser)
+app.post('/jrn/update_techno', updateJrnTechno)
 
 //////////// incidents usagers ////////////
-app.get('/get_empNewInc', getAllEmpAndTinc)
-app.post('/crea_inc',creaOneInc)
-app.get('/clotureInc/:inc_id', clotInc)
+app.get('/inc/get_allEmpAndTinc', getAllEmpAndTinc)
+app.post('/inc/creation', creaOneInc)
+app.get('/inc/closing/:inc_id', clotInc)
 // insatisfaction : commentaire + relance
-app.post('/clotureInc', clotInc)     
- // clôture tous les incidents fermés +48 heures
-app.get('/clotureInc', clotOldInc)
+app.post('/inc/closingAndRelaunch', clotInc)
+// clôture tous les incidents fermés +48 heures
+app.get('/inc/closing', clotOldInc)
 
 //////////// incidents presta ////////////
-app.get('/get_incByPresta', getIncByPresta)
+app.get('/inc/get_byPresta', getIncByPresta)
 
-app.get('/affectation/:inc_id', autoAffectation)
-app.get('/affectation/:inc_id/:techno_id', affectation)
-app.get('/attribution/:inc_id/:presta_id', attribution)
-app.get('/finIntervention/:inc_id', finInc)
+app.get('/inc/affect/:inc_id', autoAffectation)
+app.get('/inc/affect/:inc_id/:techno_id', affectation)
+app.get('/inc/attrib/:inc_id/:presta_id', attribution)
+app.get('/inc/end/:inc_id', finInc)
 

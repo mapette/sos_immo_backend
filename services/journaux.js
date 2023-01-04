@@ -1,11 +1,7 @@
-import {
-    NewLine, jrnByInc,
-} from '../data/DAO/journaux.js'
-import {
-    userByUuid,
-} from '../data/DAO/utilisateurs.js'
+import { NewLine, jrnByInc, } from '../data/DAO/journaux.js'
+import { userByUuid, } from '../data/DAO/utilisateurs.js'
 
-const updateJrnUsager = (request, response) => {
+const updateJrnUser = (request, response) => {
     const { session, body } = request
     if (session.isId == true) {
         userByUuid(session.uuid)
@@ -44,18 +40,19 @@ const updateJrnTechno = (request, response) => {
     }
 }
 
+// non services primaires
 // get
 const getJrnByInc = (request, response) => {
-    const { params } = request
-    jrnByInc(parseInt(params.id))
-        .then(jrnList => {
-            if (params.infoImmoInclude === 'false') {
-                return jrnList.filter(line => line.jrn_imm === 0)
-            }
-            else return jrnList
-        })
-        .then(jrnList => response.send(jrnList))
-        .catch((err) => { response.status(500).json(err) })
+    const { params, session } = request
+    if (session.isId == true) {
+        jrnByInc(parseInt(params.id))
+            .then(jrnList => {
+                if (params.infoImmoInclude === 'false') return jrnList.filter(line => line.jrn_imm === 0)
+                else return jrnList
+            })
+            .then(jrnList => response.send(jrnList))
+            .catch((err) => { response.status(500).json(err) })
+    }
 }
 
 // maj
@@ -140,9 +137,10 @@ function jnrAprescloture(inc, user, msgInfo) {
 }
 
 export  {
-    getJrnByInc,
-    updateJrnUsager,
+    updateJrnUser,
     updateJrnTechno,
+    
+    getJrnByInc,
     jrnApresSignal, 
     jrnApresAffectation,
     jrnApresAttribution,

@@ -7,7 +7,7 @@ const userLogin = (data) => {
     return Utilisateurs.sync({ alter: false }).then(() => {
         return db.query(`
             SELECT ut_nom, ut_prenom, ut_id, ut_uuid, ut_mdp_exp, 
-                hab_uuid, hab_profil 
+                hab_uuid, hab_profil, ut_presta
             FROM habilitations, utilisateurs
             WHERE ut_id = :id AND ut_mdp = :mdp 
             AND hab_date_exp is null

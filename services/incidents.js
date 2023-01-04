@@ -23,23 +23,17 @@ import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
 import Incidents from '../data/models/incidents.js'
 
-const retirerVieux = (inc) => {
-    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
-    else { return true }
-}
 
 // get
 const getIncAll = (request, response) => {
         // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
         // tous les incidents => jusqu'à 1 mois après clôture
         const {session} = request
-        if (session.isId == true && (session.profil == 3 || session.profil == 4)) {
+        if (session.isId == true && ((session.profil == 3) || session.profil == 4)) {
             incListWithDetails()
             .then(incList => {
                 if(session.profil == 3){
-                    userByUuid(session.uuid)
-                    .then(userList =>prestaById(userList[0].ut_presta))
-                    .then(presta => incList.filter(inc => inc.inc_presta === presta.presta_id))
+                     incList.filter(inc => inc.inc_presta === session.presta)
                     .then(incList => incList.filter(inc =>retirerVieux(inc))) 
                     .then(incList => response.send(incList))
                 }
@@ -51,49 +45,55 @@ const getIncAll = (request, response) => {
     }
 }
 const getIncByUser = (request, response) =>  {
-        // mes demandes => jusqu'à 1 mois après clôture
-    const {session} = request
+    // request (entrée) :  cookie de session
+    // response (sortie) : liste des incidents de l'utilisateur jusqu'à 1 mois après clôture
+    // définition de variable initialisée d'après request
+    const {session} = request  
+    // test session en cours
     if (session.isId == true) {
-        incListWithDetails()
+        // récupère tous les incidents de la table (DAO)
+        incListWithDetails()    
+            // filtre : uniquement les incidents de l'auteur de la session
         .then(list =>{return list.filter(line => line.inc_signal_ut === session.uuid) })
+             // filtre : uniquement les incidents  jusqu'à 1 mois après clôture
         .then(incList => incList.filter(inc =>retirerVieux(inc))) 
+            // retourne au front les résultats après filtre ou err(500) 
         .then(list => response.send(list))
         .catch((err)=>{response.status(500).json(err)})
     }
+    else response.send(response.status(500))
 }
 
 const getIncByPresta = (request, response) => {
-    // suivi incidents => status 'enAttente' et 'enCours'
+    // suivi incidents (technicien) => status 'enAttente' et 'enCours'
     const { session } = request
-    let user = new User
-    if (session.isId == true &&
-        (session.profil == 2 | session.profil == 3)) {
-        // récup de l'employeur du demandeur 
-        userByUuid(session.uuid)
-            .then(userList => user = userList[0])
-            .then(() => incListWithDetails())
-            // récup inc de cet employeur 
-            .then(incList => { return incList.filter(inc => inc.inc_presta === user.ut_presta) })
-            .then(incList => {
-                if (session.profil == 2) {
-                    return incList.filter(inc => inc.inc_fin_date === null
-                        && (inc.inc_affect_date === null ||
-                            inc.inc_affect_ut === session.uuid))
-                }
-                else { return incList.filter(inc => inc.inc_fin_date === null) }
-            })
+    if (session.isId == true && session.profil == 2) {
+        incListWithDetails()
+            .then(incList => incList.filter(inc => inc.inc_presta === session.presta))
+            .then(incList => incList.filter(inc => inc.inc_fin_date === null &&
+               (inc.inc_affect_date === null ||
+                    inc.inc_affect_ut === session.uuid)))
             .then(incList => response.send(incList))
-            .catch((err) => { response.status(500).json(err) })
+            .catch(err => response.status(500).json(err))
     }
 }
 
-const getOneInc = (request, response) =>  {
-    const {session, params} = request
+const getOneInc = (request, response) => {
+    const { session, params } = request
     if (session.isId == true) {
         incListWithDetails()
-        .then(incList => {return incList.filter(inc => inc.inc_id ===  parseInt(params.id))})
-        .then(incList => response.send(incList[0]))
-        .catch((err)=>{response.status(500).json(err)})
+            .then(incList => incList.filter(inc => inc.inc_id === parseInt(params.id)))
+            .then(incList => incList[0])
+            .then(inc => {
+                // access à l'auteur du signalement, Admin et presta de l'incident
+                if (inc.inc_signal_ut == session.uuid || session.profil == 4 ||
+                    ((session.profil == 2 || session.profil == 3)
+                        && session.presta == inc.inc_presta)) {
+                    response.send(inc)
+                }
+                else response.status(500).json(err)
+            })
+            .catch(err => response.status(500).json(err))
     }
 }
 
@@ -125,25 +125,8 @@ const creaOneInc = (request, response) => {
             jrnApresSignal(incident, user, presta, body.info)
             response.send({id : incident.inc_id})
         })
-       .catch((err)=>{response.status(500).json(err)})
+       .catch(err => response.status(500).json(err))
     }
-}
-
-const relanceSignal = (ancInc, user, msg) => {
-    let nouvInc = new Incidents
-    newInc({
-        inc_emp: ancInc.inc_emp,
-        inc_tinc: ancInc.inc_tinc,
-        inc_presta: ancInc.inc_presta,
-        inc_signal_ut: ancInc.inc_signal_ut,
-        inc_signal_date: new Date(),
-    })
-        .then(incident => nouvInc = incident)
-        .then(() =>  prestaById(nouvInc.inc_presta))
-        .then(presta => {
-            let msgRelance = "Relance de l'incident " + ancInc.inc_id + ". Motif : " + msg
-            jrnApresSignal(nouvInc, user, presta, msgRelance)
-        })
 }
 
 // affectation - attribution
@@ -265,7 +248,6 @@ const clotOldInc = (request, response) => {
     }
 }
 
-
 export  {
     getIncAll,
     getIncByPresta,
@@ -279,3 +261,27 @@ export  {
     clotInc,
     clotOldInc,
 }
+
+// fonctions
+const relanceSignal = (ancInc, user, msg) => {
+    let nouvInc = new Incidents
+    newInc({
+        inc_emp: ancInc.inc_emp,
+        inc_tinc: ancInc.inc_tinc,
+        inc_presta: ancInc.inc_presta,
+        inc_signal_ut: ancInc.inc_signal_ut,
+        inc_signal_date: new Date(),
+    })
+        .then(incident => nouvInc = incident)
+        .then(() =>  prestaById(nouvInc.inc_presta))
+        .then(presta => {
+            let msgRelance = "Relance de l'incident " + ancInc.inc_id + ". Motif : " + msg
+            jrnApresSignal(nouvInc, user, presta, msgRelance)
+        })
+}
+
+const retirerVieux = (inc) => {
+    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
+    else { return true }
+}
+

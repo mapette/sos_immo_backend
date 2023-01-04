@@ -46,9 +46,16 @@ const getUserListByCatAndPresta = (request, response) => {
 
 // maj
 const creaOneUser = (request, response) => {
-    const { session, body } = request
+    // request (entrée) :  cookie de session - données nouvel utilisateur
+    // response (sortie) : mot de passe aléatoire
+    // définition de variables initialisées d'après request :
+    //      cookie (session) et données utilisateur (body)
+    const { session, body } = request   
+    // test session en cours et profil Admin
     if (session.isId == true & session.profil == 4) {
-        let mdp = genMdp()
+        let mdp = genMdp()  // génération du mdp aléatoire
+        console.log('mot de passe à changer à la prochaine connexion => ', mdp)
+        // création d'un objet Utilisateurs
         const user = Utilisateurs.build({
             ut_uuid: genUuid(),
             ut_id: body.ut_id,
@@ -60,7 +67,7 @@ const creaOneUser = (request, response) => {
             ut_mdp: hash(body.ut_id, mdp),
             ut_mdp_exp: new Date(),
         })
-        console.log('mot de passe à changer à la prochaine connexion => ', mdp)
+        // sauvegarde de l'objet en base  
         saveUser(user)
             .then(newHab({
                 hab_uuid: genUuid(),
@@ -68,8 +75,8 @@ const creaOneUser = (request, response) => {
                 hab_profil: parseInt(body.hab_profil),
                 hab_date_deb: new Date(),
                 hab_date_exp: null,
-            })
-            )
+            }))
+             // retourne au front du mot de passe ou err(500) 
             .then(response.send({ mdp: mdp }))
             .catch((err) => { response.status(500).json(err) })
     }
@@ -126,7 +133,6 @@ const deleteOneUser = (request, response) => {
 export {
     getAllUsers,
     getOneUser,
-    // getUserHab,
     getUserListByCatAndPresta,
     creaOneUser,
     updateOneUser,
