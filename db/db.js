@@ -1,13 +1,13 @@
 import { Sequelize } from 'sequelize'
 
-// export default new Sequelize(process.env.sos_immo_db,'root',process.env.mySqlPw, {
-//     dialect: 'mysql',
-//     host: 'localhost',
-//     logging: false,
-// })
-
-export default new Sequelize(process.env.base_sos_immo_test,'root',process.env.mySqlPw, {
-    dialect: 'mysql',
-    host: 'localhost',
-    logging: false,
+export default new Sequelize(process.env.db_sos_immo_test,
+                            process.env.mySqlUser,
+                            process.env.mySqlPw, {
+            dialect: 'mysql',
+            host: 'localhost',
+            logging: false,
 })
+
+
+
+              // db_sos_immo_prod / db_sos_immo_test

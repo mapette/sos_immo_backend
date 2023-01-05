@@ -14,32 +14,32 @@ const welcome = (request, response) => {
     // test session en cours
     if (session.uuid !== undefined) {
         // retourne au front d'identifiant de l'auteur de la session
-        response.send({id: session.ut})
+        response.send({ id: session.ut })
     }
 }
 
 const login = (request, response) => {
-    const {session,body} = request
+    const { session, body } = request
     userLogin({
         id: body.ut_id,
         mdp: body.ut_mdp,
     })
-    .then(userList => userList[0]) 
-    .then(user => {
-        if(user !== undefined){
-            session.isId = true
-            session.profil = user.hab_profil
-            session.uuid = user.ut_uuid
-            session.ut = user.ut_id
-            session.presta = user.ut_presta
-        }
-        response.send(user)
-    })
-    .catch((err)=> console.log(err)) 
+        .then(userList => userList[0])
+        .then(user => {
+            if (user !== undefined) {
+                session.isId = true
+                session.profil = user.hab_profil
+                session.uuid = user.ut_uuid
+                session.ut = user.ut_id
+                session.presta = user.ut_presta
+            }
+            response.send(user)
+        })
+        .catch((err) => console.log(err))
 }
 
 const logout = (request, response) => {
-    const {session} = request
+    const { session } = request
     session.isId = false
     response.send(session)
 }

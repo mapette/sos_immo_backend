@@ -16,7 +16,7 @@ import Utilisateurs from '../data/models/utilisateurs.js'
 
 const getAllUsers = (request, response) => {
     const {session} = request
-    if (session.isId == true) {
+    if (session.isId == true && session.profil == 4) {
         userList(request)
         .then(userList => response.send(userList))
         .catch((err)=> console.log(err)) 
@@ -25,10 +25,11 @@ const getAllUsers = (request, response) => {
 
 // get
 const getOneUser = (request, response) => {
-    const {session} = request
+    const {session, params} = request
     if (session.isId == true & session.profil == 4) {
-        userByUuid(request.params.uuid) 
-        .then(userList => response.send(userList[0]))
+        userByUuid(params.uuid) 
+        .then(userList =>{
+            response.send(userList[0])})
         .catch((err)=>{response.status(500).json(err)})
     }
 }
@@ -109,7 +110,7 @@ const updateOneUser = (request, response) => {
     }
 }
 
-const deleteOneUser = (request, response) => {
+const exitOneUser = (request, response) => {
     const { session, params } = request
     if (session.isId == true & session.profil == 4) {
         userByUuid(params.uuid) // retourne 1 liste d'1 seul élément
@@ -125,7 +126,7 @@ const deleteOneUser = (request, response) => {
                 hab_uuid: user.hab_uuid,
                 profil: 0,
             }))
-            .then(response.send({ status: 'delete' }))
+            .then(response.send({ status: 'exit' }))
             .catch((err) => { response.status(500).json(err) })
     }
 }
@@ -136,5 +137,5 @@ export {
     getUserListByCatAndPresta,
     creaOneUser,
     updateOneUser,
-    deleteOneUser,
+    exitOneUser,
 }

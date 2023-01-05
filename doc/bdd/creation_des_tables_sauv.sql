@@ -100,13 +100,13 @@ CREATE TABLE `incidents` (
    `inc_tinc` int NOT NULL,
    `inc_presta` int NOT NULL,
    `inc_signal_ut` varchar(36) NOT NULL,
-   `inc_signal_date` datetime NOT NULL,
+   `inc_signal_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `inc_affect_ut` varchar(36) DEFAULT NULL,
    `inc_affect_date` datetime DEFAULT NULL,
    `inc_fin_date` datetime DEFAULT NULL,
    `inc_cloture_date` datetime DEFAULT NULL,
    `inc_note` int DEFAULT NULL,
-   `inc_comm` int DEFAULT NULL,
+   `inc_comm` varchar(100) DEFAULT NULL,
    PRIMARY KEY (`inc_id`),
    KEY `inc_signal_ut` (`inc_signal_ut`),
    KEY `incidents_ibfk_5` (`inc_affect_ut`),
@@ -122,7 +122,7 @@ COMMENT='incidents - signalement, affectation, fin d''intervention et clôture';
 CREATE TABLE `journaux` (
    `jrn_id` int NOT NULL AUTO_INCREMENT,
    `jrn_inc` int NOT NULL,
-   `jrn_date` datetime,
+   `jrn_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `jrn_msg` varchar(100) DEFAULT NULL,
    `jrn_imm` tinyint DEFAULT '0',
    PRIMARY KEY (`jrn_id`),
@@ -137,27 +137,30 @@ CREATE TABLE `incidents_arc` (
    `inc_tinc` int NOT NULL,
    `inc_presta` int NOT NULL,
    `inc_signal_ut` varchar(36) NOT NULL,
-   `inc_signal_date` datetime NOT NULL,
+   `inc_signal_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `inc_affect_ut` varchar(36) DEFAULT NULL,
    `inc_affect_date` datetime DEFAULT NULL,
    `inc_fin_date` datetime DEFAULT NULL,
    `inc_cloture_date` datetime DEFAULT NULL,
    `inc_note` int DEFAULT NULL,
-   `inc_comm` int DEFAULT NULL,
+   `inc_comm` varchar(100) DEFAULT NULL,
    `inc_arc` datetime DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY (`inc_id`)
  )
  COMMENT='archives incidents';
+ 
 CREATE TABLE `journaux_arc` (
    `jrn_id` int NOT NULL,
    `jrn_inc` int NOT NULL,
-   `jrn_date` datetime,
+   `jrn_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `jrn_msg` varchar(100) DEFAULT NULL,
    `jrn_imm` tinyint DEFAULT '0',
    `jrn_arc` datetime DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY (`jrn_id`)
+   -- obligée de retirer la contrainte : foreign key incidents dans un premier temps et incidents_arc ensuite`)
  )
 COMMENT='archive journaux';
+
 CREATE TABLE `utilisateurs_arc` (
   `ut_uuid` varchar(36) NOT NULL,
   `ut_id` varchar(15) NOT NULL,
@@ -171,9 +174,14 @@ CREATE TABLE `utilisateurs_arc` (
   `ut_mdp` varchar(40) DEFAULT NULL, 
   `ut_mdp_exp` datetime DEFAULT CURRENT_TIMESTAMP,
   `ut_arc` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ut_uuid`)
+   PRIMARY KEY (`ut_uuid`),
+  UNIQUE KEY `ut_id_UNIQUE` (`ut_id`), 
+  UNIQUE KEY `ut_mail_UNIQUE` (`ut_mail`),
+  KEY `fk_ut_presta_idx` (`ut_presta`), 
+  CONSTRAINT `fk_ut_presta_arc` FOREIGN KEY (`ut_presta`) REFERENCES `presta` (`presta_id`)
 )
 COMMENT='archive utilisateurs';
+
 CREATE TABLE `habilitations_arc` (
    `hab_uuid` varchar(36) NOT NULL,
    `hab_ut` varchar(36) NOT NULL,
@@ -182,5 +190,6 @@ CREATE TABLE `habilitations_arc` (
    `hab_date_exp` datetime DEFAULT NULL,
    `hab_arc` datetime DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY (`hab_uuid`)
+   -- obligée de retirer la contrainte : foreign key utilisateurs dans un premier temps et utilisateurs_arc ensuite
 )
 COMMENT='archive habilitations';

@@ -48,7 +48,7 @@ import {
   getUserListByCatAndPresta,
   creaOneUser,
   updateOneUser,
-  deleteOneUser,
+  exitOneUser,
 } from './services/utilisateurs.js'
 import {
   getUserHab,
@@ -90,7 +90,7 @@ app.get('/user/get_byCatAndPresta/:cat/:presta_id', getUserListByCatAndPresta)
 
 app.post('/user/creation', creaOneUser)
 app.post('/user/update', updateOneUser)
-app.get('/user/delete/:uuid', deleteOneUser)
+app.get('/user/exit/:uuid', exitOneUser)
 
 //////////// gestion prestataires ////////////
 app.get('/get_presta', getAllPresta)
