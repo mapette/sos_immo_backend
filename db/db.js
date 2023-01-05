@@ -6,7 +6,7 @@ import { Sequelize } from 'sequelize'
 //     logging: false,
 // })
 
-export default new Sequelize('sos_immo_test','root',process.env.mySqlPw, {
+export default new Sequelize(process.env.base_sos_immo_test,'root',process.env.mySqlPw, {
     dialect: 'mysql',
     host: 'localhost',
     logging: false,
