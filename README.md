@@ -13,13 +13,16 @@ npm install --save
 * jest
 
 ## base de données MySql : 
-* créer une database "sos_immo"
-* jouer les scripts contenus dans "creation_des_tables.sql"
+* jouer le script "backend sos_immo\doc\bdd\script_mise_en_place.sql"
 
 ## variables d'environnement : 
 portSosImmo -> valeur 3001
 
-mySqlPw -> mot de passe de la base mySql
+db_sos_immo_prod -> nom de la base de production
+db_sos_immo_test -> nom de la base de tests
+
+mySqlUser -> user mySql
+mySqlPw -> mot de passe mySql
 
 ## lancement : 
 * ligne de commande : nodemon serveur.js
