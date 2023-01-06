@@ -7,6 +7,18 @@
 	"item": [
 		{
 			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"usager_uuid\",pm.response.json().ut_uuid);\r",
+							"console.log(pm.globals.get('usager_uuid'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -47,26 +59,19 @@
 			"response": []
 		},
 		{
-			"name": "liste complete emp/tinc",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/get_empNewInc",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"get_empNewInc"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "creation incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"new_inc_id\",pm.response.json().id);\r",
+							"console.log(pm.globals.get('new_inc_id'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -75,12 +80,12 @@
 					"urlencoded": [
 						{
 							"key": "emp",
-							"value": "37",
+							"value": "2",
 							"type": "default"
 						},
 						{
 							"key": "tinc",
-							"value": "11",
+							"value": "1",
 							"type": "default"
 						},
 						{
@@ -91,14 +96,35 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3001/crea_inc",
+					"raw": "http://localhost:3001/inc/creation",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3001",
 					"path": [
-						"crea_inc"
+						"inc",
+						"creation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste complete emp/tinc",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/inc/get_allEmpAndTinc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"inc",
+						"get_allEmpAndTinc"
 					]
 				}
 			},
@@ -110,14 +136,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3001/get_incByUser",
+					"raw": "http://localhost:3001/inc/get_byUser",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3001",
 					"path": [
-						"get_incByUser"
+						"inc",
+						"get_byUser"
 					]
 				}
 			},
@@ -129,15 +156,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3001/get_inc_details/132",
+					"raw": "http://localhost:3001/inc/get_one/{{new_inc_id}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3001",
 					"path": [
-						"get_inc_details",
-						"132"
+						"inc",
+						"get_one",
+						"{{new_inc_id}}"
 					]
 				}
 			},
@@ -145,20 +173,61 @@
 		},
 		{
 			"name": "journal sans comm techno",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
 				"url": {
-					"raw": "http://localhost:3001/get_inc_journal/132/false",
+					"raw": "http://localhost:3001/inc/get_jnr/{{new_inc_id}}/false",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3001",
 					"path": [
-						"get_inc_journal",
-						"132",
+						"inc",
+						"get_jnr",
+						"{{new_inc_id}}",
 						"false"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3001/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"logout"
+					],
+					"query": [
+						{
+							"key": "ut_id",
+							"value": "lsala",
+							"disabled": true
+						}
 					]
 				}
 			},

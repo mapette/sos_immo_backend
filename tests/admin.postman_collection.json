@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "b188f880-290f-41f8-bdbf-d3e3d5b0dce1",
+		"name": "admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"admin_uuid\",pm.response.json().ut_uuid);\r",
+							"console.log(pm.globals.get('admin_uuid'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{admin_id}}",
+							"type": "default"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{admin_mdp}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accueil - id session en cours",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/welcome",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"welcome"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/user/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creation nouveau user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"new_user_mdp\",pm.response.json().mdp);\r",
+							"console.log(pm.globals.get('new_user_mdp'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{new_user_id}}",
+							"type": "default"
+						},
+						{
+							"key": "ut_nom",
+							"value": "duval",
+							"type": "default"
+						},
+						{
+							"key": "ut_prenom",
+							"value": "nono",
+							"type": "default"
+						},
+						{
+							"key": "ut_tel",
+							"value": "0123456789",
+							"type": "default"
+						},
+						{
+							"key": "ut_mail",
+							"value": "nduval@toto.fr",
+							"type": "default"
+						},
+						{
+							"key": "hab_profil",
+							"value": "2",
+							"type": "default"
+						},
+						{
+							"key": "ut_presta",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/user/creation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"creation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "détail user par uuid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/user/get_one/{{admin_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"get_one",
+						"{{admin_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "détail hab par user uudi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/user/get_author/{{admin_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"get_author",
+						"{{admin_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste prestataires",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/get_presta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"get_presta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste complete incidents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/inc/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"inc",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
