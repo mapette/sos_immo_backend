@@ -60,6 +60,7 @@ import {
   autoAffectation, affectation, attribution,
   finInc,
   clotInc, clotOldInc,
+  arcOldInc,
 } from './services/incidents.js'
 import {
   getAllEmp, getAllEmpAndTinc, getOneEmp,
@@ -121,11 +122,9 @@ app.post('/jrn/update_techno', updateJrnTechno)
 //////////// incidents usagers ////////////
 app.get('/inc/get_allEmpAndTinc', getAllEmpAndTinc)
 app.post('/inc/creation', creaOneInc)
-app.get('/inc/closing/:inc_id', clotInc)
-// insatisfaction : commentaire + relance
-app.post('/inc/closingAndRelaunch', clotInc)
-// clôture tous les incidents fermés +48 heures
-app.get('/inc/closing', clotOldInc)
+app.get('/inc/closing/:inc_id', clotInc)  // satisfaction
+app.post('/inc/closingAndRelaunch', clotInc)  // insatisfaction : commentaire + relance
+
 
 //////////// incidents presta ////////////
 app.get('/inc/get_byPresta', getIncByPresta)
@@ -135,3 +134,6 @@ app.get('/inc/affect/:inc_id/:techno_id', affectation)
 app.get('/inc/attrib/:inc_id/:presta_id', attribution)
 app.get('/inc/end/:inc_id', finInc)
 
+//////////// incidents admin ////////////
+app.get('/inc/closing', clotOldInc) // clôture tous les incidents fermés +48 heures
+app.get('/inc/arc', arcOldInc) // cl

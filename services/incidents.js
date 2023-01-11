@@ -1,12 +1,13 @@
-import {userByUuid, } from '../data/DAO/utilisateurs.js'
-import {tincById,} from '../data/DAO/types_inc.js'
-import {prestaById,} from '../data/DAO/prestataires.js'
-import {NewLine,} from '../data/DAO/journaux.js'
+import { userByUuid, } from '../data/DAO/utilisateurs.js'
+import { tincById, } from '../data/DAO/types_inc.js'
+import { prestaById, } from '../data/DAO/prestataires.js'
+import { NewLine, jrnDestroyByInc, } from '../data/DAO/journaux.js'
 import {
-    incById,    incListWithDetails,
-    newInc,    saveInc,
+    incById, incListWithDetails,
+    newInc, saveInc,
+    incDestroyById,
 } from '../data/DAO/incidents.js'
-import  {
+import {
     DELAIS_CLOTURE_AUTO,
     DELAIS_VISIBILITE_INC_CLOTURE,
 } from './lib_serveur.js'
@@ -21,8 +22,11 @@ import {
 import Prestataires from '../data/models/prestataires.js'
 import Tinc from '../data/models/types_inc.js'
 import User from '../data/models/utilisateurs.js'
-import Incidents from '../data/models/incidents.js'
 
+const retirerVieux = (inc) => {
+    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
+    else { return true }
+}
 
 // get
 const getIncAll = (request, response) => {
@@ -34,11 +38,12 @@ const getIncAll = (request, response) => {
             .then(incList => {
                 if(session.profil == 3){
                      incList.filter(inc => inc.inc_presta === session.presta)
-                    .then(incList => incList.filter(inc =>retirerVieux(inc))) 
+                 //   .then(incList => incList.filter(inc =>retirerVieux(inc))) 
                     .then(incList => response.send(incList))
                 }
                 else {
-                    response.send(incList.filter(inc =>retirerVieux(inc)))
+                    response.send(incList)
+               //     response.send(incList.filter(inc =>retirerVieux(inc)))
                 }
             })
             .catch((err)=>{response.status(500).json(err)})
@@ -231,8 +236,7 @@ const clotOldInc = (request, response) => {
     const { session, } = request
     if (session.isId == true && session.profil == 4) {
         incListWithDetails()
-            .then(incList => incList.filter(inc =>
-                inc.inc_fin_date !== null && inc.inc_cloture_date === null))
+            .then(incList => incList.filter(inc => inc.inc_fin_date !== null && inc.inc_cloture_date === null))
             .then(incList => incList.filter(inc => new Date() - inc.inc_fin_date > DELAIS_CLOTURE_AUTO))
             .then(incList => {
                 incList.forEach(inc => {
@@ -248,20 +252,36 @@ const clotOldInc = (request, response) => {
     }
 }
 
-export  {
+const arcOldInc = (request, response) => {
+    const { session, } = request
+    if (session.isId == true && session.profil == 4) {
+        incListWithDetails()
+            .then(incList => incList.filter(inc => inc.inc_cloture_date !== null))
+            .then(incList => incList.filter(inc => new Date() - inc.inc_cloture_date > DELAIS_VISIBILITE_INC_CLOTURE))
+            .then(incList => {
+                incList.forEach(inc => {
+                    jrnDestroyByInc(inc.inc_id) // archiver journal
+                    incDestroyById(inc.inc_id)  // archiver incident
+                })
+                response.send(incList)
+            })
+    }
+}
+
+export {
     getIncAll,
     getIncByPresta,
     getOneInc,
     getIncByUser,
-    creaOneInc, 
-    autoAffectation,  
-    affectation, 
-    attribution,
-    finInc,
-    clotInc,
-    clotOldInc,
+    creaOneInc,
+    autoAffectation, affectation, attribution,
+    finInc, clotInc, clotOldInc,
+    arcOldInc,
 }
 
+
+/*
+import Incidents from '../data/models/incidents.js'
 // fonctions
 const relanceSignal = (ancInc, user, msg) => {
     let nouvInc = new Incidents
@@ -280,8 +300,4 @@ const relanceSignal = (ancInc, user, msg) => {
         })
 }
 
-const retirerVieux = (inc) => {
-    if (inc.inc_cloture_date !== null) { return new Date() - inc.inc_cloture_date < DELAIS_VISIBILITE_INC_CLOTURE }
-    else { return true }
-}
-
+*/

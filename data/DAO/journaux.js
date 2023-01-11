@@ -11,8 +11,15 @@ const jrnByInc = (inc_id) => {
     })
 }
 
+const jrnDestroyByInc = (inc_id) => {
+    return Journaux.destroy({
+        where: { jrn_inc : inc_id },
+    })
+}
+
 export  {
     NewLine, 
     jrnByInc,
+    jrnDestroyByInc,
  }
  

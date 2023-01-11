@@ -22,10 +22,17 @@ const incListWithDetails = () => {
     })
 }
 
+const incDestroyById = (id) => {
+    return Incidents.destroy({
+        where: { inc_id : id },
+    })
+}
+
 export  {
     newInc, 
     saveInc,
     incById,
     incListWithDetails,
+    incDestroyById,
   }
   
