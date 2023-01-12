@@ -128,7 +128,7 @@ CREATE TABLE `journaux` (
    `jrn_imm` tinyint DEFAULT '0',
    PRIMARY KEY (`jrn_id`),
    KEY `jrn_inc` (`jrn_inc`),
-   CONSTRAINT `journaux_ibfk_arc` FOREIGN KEY (`jrn_inc`) REFERENCES `incidents` (`inc_id`)
+   CONSTRAINT `journaux_ibfk` FOREIGN KEY (`jrn_inc`) REFERENCES `incidents` (`inc_id`)
  )
 COMMENT='lignes des journaux d''interventions';
 
@@ -323,7 +323,7 @@ CREATE TABLE `journaux` (
    `jrn_imm` tinyint DEFAULT '0',
    PRIMARY KEY (`jrn_id`),
    KEY `jrn_inc` (`jrn_inc`),
-   CONSTRAINT `journaux_ibfk_1` FOREIGN KEY (`jrn_inc`) REFERENCES `incidents` (`inc_id`)
+   CONSTRAINT `journaux_ibfk` FOREIGN KEY (`jrn_inc`) REFERENCES `incidents` (`inc_id`)
  )
 COMMENT='lignes des journaux d''interventions';
 
@@ -507,7 +507,6 @@ END;
 DELIMITER ;
 
 --                            triggers tables avec archive 		-----------------------------------------------------
-
 -- utilisateurs
 DROP TRIGGER IF EXISTS after_create_utilisateurs;
 DROP TRIGGER IF EXISTS after_update_utilisateurs;
@@ -530,7 +529,7 @@ BEGIN
         ut_presta = new.ut_presta, ut_tel = new.ut_tel, ut_mail = new.ut_mail, 
         ut_date_deb = new.ut_date_deb, ut_date_exp = new.ut_date_exp,
         ut_mdp = new.ut_mdp, ut_mdp_exp = new.ut_mdp_exp
-        WHERE ut_uuid = new.ut_uuid;		
+	WHERE ut_uuid = new.ut_uuid;		
 END;
 //
 CREATE TRIGGER before_delete_utilisateurs BEFORE DELETE
@@ -539,7 +538,13 @@ BEGIN
 	INSERT INTO utilisateurs_arc
  		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, 
          ut_date_deb, ut_date_exp, ut_mdp, ut_mdp_exp)
- 	VALUES
+		VALUES
+		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
+        old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
+	INSERT INTO sos_immo_sauv.utilisateurs_arc
+ 		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, 
+         ut_date_deb, ut_date_exp, ut_mdp, ut_mdp_exp)
+		VALUES
 		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
         old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
 	DELETE FROM sos_immo_sauv.utilisateurs
@@ -576,7 +581,11 @@ CREATE TRIGGER before_delete_habilitations BEFORE DELETE
 BEGIN
 	INSERT INTO habilitations_arc
  		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
- 	VALUES
+		VALUES
+			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
+	INSERT INTO sos_immo_sauv.habilitations_arc
+ 		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
+		VALUES
 			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
 	DELETE FROM sos_immo_sauv.habilitations
 		  WHERE hab_uuid = old.hab_uuid;		
@@ -619,7 +628,19 @@ BEGIN
         inc_affect_ut, inc_affect_date,
         inc_fin_date, inc_cloture_date,
         inc_note, inc_comm)
- 	VALUES
+		VALUES
+		(old.inc_id, old.inc_emp, old.inc_tinc, old.inc_presta, 
+        old.inc_signal_ut, old.inc_signal_date,
+        old.inc_affect_ut, old.inc_affect_date,
+        old.inc_fin_date, old.inc_cloture_date,
+        old.inc_note, old.inc_comm);
+	INSERT INTO sos_immo_sauv.incidents_arc
+ 		(inc_id, inc_emp, inc_tinc, inc_presta, 
+        inc_signal_ut, inc_signal_date,
+        inc_affect_ut, inc_affect_date,
+        inc_fin_date, inc_cloture_date,
+        inc_note, inc_comm)
+		VALUES
 		(old.inc_id, old.inc_emp, old.inc_tinc, old.inc_presta, 
         old.inc_signal_ut, old.inc_signal_date,
         old.inc_affect_ut, old.inc_affect_date,
@@ -659,7 +680,11 @@ CREATE TRIGGER before_delete_journaux BEFORE DELETE
 BEGIN
 	INSERT INTO journaux_arc
  		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
- 	VALUES
+		VALUES
+		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
+	INSERT INTO sos_immo_sauv.journaux_arc
+ 		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
+		VALUES
 		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
 	DELETE FROM sos_immo_sauv.journaux
 		  WHERE jrn_id = old.jrn_id;		
@@ -688,6 +713,11 @@ INSERT INTO `utilisateurs` ( `ut_uuid`, `ut_id`,  `ut_nom`,  `ut_prenom`,  `ut_p
 	('27bc82c-f294-4908-8ba3-d99ff3e260f7','blaurent','Laurent','Bod', 1, 0123456789,'bl@presta.com', '29cadbe82ff701f788785ff51311c424036cf9f6'),
     ('9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 'mario','mario','mario', 1, 01234---56789,'mario@presta.com', '80d945a6945953a704fb109414d7c2a9788f5fec'),
     ('c7f1d496-a72d-44a3-90cf-ebb4128bd0b4','hwilliam','william','henry', 1, 012399999,'wh@presta.com', '73a9a84ffa2adc1543d8b1e57fefb5550507deda');
+    
+    
+--  reculer la date d'expiration des mots de passe
+UPDATE utilisateurs SET ut_mdp_exp = ADDDATE(ut_mdp_exp, 90) 
+WHERE ut_uuid != " ";
 
 -- habilitations
 INSERT INTO `habilitations` ( `hab_uuid`, `hab_ut`,  `hab_profil`)
@@ -730,7 +760,6 @@ INSERT INTO `types_emp` (`temp_nom`)
 	('vestiaire');	
 
 -- emplacements, salles, lieux succeptible de faire l'objet d'un signalement 
-
 INSERT INTO emplacements (emp_etage, emp_nom, emp_temp)
 VALUES ('0','pallier escaliers',2),
  ('1','salle de réunions',5),
@@ -752,8 +781,53 @@ INSERT INTO `mapping_inc_emp` (`mapping_tinc`,  `mapping_temp`)
     (7,5),
     (8,5);	
 
---  reculer la date d'expiration des mots de passe
-UPDATE utilisateurs SET ut_mdp_exp = ADDDATE(ut_mdp_exp, 90) 
-WHERE ut_uuid != " ";
+--                            triggers tables archivage 		-----------------------------------------------------
+-- utilisateurs
+DROP TRIGGER IF EXISTS before_delete_utilisateurs_arc;
+DELIMITER //
+CREATE TRIGGER before_delete_utilisateurs_arc BEFORE DELETE
+	on utilisateurs_arc FOR EACH ROW
+BEGIN
+	DELETE FROM sos_immo_sauv.utilisateurs_arc
+		WHERE ut_uuid = old.ut_uuid;
+END;
+//
+DELIMITER ;
+
+-- habilitations_arc
+DROP TRIGGER IF EXISTS before_delete_habilitations_arc;
+DELIMITER //
+CREATE TRIGGER before_delete_habilitations_arc BEFORE DELETE
+	on habilitations_arc FOR EACH ROW
+BEGIN
+	DELETE FROM sos_immo_sauv.habilitations_arc
+		  WHERE hab_uuid = old.hab_uuid;		
+END;
+//
+DELIMITER ;
+
+-- incidents_arc
+DROP TRIGGER IF EXISTS before_delete_incidents_arc;
+DELIMITER //
+CREATE TRIGGER before_delete_incidents_arc BEFORE DELETE
+	on incidents_arc FOR EACH ROW
+BEGIN
+	DELETE FROM sos_immo_sauv.incidents_arc
+		  WHERE inc_id = old.inc_id;		
+END;
+//
+DELIMITER ;
+
+-- journaux_arc
+DROP TRIGGER IF EXISTS before_delete_journaux_arc;
+DELIMITER //
+CREATE TRIGGER before_delete_journaux_arc BEFORE DELETE
+	on journaux_arc FOR EACH ROW
+BEGIN
+	DELETE FROM sos_immo_sauv.journaux_arc
+		  WHERE jrn_id = old.jrn_id;		
+END;
+//
+DELIMITER ;
 
 

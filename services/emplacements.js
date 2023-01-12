@@ -11,6 +11,7 @@ import {
     tempById,
     saveTemp,
 } from '../data/DAO/temp.js'
+import { ConnectionAcquireTimeoutError } from 'sequelize'
 
 //// emplacements ////
 const getAllEmp = (request, response) => {

@@ -28,8 +28,14 @@ CREATE TRIGGER before_delete_utilisateurs BEFORE DELETE
 BEGIN
 	INSERT INTO utilisateurs_arc
  		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, 
-         ut_date_deb, ut_date_exp, ut_mdp, old.ut_mdp_exp)
- 	VALUES
+         ut_date_deb, ut_date_exp, ut_mdp, ut_mdp_exp)
+		VALUES
+		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
+        old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
+	INSERT INTO sos_immo_sauv.utilisateurs_arc
+ 		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, 
+         ut_date_deb, ut_date_exp, ut_mdp, ut_mdp_exp)
+		VALUES
 		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
         old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
 	DELETE FROM sos_immo_sauv.utilisateurs
@@ -66,7 +72,11 @@ CREATE TRIGGER before_delete_habilitations BEFORE DELETE
 BEGIN
 	INSERT INTO habilitations_arc
  		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
- 	VALUES
+		VALUES
+			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
+	INSERT INTO sos_immo_sauv.habilitations_arc
+ 		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
+		VALUES
 			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
 	DELETE FROM sos_immo_sauv.habilitations
 		  WHERE hab_uuid = old.hab_uuid;		
@@ -109,7 +119,19 @@ BEGIN
         inc_affect_ut, inc_affect_date,
         inc_fin_date, inc_cloture_date,
         inc_note, inc_comm)
- 	VALUES
+		VALUES
+		(old.inc_id, old.inc_emp, old.inc_tinc, old.inc_presta, 
+        old.inc_signal_ut, old.inc_signal_date,
+        old.inc_affect_ut, old.inc_affect_date,
+        old.inc_fin_date, old.inc_cloture_date,
+        old.inc_note, old.inc_comm);
+	INSERT INTO sos_immo_sauv.incidents_arc
+ 		(inc_id, inc_emp, inc_tinc, inc_presta, 
+        inc_signal_ut, inc_signal_date,
+        inc_affect_ut, inc_affect_date,
+        inc_fin_date, inc_cloture_date,
+        inc_note, inc_comm)
+		VALUES
 		(old.inc_id, old.inc_emp, old.inc_tinc, old.inc_presta, 
         old.inc_signal_ut, old.inc_signal_date,
         old.inc_affect_ut, old.inc_affect_date,
@@ -149,7 +171,11 @@ CREATE TRIGGER before_delete_journaux BEFORE DELETE
 BEGIN
 	INSERT INTO journaux_arc
  		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
- 	VALUES
+		VALUES
+		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
+	INSERT INTO sos_immo_sauv.journaux_arc
+ 		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
+		VALUES
 		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
 	DELETE FROM sos_immo_sauv.journaux
 		  WHERE jrn_id = old.jrn_id;		

@@ -1,7 +1,6 @@
 -- presta
 DROP TRIGGER IF EXISTS after_create_presta;
 DROP TRIGGER IF EXISTS after_update_presta;
-DROP TRIGGER IF EXISTS before_delete_presta;
 DELIMITER //
 CREATE TRIGGER after_create_presta AFTER INSERT
 	on presta FOR EACH ROW
@@ -21,19 +20,11 @@ BEGIN
         WHERE presta_id = new.presta_id;		
 END;
 //
--- CREATE TRIGGER before_delete_presta BEFORE DELETE
--- 	on presta FOR EACH ROW
--- BEGIN
---  DELETE FROM sos_immo_sauv.presta
--- 		WHERE presta_id = old.presta_id;	
--- END;
--- //
 DELIMITER ;
 
 -- emplacements
 DROP TRIGGER IF EXISTS after_create_emplacements;
 DROP TRIGGER IF EXISTS after_update_emplacements;
-DROP TRIGGER IF EXISTS before_delete_emplacements;
 DELIMITER //
 CREATE TRIGGER after_create_emplacements AFTER INSERT
 	on emplacements FOR EACH ROW
@@ -54,19 +45,11 @@ BEGIN
         WHERE emp_id = new.emp_id;		
 END;
 //
--- CREATE TRIGGER before_delete_emplacements BEFORE DELETE
--- 	on emplacements FOR EACH ROW
--- BEGIN
---  DELETE FROM sos_immo_sauv.emplacements
--- 		WHERE emp_id = old.emp_id;	
--- END;
--- //
 DELIMITER ;
 
 -- types_emp
 DROP TRIGGER IF EXISTS after_create_type_emplacements;
 DROP TRIGGER IF EXISTS after_update_type_emplacements;
-DROP TRIGGER IF EXISTS before_delete_type_emplacements;
 DELIMITER //
 CREATE TRIGGER after_create_type_emplacements AFTER INSERT
 	on types_emp FOR EACH ROW
@@ -85,19 +68,11 @@ BEGIN
         WHERE temp_id = new.temp_id;		
 END;
 //
--- CREATE TRIGGER before_delete_type_emplacements BEFORE DELETE
--- 	on types_emp FOR EACH ROW
--- BEGIN
---  DELETE FROM sos_immo_sauv.types_emp
--- 		WHERE temp_id = old.temp_id;	
--- END;
--- //
 DELIMITER ;
 
 -- types_inc
 DROP TRIGGER IF EXISTS after_create_type_incidents;
 DROP TRIGGER IF EXISTS after_update_type_incidents;
-DROP TRIGGER IF EXISTS before_delete_type_incidents;
 DELIMITER //
 CREATE TRIGGER after_create_type_incidents AFTER INSERT
 	on types_inc FOR EACH ROW
@@ -117,19 +92,12 @@ BEGIN
         WHERE tinc_id = new.tinc_id;		
 END;
 //
--- CREATE TRIGGER before_delete_type_incidents BEFORE DELETE
--- 	on types_inc FOR EACH ROW
--- BEGIN
---  DELETE FROM sos_immo_sauv.types_inc
--- 		WHERE tinc_id = old.tinc_id;	
--- END;
--- //
 DELIMITER ;
 
 -- mapping temp/tinc
 DROP TRIGGER IF EXISTS after_create_mapping_temp_tinc;
 DROP TRIGGER IF EXISTS after_update_mapping_temp_tinc;
-DROP TRIGGER IF EXISTS before_delete_mapping_temp_tinc;
+
 DELIMITER //
 CREATE TRIGGER after_create_mapping_temp_tinc AFTER INSERT
 	on mapping_inc_emp FOR EACH ROW
@@ -149,6 +117,41 @@ BEGIN
         WHERE mapping_id = new.mapping_id;		
 END;
 //
+DELIMITER ;
+
+-- DROP TRIGGER IF EXISTS before_delete_presta;
+-- CREATE TRIGGER before_delete_presta BEFORE DELETE
+-- 	on presta FOR EACH ROW
+-- BEGIN
+--  DELETE FROM sos_immo_sauv.presta
+-- 		WHERE presta_id = old.presta_id;	
+-- END;
+-- //
+-- DROP TRIGGER IF EXISTS before_delete_emplacements;
+-- CREATE TRIGGER before_delete_emplacements BEFORE DELETE
+-- 	on emplacements FOR EACH ROW
+-- BEGIN
+--  DELETE FROM sos_immo_sauv.emplacements
+-- 		WHERE emp_id = old.emp_id;	
+-- END;
+-- //
+-- DROP TRIGGER IF EXISTS before_delete_type_emplacements;
+-- CREATE TRIGGER before_delete_type_emplacements BEFORE DELETE
+-- 	on types_emp FOR EACH ROW
+-- BEGIN
+--  DELETE FROM sos_immo_sauv.types_emp
+-- 		WHERE temp_id = old.temp_id;	
+-- END;
+-- //
+-- DROP TRIGGER IF EXISTS before_delete_type_incidents;
+-- CREATE TRIGGER before_delete_type_incidents BEFORE DELETE
+-- 	on types_inc FOR EACH ROW
+-- BEGIN
+--  DELETE FROM sos_immo_sauv.types_inc
+-- 		WHERE tinc_id = old.tinc_id;	
+-- END;
+-- //
+-- DROP TRIGGER IF EXISTS before_delete_mapping_temp_tinc;
 -- CREATE TRIGGER before_delete_mapping_temp_tinc BEFORE DELETE
 -- 	on mapping_inc_emp FOR EACH ROW
 -- BEGIN
@@ -156,7 +159,7 @@ END;
 -- 		WHERE mapping_id = old.mapping_id;	
 -- END;
 -- //
-DELIMITER ;
+
 
 
 -- show triggers;

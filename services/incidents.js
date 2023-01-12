@@ -241,8 +241,10 @@ const clotOldInc = (request, response) => {
             .then(incList => {
                 incList.forEach(inc => {
                     inc.inc_cloture_date = new Date()
+                    console.log('coucou')
                     NewLine({
                         jrn_inc: inc.inc_id,
+                        jrn_date: inc.inc_cloture_date,
                         jrn_msg: 'Intervention clôturée automatiquement',
                     })
                     saveInc(inc)
@@ -280,7 +282,7 @@ export {
 }
 
 
-/*
+
 import Incidents from '../data/models/incidents.js'
 // fonctions
 const relanceSignal = (ancInc, user, msg) => {
@@ -300,4 +302,4 @@ const relanceSignal = (ancInc, user, msg) => {
         })
 }
 
-*/
+
