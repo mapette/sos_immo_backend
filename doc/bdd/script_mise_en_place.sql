@@ -711,9 +711,11 @@ INSERT INTO `utilisateurs` ( `ut_uuid`, `ut_id`,  `ut_nom`,  `ut_prenom`,  `ut_t
 INSERT INTO `utilisateurs` ( `ut_uuid`, `ut_id`,  `ut_nom`,  `ut_prenom`,  `ut_presta`, `ut_tel`,  `ut_mail`,  `ut_mdp`)
  VALUES
 	('27bc82c-f294-4908-8ba3-d99ff3e260f7','blaurent','Laurent','Bod', 1, 0123456789,'bl@presta.com', '29cadbe82ff701f788785ff51311c424036cf9f6'),
-    ('9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 'mario','mario','mario', 1, 01234---56789,'mario@presta.com', '80d945a6945953a704fb109414d7c2a9788f5fec'),
-    ('c7f1d496-a72d-44a3-90cf-ebb4128bd0b4','hwilliam','william','henry', 1, 012399999,'wh@presta.com', '73a9a84ffa2adc1543d8b1e57fefb5550507deda');
-    
+    ('c7f1d496-a72d-44a3-90cf-ebb4128bd0b4','hwilliam','william','henry', 1, 012399999,'wh@presta.com', '73a9a84ffa2adc1543d8b1e57fefb5550507deda'),
+    ('9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 'mario','mario','mario', 2, 01234---56789,'mario@presta.com', '80d945a6945953a704fb109414d7c2a9788f5fec'),
+    ('ce12553f-1475-4a57-a1af-07765719c347','ocain','cain','horacio', 2, 012399999,'oc@presta.com', '505bd8735537efeaded372d7ec5e524e2560f22c'),
+    ('94de4d95-e933-46aa-b94a-99366e47b1a2','mclean','clean','mister', 4, 15629096,'mc@presta.com', '1ce180ae39167aea7fd3f6d1588c3032da5ef155'),
+    ('06bad5fe-8173-47df-8831-77bccf20f3f9','fad','adelaar','felix', 5, 15629096,'fad@presta.com', 'f1150c0a391516bd61f377c68c13612e98f4b785');
     
 --  reculer la date d'expiration des mots de passe
 UPDATE utilisateurs SET ut_mdp_exp = ADDDATE(ut_mdp_exp, 90) 
@@ -726,16 +728,19 @@ INSERT INTO `habilitations` ( `hab_uuid`, `hab_ut`,  `hab_profil`)
 	('2a0edddb-ba6e-4366-af2c-9682b9ff6b19', 'cba7c9b1-f0fe-4373-adf5-25201601ae76', 4),
 	('50bd2a84-121e-42af-886d-81023e4400aa', '27bc82c-f294-4908-8ba3-d99ff3e260f7', 2),
 	('50bd2a84-121e-42af-886d-9999999999aa', '9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 2),
-    ('6d3e5d4b-7d97-406f-82d7-c545891182ba', 'c7f1d496-a72d-44a3-90cf-ebb4128bd0b4', 3);
-
+    ('6d3e5d4b-7d97-406f-82d7-c545891182ba', 'c7f1d496-a72d-44a3-90cf-ebb4128bd0b4', 3),
+    ('6d3e5d4b-7d97-406f-82d7-c545891182hh', '94de4d95-e933-46aa-b94a-99366e47b1a2', 2),
+    ('ce12553f-1475-4a57-a1af-07765719c3aa', 'ce12553f-1475-4a57-a1af-07765719c347', 3),
+    ('ce12553f-1475-4a57-a1af-07765719c300', '06bad5fe-8173-47df-8831-77bccf20f3f9', 2);
+    
 -- type d'incident
 INSERT INTO `types_inc` (`tinc_nom`,  `tinc_presta`)
  VALUES
 	('remplacement éclairage',1),
 	('fuite de robinet',2),
 	('WC bouchés',2),
-	('distributeur de savon/bouché',4),
-	('papier toilette à réapprivisionnr',4),
+	('distributeur de savon vide',4),
+	('papier toilette à réapprivisionner',4),
 	('poubelle à vider',4),
 	('sol à nettoyer',4),
 	('store bloqué',1),
@@ -743,7 +748,8 @@ INSERT INTO `types_inc` (`tinc_nom`,  `tinc_presta`)
 	('autres (espaces verts)',3),
 	('autres',4),
 	('porte ascenceur bloquée',5),
-	('porte bloquée',4);
+	('porte bloquée',4),
+    ('distributeur de savon bouché',4);
 
 -- type d'emplacements
 INSERT INTO `types_emp` (`temp_nom`)
@@ -751,7 +757,7 @@ INSERT INTO `types_emp` (`temp_nom`)
 	('open space'),
 	('dégagements'),
 	('ascenceurs'),
-	('toilettes'),
+	('sanitaires'),
 	('salle de réunions'),
 	('escaliers'),
 	('espaces verts'),
@@ -761,25 +767,63 @@ INSERT INTO `types_emp` (`temp_nom`)
 
 -- emplacements, salles, lieux succeptible de faire l'objet d'un signalement 
 INSERT INTO emplacements (emp_etage, emp_nom, emp_temp)
-VALUES ('0','pallier escaliers',2),
- ('1','salle de réunions',5),
- ('1','pallier escaliers',2),
- ('0','couloir est',2),
- ('0','bureau 1',1);
+VALUES ('-1',"parkings",8),
+('-2',"parkings",8),
+('0',"grand massif central",7),
+('0',"couloir est",2),
+('0',"bureau 1",1),
+('0',"bureau 2",1),
+('0',"toilettes",4),
+('1',"couloir ouest",2),
+('1',"bureau 1",1),
+('1',"bureau 2",1),
+('1',"toilettes",4),
+('1',"réunions 1",5),
+('0',"vestaires presta",10),
+('2',"local technique",9),
+('0',"hall d'accueil",2),
+('0',"pallier d'ascenceurs",2),
+('0',"ascenceurs",3),
+('0',"pallier d'escaliers",6),
+('1',"réunions",2),
+('1',"pallier d'ascenceurs",2),
+('1',"ascenceurs",3),
+('1',"pallier d'escaliers",6),
+('2',"couloir",2),
+('2',"bureau 1",1),
+('2',"bureau 2",1),
+('-1',"vestaires motards",10),
+('2',"toilettes",4),
+('2',"réunions",5),
+('2',"ascenceurs",3),
+('2',"pallier d'ascenceurs",2),
+('2',"pallier d'escaliers",6),
+('-1',"pallier d'escaliers",2),
+('-2',"pallier d'ascenceurs",2),
+('-1',"ascenceurs",3),
+('-2',"vestaires presta",10)
+
+
+;
  
 -- mapping types d'incidents/types d'emplacements
 INSERT INTO `mapping_inc_emp` (`mapping_tinc`,  `mapping_temp`)
- VALUES
-	(1,1),
-    (6,1),
-    (7,1),
-    (8,1),
-	(1,2),
-    (7,2),
-	(1,5),
-    (6,5),
-    (7,5),
-    (8,5);	
+ VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,8),(1,9),(1,10),
+(2,4),(2,9),(2,10),
+(3,4), (5,4),
+(4,4),(4,10),(14,4),(14,10),
+(6,1),(6,4),(6,5),(6,7),
+(6,8),(6,10),
+(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),(7,8),(7,9),(7,10),
+(8,1),(8,5),
+(9,1),(9,5),
+(10,7),
+(11,1),(11,2),(11,3),(11,4),(11,5),(11,6),(11,7),(11,8),(11,9),(11,10),
+(12,3),
+(13,1),(13,2),
+(13,4),(13,5),
+(13,9),(13,10)
+;
 
 --                            triggers tables archivage 		-----------------------------------------------------
 -- utilisateurs

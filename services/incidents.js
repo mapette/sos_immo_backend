@@ -241,7 +241,6 @@ const clotOldInc = (request, response) => {
             .then(incList => {
                 incList.forEach(inc => {
                     inc.inc_cloture_date = new Date()
-                    console.log('coucou')
                     NewLine({
                         jrn_inc: inc.inc_id,
                         jrn_date: inc.inc_cloture_date,
