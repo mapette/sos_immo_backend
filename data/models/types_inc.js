@@ -16,6 +16,12 @@ const Tinc = db.define('types_inc',{
         type : DataTypes.INTEGER.UNSIGNED,
         allowNull : false,
     },
+    presta_nom : {     
+        type: DataTypes.VIRTUAL,
+    },    
+    presta_libelle : {     
+        type: DataTypes.VIRTUAL,
+    },    
 },{
     freezeTableName: true,
     timestamps: false,

@@ -11,7 +11,7 @@ const empListNewInc = () => {
             AND mapping_tinc = tinc_id
             AND mapping_temp = temp_id
             AND presta_id = tinc_presta
-        ORDER BY emp_etage, emp_nom, presta_libelle`,
+        ORDER BY tinc_nom, emp_etage, emp_nom, presta_libelle`,
         {type: Sequelize.QueryTypes.SELECT,
             model: Emplacements,
         })

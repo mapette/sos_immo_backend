@@ -11,7 +11,7 @@ import {
     tempById,
     saveTemp,
 } from '../data/DAO/temp.js'
-import { ConnectionAcquireTimeoutError } from 'sequelize'
+
 
 //// emplacements ////
 const getAllEmp = (request, response) => {
@@ -77,6 +77,11 @@ const getAllTemp = (request, response) => {
     const { session, } = request
     if (session.isId === true && session.profil === 4) {
         tempList()
+            .then(list => list.sort((x, y) => {
+                if (x.temp_nom < y.temp_nom) {return -1}
+                if (x.temp_nom > y.temp_nom) {return 1}
+                return 0
+            }))
             .then(list => response.send(list))
             .catch((err) => console.log(err))
     }

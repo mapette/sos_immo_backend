@@ -44,6 +44,11 @@ import {
   updateOnePresta,
 } from './services/prestataires.js'
 import {
+  getAllTinc, getOneTinc,
+  createOneTinc,
+  updateOneTinc,
+} from './services/tinc.js'
+import {
   getAllUsers, getOneUser,
   getUserListByCatAndPresta,
   creaOneUser,
@@ -94,9 +99,8 @@ app.post('/user/update', updateOneUser)
 app.get('/user/exit/:uuid', exitOneUser)
 
 //////////// gestion prestataires ////////////
-app.get('/get_presta', getAllPresta)
-app.get('/get_presta/:id', getPrestaById)
-
+app.get('/presta/get_all', getAllPresta)
+app.get('/presta/get_one/:id', getPrestaById)
 app.post('/presta/creation', creaOnePresta)
 app.post('/presta/update', updateOnePresta)
 
@@ -118,6 +122,12 @@ app.get('/inc/get_one/:id', getOneInc)
 app.get('/inc/get_jnr/:id/:infoImmoInclude', getJrnByInc)
 app.post('/jrn/update_user', updateJrnUser)
 app.post('/jrn/update_techno', updateJrnTechno)
+
+//////////// gestion type d'incident ////////////
+app.get('/tinc/get_all', getAllTinc)
+app.get('/tinc/get_one/:id', getOneTinc)
+app.post('/tinc/create', createOneTinc)
+app.post('/tinc/update', updateOneTinc)
 
 //////////// incidents usagers ////////////
 app.get('/inc/get_allEmpAndTinc', getAllEmpAndTinc)
