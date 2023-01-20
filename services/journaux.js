@@ -146,30 +146,3 @@ export  {
     jnrApresFin,
     jnrAprescloture,
 }
-
-
-
-// const xgetJrnByInc = (request, response) => {
-//     const { params, session } = request
-//     console.log('isIncBelongUser',isIncBelongUser(params.id, session.uuid))
-//     if (session.isId == true && (session.profil != 1 || isIncBelongUser(params.id, session.uuid))) {
-//         jrnByInc(parseInt(params.id))
-//             .then(jrnList => {
-//                 if (params.infoImmoInclude === 'false') return jrnList.filter(line => line.jrn_imm === 0)
-//                 else return jrnList
-//             })
-//             .then(jrnList => response.send(jrnList))
-//             .catch((err) => { response.status(500).json(err) })
-//     }
-// }
-
-// const isIncBelongUser = (inc_id, user_uuid) => {
-//     console.log(user_uuid, inc_id)
-//     incListWithDetails()
-//         .then(incList => incList.filter(inc => inc.inc_id === parseInt(inc_id)))
-//         .then(incList => {
-//           //  ut_signal = incList[0].inc_signal_ut
-//             if (incList[0].inc_signal_ut == user_uuid)   return true
-//             else { return  false }
-//         })   
-// }

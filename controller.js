@@ -44,11 +44,6 @@ import {
   updateOnePresta,
 } from './services/prestataires.js'
 import {
-  getAllTinc, getOneTinc,
-  createOneTinc,
-  updateOneTinc,
-} from './services/tinc.js'
-import {
   getAllUsers, getOneUser,
   getUserListByCatAndPresta,
   creaOneUser,
@@ -71,10 +66,22 @@ import {
   getAllEmp, getAllEmpAndTinc, getOneEmp,
   creaOneEmp,
   updateOneEmp,
+} from './services/emplacements.js'
+import {
   getAllTemp, getOneTemp,
   creaOneTemp,
   updateOneTemp,
-} from './services/emplacements.js'
+} from './services/temp.js'
+import {
+  getAllTinc, getOneTinc,
+  createOneTinc,
+  updateOneTinc,
+} from './services/tinc.js'
+import {
+  getByTemp, getOneMapping,
+  creaOneMapping,
+  deleteOneMapping,
+} from './services/mapping.js'
 import {
   getJrnByInc,
   updateJrnUser, updateJrnTechno,
@@ -115,6 +122,11 @@ app.post('/emp/update', updateOneEmp)
 app.post('/temp/creation', creaOneTemp)
 app.post('/temp/update', updateOneTemp)
 
+app.get('/mapping/get_by_temp/:id', getByTemp)
+app.get('/mapping/get_one/:id', getOneMapping)
+app.post('/mapping/creation', creaOneMapping)
+app.get('/mapping/delete/:id', deleteOneMapping)
+
 //////////// incidents ////////////
 app.get('/inc/get_all', getIncAll)
 app.get('/inc/get_byUser', getIncByUser)
@@ -134,7 +146,6 @@ app.get('/inc/get_allEmpAndTinc', getAllEmpAndTinc)
 app.post('/inc/creation', creaOneInc)
 app.get('/inc/closing/:inc_id', clotInc)  // satisfaction
 app.post('/inc/closingAndRelaunch', clotInc)  // insatisfaction : commentaire + relance
-
 
 //////////// incidents presta ////////////
 app.get('/inc/get_byPresta', getIncByPresta)
