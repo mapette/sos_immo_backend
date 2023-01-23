@@ -15,9 +15,9 @@ const updateJrnUser = (request, response) => {
                 })
                     .then(line => response.send({ jrn_id: line.insertId }))
             })
-    }
-    else { response.send({ deconnect: true }) }
+    } else { response.send({ deconnect: true }) }
 }
+
 const updateJrnTechno = (request, response) => {
     const { session, body } = request
     if (session.isId == true && session.profil != 1) {
@@ -35,8 +35,7 @@ const updateJrnTechno = (request, response) => {
                     jrn_msg: msg(),
                     jrn_imm: body.jrn_imm,
                     jrn_date: new Date(),
-                })
-                    .then(line => response.send({ jrn_id: line.insertId }))
+                }).then(line => response.send({ jrn_id: line.insertId }))
             })
     }
 }
