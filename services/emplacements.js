@@ -12,7 +12,7 @@ const getAllEmp = (request, response) => {
         empListWithDetails()
             .then(empList => response.send(empList))
             .catch((err) => console.log(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const getOneEmp = (request, response) => {
@@ -22,7 +22,7 @@ const getOneEmp = (request, response) => {
             .then(empList => empList.filter(emp => emp.emp_id === parseInt(params.id)))
             .then(empList => response.send(empList[0]))
             .catch((err) => console.log(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const getAllEmpAndTinc = (request, response) => {
@@ -31,7 +31,7 @@ const getAllEmpAndTinc = (request, response) => {
         empListNewInc()
             .then(empList => response.send(empList))
             .catch((err) => console.log(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const creaOneEmp = (request, response) => {
@@ -45,7 +45,7 @@ const creaOneEmp = (request, response) => {
         saveEmp(emp)
             .then(emp => response.send({ id: emp.emp_id }))
             .catch((err) => { response.status(500).json(err) })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const updateOneEmp = (request, response) => {
@@ -60,7 +60,7 @@ const updateOneEmp = (request, response) => {
             })
             .then(emp => response.send({ id: emp.emp_id }))
             .catch((err) => { response.status(500).json(err) })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 

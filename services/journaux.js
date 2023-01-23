@@ -16,6 +16,7 @@ const updateJrnUser = (request, response) => {
                     .then(line => response.send({ jrn_id: line.insertId }))
             })
     }
+    else { response.send({ deconnect: true }) }
 }
 const updateJrnTechno = (request, response) => {
     const { session, body } = request

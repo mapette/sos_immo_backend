@@ -11,6 +11,7 @@ const getAllTinc = (request, response) => {
             .then(list => response.send(list))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 
@@ -18,10 +19,11 @@ const getOneTinc = (request, response) => {
     const { session, params } = request
     if (session.isId == true & session.profil == 4) {
         tincList()
-        .then(list => list.filter(tinc => tinc.tinc_id === parseInt(params.id)))
-        .then(list => response.send(list[0]))
-        .catch((err) => console.log(err))
+            .then(list => list.filter(tinc => tinc.tinc_id === parseInt(params.id)))
+            .then(list => response.send(list[0]))
+            .catch((err) => console.log(err))
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const createOneTinc = (request, response) => {
@@ -35,6 +37,7 @@ const createOneTinc = (request, response) => {
             .then(tinc => response.send({ id: tinc.tinc_id }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const updateOneTinc = (request, response) => {
@@ -49,6 +52,7 @@ const updateOneTinc = (request, response) => {
             .then(tinc => response.send({ id: tinc.tinc_id }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 export {

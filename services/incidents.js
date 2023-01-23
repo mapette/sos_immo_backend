@@ -30,24 +30,24 @@ const retirerVieux = (inc) => {
 
 // get
 const getIncAll = (request, response) => {
-        // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
-        // tous les incidents => jusqu'à 1 mois après clôture
-        const {session} = request
-        if (session.isId == true && ((session.profil == 3) || session.profil == 4)) {
-            incListWithDetails()
+    // selon le profil, on obtient tous les incidents (imm) ou ceux d'1 presta (valideur)
+    // tous les incidents => jusqu'à 1 mois après clôture
+    const { session } = request
+    if (session.isId == true && ((session.profil == 3) || session.profil == 4)) {
+        incListWithDetails()
             .then(incList => {
-                if(session.profil == 3){
-                     incList.filter(inc => inc.inc_presta === session.presta)
-                 //   .then(incList => incList.filter(inc =>retirerVieux(inc))) 
-                    .then(incList => response.send(incList))
+                if (session.profil == 3) {
+                    incList.filter(inc => inc.inc_presta === session.presta)
+                        //   .then(incList => incList.filter(inc =>retirerVieux(inc))) 
+                        .then(incList => response.send(incList))
                 }
                 else {
                     response.send(incList)
-               //     response.send(incList.filter(inc =>retirerVieux(inc)))
+                    //     response.send(incList.filter(inc =>retirerVieux(inc)))
                 }
             })
-            .catch((err)=>{response.status(500).json(err)})
-    }
+            .catch((err) => { response.status(500).json(err) })
+    }else { response.send({ deconnect: true }) }
 }
 const getIncByUser = (request, response) =>  {
     // request (entrée) :  cookie de session
@@ -65,8 +65,7 @@ const getIncByUser = (request, response) =>  {
             // retourne au front les résultats après filtre ou err(500) 
         .then(list => response.send(list))
         .catch((err)=>{response.status(500).json(err)})
-    }
-    else response.send(response.status(500))
+    }else { response.send({ deconnect: true }) }
 }
 
 const getIncByPresta = (request, response) => {
@@ -80,7 +79,7 @@ const getIncByPresta = (request, response) => {
                     inc.inc_affect_ut === session.uuid)))
             .then(incList => response.send(incList))
             .catch(err => response.status(500).json(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const getOneInc = (request, response) => {
@@ -99,7 +98,7 @@ const getOneInc = (request, response) => {
                 else response.status(500).json(err)
             })
             .catch(err => response.status(500).json(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 // création 
@@ -131,7 +130,7 @@ const creaOneInc = (request, response) => {
             response.send({id : incident.inc_id})
         })
        .catch(err => response.status(500).json(err))
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 // affectation - attribution
@@ -151,7 +150,7 @@ const autoAffectation = (request, response) => {
             jrnApresAffectation(inc, user, false)
             response.send({ status: true })
         })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const affectation = (request, response) => {
@@ -170,7 +169,7 @@ const affectation = (request, response) => {
             jrnApresAffectation(inc, user, true)
             response.send({ status: true })
         })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const attribution = (request, response) => {
@@ -188,7 +187,7 @@ const attribution = (request, response) => {
             jrnApresAttribution(inc, presta)
             response.send({ status: true })
         })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 // fin
@@ -207,7 +206,7 @@ const finInc = (request, response) => {
             jnrApresFin(inc, user)
             response.send({ status: true })
         })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const clotInc = (request, response) => {
@@ -229,7 +228,7 @@ const clotInc = (request, response) => {
                 if (Object.keys(params).length === 0) { relanceSignal(inc, user, body.info) }   // post => relance
                 response.send({ status: true })
             })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const clotOldInc = (request, response) => {
@@ -250,7 +249,7 @@ const clotOldInc = (request, response) => {
                 });
                 response.send(incList)
             })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 const arcOldInc = (request, response) => {
@@ -266,7 +265,7 @@ const arcOldInc = (request, response) => {
                 })
                 response.send(incList)
             })
-    }
+    }else { response.send({ deconnect: true }) }
 }
 
 export {

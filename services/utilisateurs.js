@@ -21,6 +21,7 @@ const getAllUsers = (request, response) => {
         .then(userList => response.send(userList))
         .catch((err)=> console.log(err)) 
     }
+    else { response.send({ deconnect: true }) }
 }
 
 // get
@@ -32,6 +33,7 @@ const getOneUser = (request, response) => {
             response.send(userList[0])})
         .catch((err)=>{response.status(500).json(err)})
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const getUserListByCatAndPresta = (request, response) => {
@@ -43,6 +45,7 @@ const getUserListByCatAndPresta = (request, response) => {
         .then(userList => response.send(userList))
         .catch((err)=> console.log(err)) 
     }
+    else { response.send({ deconnect: true }) }
 }
 
 // maj
@@ -81,6 +84,7 @@ const creaOneUser = (request, response) => {
             .then(response.send({ mdp: mdp }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const updateOneUser = (request, response) => {
@@ -106,8 +110,8 @@ const updateOneUser = (request, response) => {
         })
         .then(user => response.send({ user: user.ut_id }))
         .catch((err)=>{response.status(500).json(err)})
-    
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const exitOneUser = (request, response) => {
@@ -129,6 +133,7 @@ const exitOneUser = (request, response) => {
             .then(response.send({ status: 'exit' }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 export {

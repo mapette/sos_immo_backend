@@ -17,6 +17,7 @@ const getAllTemp = (request, response) => {
             .then(list => response.send(list))
             .catch((err) => console.log(err))
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const getOneTemp = (request, response) => {
@@ -26,6 +27,7 @@ const getOneTemp = (request, response) => {
             .then(temp => response.send(temp))
             .catch((err) => console.log(err))
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const creaOneTemp = (request, response) => {
@@ -38,6 +40,7 @@ const creaOneTemp = (request, response) => {
             .then(temp => response.send({ id: temp.temp_id }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 
 const updateOneTemp = (request, response) => {
@@ -51,6 +54,7 @@ const updateOneTemp = (request, response) => {
             .then(temp => response.send({ id: temp.temp_id }))
             .catch((err) => { response.status(500).json(err) })
     }
+    else { response.send({ deconnect: true }) }
 }
 export  {
     getAllTemp,
