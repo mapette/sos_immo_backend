@@ -6,9 +6,6 @@ app.use(express.urlencoded({ extended: true }))
 
 export { app, }
 
-//import {PORT} from '.env.dev'
-// console.log(PORT)
-
 //gestion des cookies
 import session from 'express-session'
 app.use(session({
@@ -23,14 +20,9 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }))
-// if (actual_db = 'prod') {
-//   './db/db.js'
-// }
+
 import db from './db/db.js'
-// console.log(process.env.sos_immo_db)
 db.sync()
-//const port = 3001
-//app.listen(port)    
 app.listen(process.env.portSosImmo, '0.0.0.0')
 
 import {

@@ -13,39 +13,44 @@ import {
     changeProfil,
 } from '../services/habilitations.js'
 import Utilisateurs from '../data/models/utilisateurs.js'
+import { ExceptionUtilisateur } from './cl_exept.js'
 
 const getAllUsers = (request, response) => {
-    const {session} = request
-    if (session.isId == true && session.profil == 4) {
-        userList(request)
-        .then(userList => response.send(userList))
-        .catch((err)=> console.log(err)) 
-    }
-    else { response.send({ deconnect: true }) }
+    const { session } = request
+    try {
+        if (session.isId == true && session.profil == 4) {
+            userList(request)
+                .then(userList => response.send(userList))
+                .catch((err) => console.log(err))
+        }
+        else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 // get
 const getOneUser = (request, response) => {
-    const {session, params} = request
-    if (session.isId == true & session.profil == 4) {
-        userByUuid(params.uuid) 
-        .then(userList =>{
-            response.send(userList[0])})
-        .catch((err)=>{response.status(500).json(err)})
-    }
-    else { response.send({ deconnect: true }) }
+    const { session, params } = request
+    try {
+        if (session.isId == true & session.profil == 4) {
+            userByUuid(params.uuid)
+                .then(userList => {
+                    response.send(userList[0])
+                })
+                .catch((err) => { response.status(500).json(err) })
+        }
+        else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const getUserListByCatAndPresta = (request, response) => {
-    const {session, params} = request
+    const { session, params } = request
     if (session.isId == true & (session.profil == 3 | session.profil == 4)) {
         userList(request)
-        .then(userList => { return userList.filter(user => user.ut_presta === parseInt(params.presta_id)) })
-        .then(userList => { return userList.filter(user => user.hab_profil === parseInt(params.cat)) })
-        .then(userList => response.send(userList))
-        .catch((err)=> console.log(err)) 
+            .then(userList => { return userList.filter(user => user.ut_presta === parseInt(params.presta_id)) })
+            .then(userList => { return userList.filter(user => user.hab_profil === parseInt(params.cat)) })
+            .then(userList => response.send(userList))
+            .catch((err) => console.log(err))
     }
-    else { response.send({ deconnect: true }) }
 }
 
 // maj
@@ -56,6 +61,7 @@ const creaOneUser = (request, response) => {
     //      cookie (session) et données utilisateur (body)
     const { session, body } = request   
     // test session en cours et profil Admin
+    try{
     if (session.isId == true & session.profil == 4) {
         let mdp = genMdp()  // génération du mdp aléatoire
         console.log('mot de passe à changer à la prochaine connexion => ', mdp)
@@ -71,20 +77,21 @@ const creaOneUser = (request, response) => {
             ut_mdp: hash(body.ut_id, mdp),
             ut_mdp_exp: new Date(),
         })
-        // sauvegarde de l'objet en base  
-        saveUser(user)
-            .then(newHab({
-                hab_uuid: genUuid(),
-                hab_ut: user.ut_uuid,
-                hab_profil: parseInt(body.hab_profil),
-                hab_date_deb: new Date(),
-                hab_date_exp: null,
-            }))
-             // retourne au front du mot de passe ou err(500) 
-            .then(response.send({ mdp: mdp }))
-            .catch((err) => { response.status(500).json(err) })
-    }
-    else { response.send({ deconnect: true }) }
+            // sauvegarde de l'objet en base  
+            saveUser(user)
+                .then(newHab({
+                    hab_uuid: genUuid(),
+                    hab_ut: user.ut_uuid,
+                    hab_profil: parseInt(body.hab_profil),
+                    hab_date_deb: new Date(),
+                    hab_date_exp: null,
+                }))
+                // retourne au front du mot de passe ou err(500) 
+                .then(response.send({ mdp: mdp }))
+                .catch((err) => { response.status(500).json(err) })
+        }
+        else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const updateOneUser = (request, response) => {
@@ -111,7 +118,6 @@ const updateOneUser = (request, response) => {
         .then(user => response.send({ user: user.ut_id }))
         .catch((err)=>{response.status(500).json(err)})
     }
-    else { response.send({ deconnect: true }) }
 }
 
 const exitOneUser = (request, response) => {
@@ -133,7 +139,6 @@ const exitOneUser = (request, response) => {
             .then(response.send({ status: 'exit' }))
             .catch((err) => { response.status(500).json(err) })
     }
-    else { response.send({ deconnect: true }) }
 }
 
 export {

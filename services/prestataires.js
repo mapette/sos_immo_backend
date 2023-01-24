@@ -4,14 +4,18 @@ import {
     savePresta,
 } from '../data/DAO/prestataires.js'
 import Presta from '../data/models/prestataires.js'
+import { ExceptionUtilisateur } from './cl_exept.js'
 
 const getAllPresta = (request, response) => {
     const { session } = request
-    if (session.isId == true & (session.profil == 4)) {
-        prestaList()
-            .then(list => response.send(list))
-            .catch((err) => { response.status(500).json(err) })
-    } else { response.send({ deconnect: true }) }
+    try {
+        if (session.isId == true & (session.profil == 4)) {
+            prestaList()
+                .then(list => response.send(list))
+                .catch((err) => { response.status(500).json(err) })
+        } else { throw new ExceptionUtilisateur() }
+    }
+    catch (err) { response.status(666).json(err) }
 }
 
 const getPrestaById = (request, response) => {
@@ -24,30 +28,34 @@ const getPrestaById = (request, response) => {
 }
 
 const creaOnePresta = (request, response) => {
-    const {session, body} = request
-    if (session.isId == true & session.profil == 4) {
-        const presta = Presta.build({
-            presta_nom: body.presta_nom,
-            presta_libelle: body.presta_libelle,
-        })
-        savePresta(presta)
-            .then(newPresta => response.send({id : newPresta.presta_id}))
-            .catch(err =>  response.status(500).json(err) )
-    }else { response.send({ deconnect: true }) }
+    const { session, body } = request
+    try {
+        if (session.isId == true & session.profil == 4) {
+            const presta = Presta.build({
+                presta_nom: body.presta_nom,
+                presta_libelle: body.presta_libelle,
+            })
+            savePresta(presta)
+                .then(newPresta => response.send({ id: newPresta.presta_id }))
+                .catch(err => response.status(500).json(err))
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const updateOnePresta = (request, response) => {
     const { session, body } = request
-    if (session.isId == true & session.profil == 4) {
-        prestaById(body.presta_id)
-            .then(presta => {
-                presta.presta_nom = body.presta_nom
-                presta.presta_libelle = body.presta_libelle
-                return savePresta(presta)
-            })
-            .then(presta => response.send({ id: presta.presta_id }))
-            .catch((err) => { response.status(500).json(err) })
-    }else { response.send({ deconnect: true }) }
+    try {
+        if (session.isId == true & session.profil == 4) {
+            prestaById(body.presta_id)
+                .then(presta => {
+                    presta.presta_nom = body.presta_nom
+                    presta.presta_libelle = body.presta_libelle
+                    return savePresta(presta)
+                })
+                .then(presta => response.send({ id: presta.presta_id }))
+                .catch((err) => { response.status(500).json(err) })
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 export {

@@ -1,21 +1,24 @@
 import { NewLine, jrnByInc, } from '../data/DAO/journaux.js'
 import { userByUuid, } from '../data/DAO/utilisateurs.js'
+import { ExceptionUtilisateur } from './cl_exept.js'
 
 const updateJrnUser = (request, response) => {
     const { session, body } = request
-    if (session.isId == true) {
-        userByUuid(session.uuid)
-            .then(userList => userList[0])
-            .then(user => {
-                NewLine({
-                    jrn_inc: body.jrn_inc,
-                    jrn_msg: user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg,
-                    jrn_imm: body.jrn_imm,
-                    jrn_date: new Date(),
+    try {
+        if (session.isId == true) {
+            userByUuid(session.uuid)
+                .then(userList => userList[0])
+                .then(user => {
+                    NewLine({
+                        jrn_inc: body.jrn_inc,
+                        jrn_msg: user.ut_prenom + ' ' + user.ut_nom + ' : ' + body.jrn_msg,
+                        jrn_imm: body.jrn_imm,
+                        jrn_date: new Date(),
+                    })
+                        .then(line => response.send({ jrn_id: line.insertId }))
                 })
-                    .then(line => response.send({ jrn_id: line.insertId }))
-            })
-    } else { response.send({ deconnect: true }) }
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const updateJrnTechno = (request, response) => {

@@ -3,7 +3,6 @@ import {
 } from '../data/DAO/mapping.js'
 import Mapping from '../data/models/mapping.js'
 
-
 const getByTemp = (request, response) => {
     const { session, params } = request
     if (session.isId === true && session.profil === 4) {
@@ -16,7 +15,7 @@ const getByTemp = (request, response) => {
             // }))
             .then(list => response.send(list))
             .catch((err) => console.log(err))
-    } else { response.send({ deconnect: true }) }
+    } 
 }
 
 const getOneMapping = (request, response) => {
@@ -26,7 +25,7 @@ const getOneMapping = (request, response) => {
             .then(mapp => mapp.filter(m => m.mapping_id === parseInt(params.id)))
             .then(m => response.send(m))
             .catch((err) => console.log(err))
-    } else { response.send({ deconnect: true }) }
+    } 
 }
 
 const creaOneMapping = (request, response) => {
@@ -39,7 +38,7 @@ const creaOneMapping = (request, response) => {
         saveMapping(mapping)
             .then(map => response.send({ id: map.mapping_id }))
             .catch((err) => { response.status(500).json(err) })
-    } else { response.send({ deconnect: true }) }
+    }
 }
 
 const deleteOneMapping = (request, response) => {
@@ -47,7 +46,7 @@ const deleteOneMapping = (request, response) => {
     if (session.isId == true && session.profil == 4) {
         mappingDestroyById(params.id) 
         response.send(params.id)
-    }else { response.send({ deconnect: true }) }
+    }
 }
 
 

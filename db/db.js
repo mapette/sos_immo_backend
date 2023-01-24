@@ -9,5 +9,4 @@ export default new Sequelize(process.env.db_sos_immo_test,
 })
 
 
-
               // db_sos_immo_prod / db_sos_immo_test
