@@ -37,8 +37,7 @@ const getOneUser = (request, response) => {
                     response.send(userList[0])
                 })
                 .catch((err) => { response.status(500).json(err) })
-        }
-        else { throw new ExceptionUtilisateur() }
+        } else { throw new ExceptionUtilisateur() }
     } catch (err) { response.status(666).json(err) }
 }
 

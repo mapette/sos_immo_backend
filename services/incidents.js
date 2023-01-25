@@ -51,37 +51,41 @@ const getIncAll = (request, response) => {
     } catch (err) { response.status(666).json(err) }
 }
 
-const getIncByUser = (request, response) =>  {
+const getIncByUser = (request, response) => {
     // request (entrée) :  cookie de session
     // response (sortie) : liste des incidents de l'utilisateur jusqu'à 1 mois après clôture
     // définition de variable initialisée d'après request
-    const {session} = request  
+    const { session } = request
     // test session en cours
-    if (session.isId == true) {
-        // récupère tous les incidents de la table (DAO)
-        incListWithDetails()    
-            // filtre : uniquement les incidents de l'auteur de la session
-        .then(list =>{return list.filter(line => line.inc_signal_ut === session.uuid) })
-             // filtre : uniquement les incidents  jusqu'à 1 mois après clôture
-        .then(incList => incList.filter(inc =>retirerVieux(inc))) 
-            // retourne au front les résultats après filtre ou err(500) 
-        .then(list => response.send(list))
-        .catch((err)=>{response.status(500).json(err)})
-    }
+    try {
+        if (session.isId == true) {
+            // récupère tous les incidents de la table (DAO)
+            incListWithDetails()
+                // filtre : uniquement les incidents de l'auteur de la session
+                .then(list => { return list.filter(line => line.inc_signal_ut === session.uuid) })
+                // filtre : uniquement les incidents  jusqu'à 1 mois après clôture
+                .then(incList => incList.filter(inc => retirerVieux(inc)))
+                // retourne au front les résultats après filtre ou err(500) 
+                .then(list => response.send(list))
+                .catch((err) => { response.status(500).json(err) })
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const getIncByPresta = (request, response) => {
     // suivi incidents (technicien) => status 'enAttente' et 'enCours'
     const { session } = request
-    if (session.isId == true && session.profil == 2) {
-        incListWithDetails()
-            .then(incList => incList.filter(inc => inc.inc_presta === session.presta))
-            .then(incList => incList.filter(inc => inc.inc_fin_date === null &&
-               (inc.inc_affect_date === null ||
-                    inc.inc_affect_ut === session.uuid)))
-            .then(incList => response.send(incList))
-            .catch(err => response.status(500).json(err))
-    }
+    try {
+        if (session.isId == true && session.profil == 2) {
+            incListWithDetails()
+                .then(incList => incList.filter(inc => inc.inc_presta === session.presta))
+                .then(incList => incList.filter(inc => inc.inc_fin_date === null &&
+                    (inc.inc_affect_date === null ||
+                        inc.inc_affect_ut === session.uuid)))
+                .then(incList => response.send(incList))
+                .catch(err => response.status(500).json(err))
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const getOneInc = (request, response) => {
