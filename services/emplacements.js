@@ -20,21 +20,24 @@ const getAllEmp = (request, response) => {
 
 const getOneEmp = (request, response) => {
     const { session, params, } = request
+
     if (session.isId === true && session.profil === 4) {
         empListWithDetails()
             .then(empList => empList.filter(emp => emp.emp_id === parseInt(params.id)))
             .then(empList => response.send(empList[0]))
             .catch((err) => console.log(err))
-    }else { response.send({ deconnect: true }) }
+    }
 }
 
 const getAllEmpAndTinc = (request, response) => {
     const { session, } = request
-    if (session.isId == true) {
-        empListNewInc()
-            .then(empList => response.send(empList))
-            .catch((err) => console.log(err))
-    }else { response.send({ deconnect: true }) }
+    try {
+        if (session.isId == true) {
+            empListNewInc()
+                .then(empList => response.send(empList))
+                .catch((err) => console.log(err))
+        } else { throw new ExceptionUtilisateur() }
+    } catch (err) { response.status(666).json(err) }
 }
 
 const creaOneEmp = (request, response) => {

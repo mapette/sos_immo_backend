@@ -21,6 +21,7 @@ const updateJrnUser = (request, response) => {
     } catch (err) { response.status(666).json(err) }
 }
 
+
 const updateJrnTechno = (request, response) => {
     const { session, body } = request
     if (session.isId == true && session.profil != 1) {
