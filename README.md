@@ -3,7 +3,7 @@
 cmd : node -v : v16.14.0
 
 ## Librairies à installer : 
-npm install --save 
+npm install 
 * express 
 * session-express
 * cors
