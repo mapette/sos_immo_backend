@@ -1,5 +1,5 @@
 {
-	"id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
+	"id": "90c64774-558c-4423-88b6-de3f00fbbb68",
 	"values": [
 		{
 			"key": "admin_id",
@@ -9,7 +9,7 @@
 		},
 		{
 			"key": "admin_mdp",
-			"value": "b7d460e23133cc432953941a31f9b3bd7ee99b2f",
+			"value": "14677f724c2f472c0273d01cc903012e7fe80d",
 			"type": "default",
 			"enabled": true
 		},
@@ -62,22 +62,28 @@
 			"enabled": true
 		},
 		{
-			"key": "new_user_mdp",
-			"value": "",
-			"type": "any",
-			"enabled": true
-		},
-		{
 			"key": "new_inc_id",
 			"value": {
 				"id": 146
 			},
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "ut_uuid",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "new_user_mdp_before_hash",
+			"value": "",
+			"type": "any",
+			"enabled": true
 		}
 	],
-	"name": "My Workspace Globals",
+	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2023-01-06T10:46:11.948Z",
-	"_postman_exported_using": "Postman/10.6.0"
+	"_postman_exported_at": "2023-01-31T10:20:19.342Z",
+	"_postman_exported_using": "Postman/10.9.1"
 }

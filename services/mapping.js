@@ -25,7 +25,7 @@ const getOneMapping = (request, response) => {
             .then(mapp => mapp.filter(m => m.mapping_id === parseInt(params.id)))
             .then(m => response.send(m))
             .catch((err) => console.log(err))
-    } 
+    }
 }
 
 const creaOneMapping = (request, response) => {
@@ -33,7 +33,7 @@ const creaOneMapping = (request, response) => {
     if (session.isId == true & session.profil == 4) {
         const mapping = Mapping.build({
             mapping_temp: body.temp,
-            mapping_tinc: body.tinc,
+            mapping_tinc: 3,//body.tinc,
         })
         saveMapping(mapping)
             .then(map => response.send({ id: map.mapping_id }))

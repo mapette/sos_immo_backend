@@ -1,6 +1,6 @@
---                         BASE SAUVEGARDE      ----------------------------------------- 	
-CREATE SCHEMA IF NOT EXISTS sos_immo_sauv;
-use sos_immo_sauv;
+--                         BASE TEST SAUVEGARDE    ----------------------------------------- 	
+CREATE SCHEMA IF NOT EXISTS sos_immo_test_sauv;
+use sos_immo_test_sauv;
 
 DROP TABLE IF EXISTS journaux;
 DROP TABLE IF EXISTS journaux_arc;
@@ -395,7 +395,7 @@ DELIMITER //
 CREATE TRIGGER after_create_presta AFTER INSERT
 	on presta FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.presta
+ 	INSERT INTO sos_immo_test_sauv.presta
  		(presta_id, presta_nom, presta_libelle)
  	VALUES
 		(new.presta_id, new.presta_nom, new.presta_libelle);
@@ -404,7 +404,7 @@ END;
 CREATE TRIGGER after_update_presta AFTER UPDATE
 	on presta FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.presta
+	UPDATE sos_immo_test_sauv.presta
 		SET presta_nom = new.presta_nom,
         presta_libelle = new.presta_libelle
         WHERE presta_id = new.presta_id;		
@@ -419,7 +419,7 @@ DELIMITER //
 CREATE TRIGGER after_create_emplacements AFTER INSERT
 	on emplacements FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.emplacements
+ 	INSERT INTO sos_immo_test_sauv.emplacements
  		(emp_id, emp_etage, emp_nom, emp_temp)
  	VALUES
 		(new.emp_id, new.emp_etage, new.emp_nom, new.emp_temp);
@@ -428,7 +428,7 @@ END;
 CREATE TRIGGER after_update_emplacements AFTER UPDATE
 	on emplacements FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.emplacements
+	UPDATE sos_immo_test_sauv.emplacements
 		SET emp_etage = new.emp_etage,
         emp_nom = new.emp_nom,
         emp_temp = new.emp_temp
@@ -444,7 +444,7 @@ DELIMITER //
 CREATE TRIGGER after_create_type_emplacements AFTER INSERT
 	on types_emp FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.types_emp
+ 	INSERT INTO sos_immo_test_sauv.types_emp
  		(temp_id, temp_nom)
  	VALUES
 		(new.temp_id, new.temp_nom);
@@ -453,7 +453,7 @@ END;
 CREATE TRIGGER after_update_type_emplacements AFTER UPDATE
 	on types_emp FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.types_emp
+	UPDATE sos_immo_test_sauv.types_emp
 		SET temp_nom = new.temp_nom
         WHERE temp_id = new.temp_id;		
 END;
@@ -467,7 +467,7 @@ DELIMITER //
 CREATE TRIGGER after_create_type_incidents AFTER INSERT
 	on types_inc FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.types_inc
+ 	INSERT INTO sos_immo_test_sauv.types_inc
  		(tinc_id, tinc_nom, tinc_presta)
  	VALUES
 		(new.tinc_id, new.tinc_nom, new.tinc_presta);
@@ -476,7 +476,7 @@ END;
 CREATE TRIGGER after_update_type_incidents AFTER UPDATE
 	on types_inc FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.types_inc
+	UPDATE sos_immo_test_sauv.types_inc
 		SET tinc_nom = new.tinc_nom,
         tinc_presta = new.tinc_presta
         WHERE tinc_id = new.tinc_id;		
@@ -491,7 +491,7 @@ DELIMITER //
 CREATE TRIGGER after_create_mapping_temp_tinc AFTER INSERT
 	on mapping_inc_emp FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.mapping_inc_emp
+ 	INSERT INTO sos_immo_test_sauv.mapping_inc_emp
  		(mapping_id, mapping_tinc, mapping_temp)
  	VALUES
 		(new.mapping_id, new.mapping_tinc, new.mapping_temp);
@@ -500,7 +500,7 @@ END;
 CREATE TRIGGER after_update_mapping_temp_tinc AFTER UPDATE
 	on mapping_inc_emp FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.mapping_inc_emp
+	UPDATE sos_immo_test_sauv.mapping_inc_emp
 		SET mapping_tinc = new.mapping_tinc,
         mapping_temp = new.mapping_temp
         WHERE mapping_id = new.mapping_id;		
@@ -517,7 +517,7 @@ DELIMITER //
 CREATE TRIGGER after_create_utilisateurs AFTER INSERT
 	on utilisateurs FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.utilisateurs
+ 	INSERT INTO sos_immo_test_sauv.utilisateurs
  		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, ut_mdp)
  	VALUES
 		(new.ut_uuid, new.ut_id, new.ut_nom, new.ut_prenom, new.ut_presta, new.ut_tel, new.ut_mail, new.ut_mdp);
@@ -526,7 +526,7 @@ END;
 CREATE TRIGGER after_update_utilisateurs AFTER UPDATE
 	on utilisateurs FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.utilisateurs
+	UPDATE sos_immo_test_sauv.utilisateurs
 		SET ut_id = new.ut_id, ut_nom = new.ut_nom, ut_prenom = new.ut_prenom, 
         ut_presta = new.ut_presta, ut_tel = new.ut_tel, ut_mail = new.ut_mail, 
         ut_date_deb = new.ut_date_deb, ut_date_exp = new.ut_date_exp,
@@ -543,13 +543,13 @@ BEGIN
 		VALUES
 		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
         old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
-	INSERT INTO sos_immo_sauv.utilisateurs_arc
+	INSERT INTO sos_immo_test_sauv.utilisateurs_arc
  		(ut_uuid, ut_id, ut_nom, ut_prenom, ut_presta, ut_tel, ut_mail, 
          ut_date_deb, ut_date_exp, ut_mdp, ut_mdp_exp)
 		VALUES
 		(old.ut_uuid, old.ut_id, old.ut_nom, old.ut_prenom, old.ut_presta, old.ut_tel, old.ut_mail, 
         old.ut_date_deb, old.ut_date_exp, old.ut_mdp, old.ut_mdp_exp);
-	DELETE FROM sos_immo_sauv.utilisateurs
+	DELETE FROM sos_immo_test_sauv.utilisateurs
 		WHERE ut_uuid = old.ut_uuid;
 END;
 //
@@ -563,7 +563,7 @@ DELIMITER //
 CREATE TRIGGER after_create_habilitations AFTER INSERT
 	on habilitations FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.habilitations
+ 	INSERT INTO sos_immo_test_sauv.habilitations
  		(hab_uuid, hab_ut, hab_profil)
  	VALUES
 		(new.hab_uuid, new.hab_ut, new.hab_profil);
@@ -572,7 +572,7 @@ END;
 CREATE TRIGGER after_update_habilitations AFTER UPDATE
 	on habilitations FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.habilitations
+	UPDATE sos_immo_test_sauv.habilitations
 		SET hab_ut = new.hab_ut, hab_profil = new.hab_profil, 
         hab_date_deb = new.hab_date_exp, hab_date_deb = new.hab_date_exp
         WHERE hab_uuid = new.hab_uuid;		
@@ -585,11 +585,11 @@ BEGIN
  		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
 		VALUES
 			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
-	INSERT INTO sos_immo_sauv.habilitations_arc
+	INSERT INTO sos_immo_test_sauv.habilitations_arc
  		(hab_uuid, hab_ut, hab_profil, hab_date_deb, hab_date_exp)
 		VALUES
 			(old.hab_uuid, old.hab_ut, old.hab_profil, old.hab_date_deb, old.hab_date_exp);
-	DELETE FROM sos_immo_sauv.habilitations
+	DELETE FROM sos_immo_test_sauv.habilitations
 		  WHERE hab_uuid = old.hab_uuid;		
 END;
 //
@@ -603,7 +603,7 @@ DELIMITER //
 CREATE TRIGGER after_create_incidents AFTER INSERT
 	on incidents FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.incidents
+ 	INSERT INTO sos_immo_test_sauv.incidents
  		(inc_id, inc_emp, inc_tinc, inc_presta, inc_signal_ut)
  	VALUES
 		(new.inc_id, new.inc_emp, new.inc_tinc, new.inc_presta, new.inc_signal_ut);
@@ -612,7 +612,7 @@ END;
 CREATE TRIGGER after_update_incidents AFTER UPDATE
 	on incidents FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.incidents
+	UPDATE sos_immo_test_sauv.incidents
 		SET inc_id = new.inc_id, inc_emp = new.inc_emp, inc_tinc = new.inc_tinc, inc_presta = new.inc_presta, 
         inc_signal_ut = new.inc_signal_ut, inc_signal_date = new.inc_signal_date,
         inc_affect_ut = new.inc_affect_ut, inc_affect_date = new.inc_affect_date,
@@ -636,7 +636,7 @@ BEGIN
         old.inc_affect_ut, old.inc_affect_date,
         old.inc_fin_date, old.inc_cloture_date,
         old.inc_note, old.inc_comm);
-	INSERT INTO sos_immo_sauv.incidents_arc
+	INSERT INTO sos_immo_test_sauv.incidents_arc
  		(inc_id, inc_emp, inc_tinc, inc_presta, 
         inc_signal_ut, inc_signal_date,
         inc_affect_ut, inc_affect_date,
@@ -648,7 +648,7 @@ BEGIN
         old.inc_affect_ut, old.inc_affect_date,
         old.inc_fin_date, old.inc_cloture_date,
         old.inc_note, old.inc_comm);
-	DELETE FROM sos_immo_sauv.incidents
+	DELETE FROM sos_immo_test_sauv.incidents
 		  WHERE inc_id = old.inc_id;		
 END;
 //
@@ -662,7 +662,7 @@ DELIMITER //
 CREATE TRIGGER after_create_journaux AFTER INSERT
 	on journaux FOR EACH ROW
 BEGIN
- 	INSERT INTO sos_immo_sauv.journaux
+ 	INSERT INTO sos_immo_test_sauv.journaux
  		(jrn_id, jrn_inc, jrn_msg, jrn_imm)
  	VALUES
 		(new.jrn_id, new.jrn_inc, new.jrn_msg, new.jrn_imm);
@@ -671,7 +671,7 @@ END;
 CREATE TRIGGER after_update_journaux AFTER UPDATE
 	on journaux FOR EACH ROW
 BEGIN
-	UPDATE sos_immo_sauv.journaux
+	UPDATE sos_immo_test_sauv.journaux
 		SET jrn_inc = new.jrn_inc, jrn_msg = new.jrn_msg, 
         jrn_date = new.jrn_date, jrn_imm = new.jrn_imm
         WHERE jrn_id = new.jrn_id;		
@@ -684,11 +684,11 @@ BEGIN
  		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
 		VALUES
 		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
-	INSERT INTO sos_immo_sauv.journaux_arc
+	INSERT INTO sos_immo_test_sauv.journaux_arc
  		(jrn_id, jrn_inc, jrn_msg, jrn_date, jrn_imm)
 		VALUES
 		(old.jrn_id, old.jrn_inc, old.jrn_msg, old.jrn_date, old.jrn_imm);
-	DELETE FROM sos_immo_sauv.journaux
+	DELETE FROM sos_immo_test_sauv.journaux
 		  WHERE jrn_id = old.jrn_id;		
 END;
 //
@@ -706,26 +706,30 @@ INSERT INTO `presta` (`presta_nom`,  `presta_libelle`)
 -- utilisateurs internes
 INSERT INTO `utilisateurs` ( `ut_uuid`, `ut_id`,  `ut_nom`,  `ut_prenom`,  `ut_tel`,  `ut_mail`, `ut_mdp`)
  VALUES
-	('e13efdf7-6512-4641-8857-af929205da61','lsala','salander','lysbeth', 0123456789, 'ls@sg.com', '120b51604eb96584e7eea87d5d2b82baa0cb54ba'),
-	('cba7c9b1-f0fe-4373-adf5-25201601ae76','sjoffre','Joffre','Sophie', 0123456789, 'sj@sg.com', 'b7d460e23133cc432953941a31f9b3bd7ee99b2f');
-
+ 	('6f20d70e-f6e4-469e-852b-daa2a489fc79','fama','mata','fabi', 0963258741, 'fm@sg.com', '62ad38851be4ff5718aac58ab0404363320a5646'),	-- aaa
+	('e13efdf7-6512-4641-8857-af929205da61','lsala','salander','lysbeth', 0123456789, 'ls@sg.com', '594baa06feef611d934ae9bb9e08d253d47f1824'), -- Pepette2021+
+	('cba7c9b1-f0fe-4373-adf5-25201601ae76','sjoffre','Joffre','Sophie', 0123456789, 'sj@sg.com', 'b7d460e23133cc432953941a31f9b3bd7ee99b2f'); -- aaa
+-- 
 -- utilisateurs presta
 INSERT INTO `utilisateurs` ( `ut_uuid`, `ut_id`,  `ut_nom`,  `ut_prenom`,  `ut_presta`, `ut_tel`,  `ut_mail`,  `ut_mdp`)
  VALUES
-	('27bc82c-f294-4908-8ba3-d99ff3e260f7','blaurent','Laurent','Bod', 1, 0123456789,'bl@presta.com', '29cadbe82ff701f788785ff51311c424036cf9f6'),
-    ('c7f1d496-a72d-44a3-90cf-ebb4128bd0b4','hwilliam','william','henry', 1, 012399999,'wh@presta.com', '73a9a84ffa2adc1543d8b1e57fefb5550507deda'),
-    ('9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 'mario','mario','mario', 2, 01234---56789,'mario@presta.com', '80d945a6945953a704fb109414d7c2a9788f5fec'),
-    ('ce12553f-1475-4a57-a1af-07765719c347','ocain','cain','horacio', 2, 012399999,'oc@presta.com', '505bd8735537efeaded372d7ec5e524e2560f22c'),
-    ('94de4d95-e933-46aa-b94a-99366e47b1a2','mclean','clean','mister', 4, 15629096,'mc@presta.com', '1ce180ae39167aea7fd3f6d1588c3032da5ef155'),
-    ('06bad5fe-8173-47df-8831-77bccf20f3f9','fad','adelaar','felix', 5, 15629096,'fad@presta.com', 'f1150c0a391516bd61f377c68c13612e98f4b785');
+	('27bc82c-f294-4908-8ba3-d99ff3e260f7','blaurent','Laurent','Bod', 1, 0123456789,'bl@presta.com', '29cadbe82ff701f788785ff51311c424036cf9f6'),	-- aaa
+    ('c7f1d496-a72d-44a3-90cf-ebb4128bd0b4','hwilliam','william','henry', 1, 012399999,'wh@presta.com', '73a9a84ffa2adc1543d8b1e57fefb5550507deda'),	-- aaa
+    ('9c3d2a09-35b7-46d6-a1ae-8d2be5dc6217', 'mario','mario','mario', 2, 01234---56789,'mario@presta.com', 'dadca15e1a10971d8aa054d340157185abe06911'),	-- Pepette2022+
+    ('ce12553f-1475-4a57-a1af-07765719c347','ocain','cain','horacio', 2, 012399999,'oc@presta.com', '505bd8735537efeaded372d7ec5e524e2560f22c'),	-- aaa
+    ('94de4d95-e933-46aa-b94a-99366e47b1a2','mclean','clean','mister', 4, 15629096,'mc@presta.com', '7a70c9adf38234a26e77f5bdc1289769ded7dc65'),	-- aaa
+    ('06bad5fe-8173-47df-8831-77bccf20f3f9','fad','adelaar','felix', 5, 15629096,'fad@presta.com', 'f1150c0a391516bd61f377c68c13612e98f4b785');	-- aaa
     
---  reculer la date d'expiration des mots de passe
+--  changer la date d'expiration des mots de passe
 UPDATE utilisateurs SET ut_mdp_exp = ADDDATE(ut_mdp_exp, 90) 
-WHERE ut_uuid != " ";
+WHERE ut_id <> "lsala";
+UPDATE utilisateurs SET ut_mdp_exp = ADDDATE(ut_mdp_exp, -90) 
+WHERE ut_id = "lsala";
 
 -- habilitations
 INSERT INTO `habilitations` ( `hab_uuid`, `hab_ut`,  `hab_profil`)
  VALUES
+	('0eb89d14-83c0-436c-a509-b4bc6c72da00', '6f20d70e-f6e4-469e-852b-daa2a489fc79', 1),
 	('0eb89d14-83c0-436c-a509-b4bc6c72da89', 'e13efdf7-6512-4641-8857-af929205da61', 1),
 	('2a0edddb-ba6e-4366-af2c-9682b9ff6b19', 'cba7c9b1-f0fe-4373-adf5-25201601ae76', 4),
 	('50bd2a84-121e-42af-886d-81023e4400aa', '27bc82c-f294-4908-8ba3-d99ff3e260f7', 2),
@@ -834,7 +838,7 @@ DELIMITER //
 CREATE TRIGGER before_delete_utilisateurs_arc BEFORE DELETE
 	on utilisateurs_arc FOR EACH ROW
 BEGIN
-	DELETE FROM sos_immo_sauv.utilisateurs_arc
+	DELETE FROM sos_immo_test_sauv.utilisateurs_arc
 		WHERE ut_uuid = old.ut_uuid;
 END;
 //
@@ -846,7 +850,7 @@ DELIMITER //
 CREATE TRIGGER before_delete_habilitations_arc BEFORE DELETE
 	on habilitations_arc FOR EACH ROW
 BEGIN
-	DELETE FROM sos_immo_sauv.habilitations_arc
+	DELETE FROM sos_immo_test_sauv.habilitations_arc
 		  WHERE hab_uuid = old.hab_uuid;		
 END;
 //
@@ -858,7 +862,7 @@ DELIMITER //
 CREATE TRIGGER before_delete_incidents_arc BEFORE DELETE
 	on incidents_arc FOR EACH ROW
 BEGIN
-	DELETE FROM sos_immo_sauv.incidents_arc
+	DELETE FROM sos_immo_test_sauv.incidents_arc
 		  WHERE inc_id = old.inc_id;		
 END;
 //
@@ -870,7 +874,7 @@ DELIMITER //
 CREATE TRIGGER before_delete_journaux_arc BEFORE DELETE
 	on journaux_arc FOR EACH ROW
 BEGIN
-	DELETE FROM sos_immo_sauv.journaux_arc
+	DELETE FROM sos_immo_test_sauv.journaux_arc
 		  WHERE jrn_id = old.jrn_id;		
 END;
 //

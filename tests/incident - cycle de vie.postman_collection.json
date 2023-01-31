@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d65289a4-d682-48f4-8eaf-ceee08e2b711",
-		"name": "incident - cycle de vie",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "d2cc208b-cdd2-497d-9358-bc0aa0d671ac",
+		"name": "a- incident - cycle de vie",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25295574"
 	},
 	"item": [
 		{
@@ -150,7 +151,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3001/login",
+					"raw": "http://localhost:3001/login?ut_id={{technicien_id}}&ut_mdp={{technicien_mdp}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -158,6 +159,16 @@
 					"port": "3001",
 					"path": [
 						"login"
+					],
+					"query": [
+						{
+							"key": "ut_id",
+							"value": "{{technicien_id}}"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{technicien_mdp}}"
+						}
 					]
 				}
 			},

@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "aa946e62-f8fc-4457-8eba-fb71b8d1d5e2",
+		"name": "z- New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25295574"
+	},
+	"item": [
+		{
+			"name": "login admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"admin_uuid\",pm.response.json().ut_uuid);\r",
+							"console.log(pm.globals.get('admin_uuid'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{admin_id}}",
+							"type": "default"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{admin_mdp}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "presta list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"admin_uuid\",pm.response.json().ut_uuid);\r",
+							"console.log(pm.globals.get('admin_uuid'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{admin_id}}",
+							"type": "default"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{admin_mdp}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/presta/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"presta",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tinc list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{admin_id}}",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{admin_mdp}}",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/tinc/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"tinc",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"admin_uuid\",pm.response.json().ut_uuid);\r",
+							"console.log(pm.globals.get('admin_uuid'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ut_id",
+							"value": "{{admin_id}}",
+							"type": "default"
+						},
+						{
+							"key": "ut_mdp",
+							"value": "{{admin_mdp}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9e90369c-6e30-4b24-9b8b-37d2791be56a",
-		"name": "usager",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "ffef4b93-6814-4351-a95f-5f30a0bef65c",
+		"name": "c- usager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25295574"
 	},
 	"item": [
 		{
@@ -27,12 +28,12 @@
 					"urlencoded": [
 						{
 							"key": "ut_id",
-							"value": "lsala",
+							"value": "{{usager_id}}",
 							"type": "default"
 						},
 						{
 							"key": "ut_mdp",
-							"value": "120b51604eb96584e7eea87d5d2b82baa0cb54ba",
+							"value": "{{usager_mdp}}",
 							"type": "default"
 						}
 					]
@@ -46,13 +47,6 @@
 					"port": "3001",
 					"path": [
 						"login"
-					],
-					"query": [
-						{
-							"key": "ut_id",
-							"value": "lsala",
-							"disabled": true
-						}
 					]
 				}
 			},

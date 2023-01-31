@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b188f880-290f-41f8-bdbf-d3e3d5b0dce1",
-		"name": "admin",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "7f4ec6e0-6688-419d-ac31-3551b7a4e4ef",
+		"name": "b- admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25295574"
 	},
 	"item": [
 		{
@@ -71,6 +72,88 @@
 			"response": []
 		},
 		{
+			"name": "détail user par uuid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/user/get_one/{{admin_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"get_one",
+						"{{admin_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "détail hab par user uudi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/user/get_author/{{admin_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"user",
+						"get_author",
+						"{{admin_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste prestataires",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/presta/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"presta",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "liste complete incidents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/inc/get_all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"inc",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "liste users",
 			"request": {
 				"method": "GET",
@@ -97,8 +180,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.globals.set(\"new_user_mdp\",pm.response.json().mdp);\r",
-							"console.log(pm.globals.get('new_user_mdp'))"
+							"pm.globals.set(\"new_user_mdp_before_hash\",pm.response.json().mdp);\r",
+							"console.log(pm.globals.get(\"new_user_mdp_before_hash\"))"
 						],
 						"type": "text/javascript"
 					}
@@ -157,87 +240,6 @@
 					"path": [
 						"user",
 						"creation"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "détail user par uuid",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/user/get_one/{{admin_uuid}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"user",
-						"get_one",
-						"{{admin_uuid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "détail hab par user uudi",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/user/get_author/{{admin_uuid}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"user",
-						"get_author",
-						"{{admin_uuid}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "liste prestataires",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/get_presta",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"get_presta"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "liste complete incidents",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/inc/get_all",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"inc",
-						"get_all"
 					]
 				}
 			},
