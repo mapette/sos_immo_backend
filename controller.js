@@ -85,7 +85,7 @@ app.post('/login', login)
 app.get('/logout', logout)
 app.post('/forgotPw', UserByMail)
 app.get('/user/get_session', UserBySession)
-app.post('/change_pw', changePw)
+app.put('/change_pw', changePw)
 
 //////////// gestion utilisateurs ////////////
 app.get('/user/get_all', getAllUsers)
@@ -94,14 +94,14 @@ app.get('/user/get_author/:uuid', getUserHab)
 app.get('/user/get_byCatAndPresta/:cat/:presta_id', getUserListByCatAndPresta)
 
 app.post('/user/creation', creaOneUser)
-app.post('/user/update', updateOneUser)
+app.put('/user/update', updateOneUser)
 app.get('/user/exit/:uuid', exitOneUser)
 
 //////////// gestion prestataires ////////////
 app.get('/presta/get_all', getAllPresta)
 app.get('/presta/get_one/:id', getPrestaById)
 app.post('/presta/creation', creaOnePresta)
-app.post('/presta/update', updateOnePresta)
+app.put('/presta/update', updateOnePresta)
 
 //////////// gestion emplacement ////////////
 app.get('/emp/get_all', getAllEmp)
@@ -110,14 +110,14 @@ app.get('/temp/get_all', getAllTemp)
 app.get('/temp/get_one/:id', getOneTemp)
 
 app.post('/emp/creation', creaOneEmp)
-app.post('/emp/update', updateOneEmp)
+app.put('/emp/update', updateOneEmp)
 app.post('/temp/creation', creaOneTemp)
-app.post('/temp/update', updateOneTemp)
+app.put('/temp/update', updateOneTemp)
 
 app.get('/mapping/get_by_temp/:id', getByTemp)
 app.get('/mapping/get_one/:id', getOneMapping)
 app.post('/mapping/creation', creaOneMapping)
-app.get('/mapping/delete/:id', deleteOneMapping)
+app.delete('/mapping/delete/:id', deleteOneMapping)
 
 //////////// incidents ////////////
 app.get('/inc/get_all', getIncAll)
@@ -131,13 +131,13 @@ app.post('/jrn/update_techno', updateJrnTechno)
 app.get('/tinc/get_all', getAllTinc)
 app.get('/tinc/get_one/:id', getOneTinc)
 app.post('/tinc/create', createOneTinc)
-app.post('/tinc/update', updateOneTinc)
+app.put('/tinc/update', updateOneTinc)
 
 //////////// incidents usagers ////////////
 app.get('/inc/get_allEmpAndTinc', getAllEmpAndTinc)
 app.post('/inc/creation', creaOneInc)
 app.get('/inc/closing/:inc_id', clotInc)  // satisfaction
-app.post('/inc/closingAndRelaunch', clotInc)  // insatisfaction : commentaire + relance
+app.put('/inc/closingAndRelaunch', clotInc)  // insatisfaction : commentaire + relance
 
 //////////// incidents presta ////////////
 app.get('/inc/get_byPresta', getIncByPresta)

@@ -220,7 +220,7 @@ const clotInc = (request, response) => {
     let user = User
     let inc_id = 0
     if (session.isId == true) {
-        if (Object.keys(params).length === 0) { inc_id = body.inc_id }  // post => prendre body
+        if (Object.keys(params).length === 0) { inc_id = body.inc_id }  // put => prendre body
         else { inc_id = parseInt(params.inc_id) }                       // get => prendre params
         userByUuid(session.uuid)
             .then(userList => user = userList[0])
