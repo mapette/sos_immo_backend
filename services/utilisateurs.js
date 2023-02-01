@@ -14,6 +14,7 @@ import {
 } from '../services/habilitations.js'
 import Utilisateurs from '../data/models/utilisateurs.js'
 import { ExceptionUtilisateur } from './cl_exept.js'
+import  {addDaysToDate} from './lib_serveur.js'
 
 const getAllUsers = (request, response) => {
     const { session } = request
@@ -74,7 +75,7 @@ const creaOneUser = (request, response) => {
             ut_tel: body.ut_tel,
             ut_mail: body.ut_mail,
             ut_mdp: hash(body.ut_id, mdp),
-            ut_mdp_exp: new Date(),
+            ut_mdp_exp: addDaysToDate(new Date(), -1),
         })
             // sauvegarde de l'objet en base  
             saveUser(user)
@@ -82,10 +83,7 @@ const creaOneUser = (request, response) => {
                     hab_uuid: genUuid(),
                     hab_ut: user.ut_uuid,
                     hab_profil: parseInt(body.hab_profil),
-                    hab_date_deb: new Date(),
-                    hab_date_exp: null,
                 }))
-                // retourne au front du mot de passe ou err(500) 
                 .then(response.send({ mdp: mdp }))
                 .catch((err) => { response.status(500).json(err) })
         }

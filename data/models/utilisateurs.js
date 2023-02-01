@@ -2,7 +2,6 @@ import  {addDaysToDate} from './../../services/lib_serveur.js'
 import {DataTypes,} from 'sequelize'
 import db from '../../db/db.js'
 
-
 const Utilisateurs = db.define('utilisateurs',{
     ut_uuid : {
         type : DataTypes.STRING,

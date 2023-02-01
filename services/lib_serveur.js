@@ -11,7 +11,7 @@ const genMdp = () => {
     /* charAlpha : chaîne de caractères alphanumérique */
     let charAlpha = 'abcdefghijknopqrstuvwxyzAcDEFGHJKLMNPQRSTUVWXYZ12345679'
     /* charSpe : chaîne de caractères spéciaux */
-    let charSpe = '()!@#$+-*_'
+    let charSpe = '()!+-*_'
     /* posCharSpe : position du caractère spécial dans le mdp */
     let posCharSpe = Math.floor(Math.random() * (longMdp - 1))
     for (var i = 0; i < longMdp; ++i) {

@@ -19,9 +19,11 @@ const Habilitations = db.define('habilitations',{
     hab_date_deb : {
         type : DataTypes.DATE,
         allowNull : false,
+        defaultValue: new Date(),
     },
     hab_date_exp : {
         type : DataTypes.DATE,
+        defaultValue: null,
     },
 },{
     freezeTableName: true,

@@ -13,20 +13,24 @@ npm install
 * jest
 
 ## base de données MySql : 
-* jouer le script "backend sos_immo\doc\bdd\script_mise_en_place.sql"
+* lancer le fichier sql-init.bat
 
 ## variables d'environnement : 
 portSosImmo -> valeur 3001
 
 db_sos_immo_prod -> nom de la base de production
+
 db_sos_immo_test -> nom de la base de tests
 
 mySqlUser -> user mySql
+
 mySqlPw -> mot de passe mySql
 
 ## lancement : 
 * ligne de commande : nodemon serveur.js
 
-### tests :
-* postman
-* scénarios : répertoire "tests"
+## tests :
+* lancer le fichier sql-init-test.bat
+*répertoire "tests"
+* Le fichier TNR.xlsx contient un scénario à mettre en oeuvre via navigateur(s) 
+* Les fichiers .json sont des variables et collections Postman
