@@ -8,11 +8,6 @@ const getByTemp = (request, response) => {
     if (session.isId === true && session.profil === 4) {
          mappList()
      .then(mapp => mapp.filter(m => m.mapping_temp === parseInt(params.id)))
-            // .then(mapp => mapp.sort((x, y) => {
-            //     if (x.mapping_tinc < y.temp_nom) { return -1 }
-            //     if (x.temp_nom > y.temp_nom) { return 1 }
-            //     return 0
-            // }))
             .then(list => response.send(list))
             .catch((err) => console.log(err))
     } 

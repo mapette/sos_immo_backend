@@ -24,8 +24,8 @@ const getAllUsers = (request, response) => {
                 .then(userList => response.send(userList))
                 .catch((err) => console.log(err))
         }
-        else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 // get
@@ -38,8 +38,8 @@ const getOneUser = (request, response) => {
                     response.send(userList[0])
                 })
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getUserListByCatAndPresta = (request, response) => {
@@ -87,8 +87,8 @@ const creaOneUser = (request, response) => {
                 .then(response.send({ mdp: mdp }))
                 .catch((err) => { response.status(500).json(err) })
         }
-        else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const updateOneUser = (request, response) => {

@@ -12,8 +12,8 @@ const getAllTinc = (request, response) => {
             tincList()
                 .then(list => response.send(list))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 
@@ -39,8 +39,8 @@ const createOneTinc = (request, response) => {
             savetinc(tinc)
                 .then(tinc => response.send({ id: tinc.tinc_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const updateOneTinc = (request, response) => {
@@ -55,8 +55,8 @@ const updateOneTinc = (request, response) => {
                 })
                 .then(tinc => response.send({ id: tinc.tinc_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 export {

@@ -35,7 +35,6 @@ const login = (request, response) => {
             }
             response.send(user)
         })
-        .catch((err) => console.log(err))
 }
 
 const logout = (request, response) => {
@@ -86,7 +85,6 @@ const changePw = (request, response) => {
             response.send({ status: true })
         }
     })
-    .catch((err)=> console.log(err)) 
 }
 
 export  {

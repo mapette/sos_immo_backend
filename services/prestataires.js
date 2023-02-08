@@ -4,7 +4,7 @@ import {
     savePresta,
 } from '../data/DAO/prestataires.js'
 import Presta from '../data/models/prestataires.js'
-import { ExceptionUtilisateur } from './cl_exept.js'
+import { ExceptionUtilisateur  } from './cl_exept.js'
 
 const getAllPresta = (request, response) => {
     const { session } = request
@@ -13,18 +13,19 @@ const getAllPresta = (request, response) => {
             prestaList()
                 .then(list => response.send(list))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    }
-    catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getPrestaById = (request, response) => {
     const { session, params } = request
-    if (session.profil == 4) {
-        prestaById(params.id)
-        .then(presta => response.send(presta))
-        .catch((err)=>{response.status(500).json(err)})
-    }else { response.send({ deconnect: true }) }
+    try {
+        if (session.profil == 4) {
+            prestaById(params.id)
+                .then(presta => response.send(presta))
+                .catch((err) => { response.status(500).json(err) })
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const creaOnePresta = (request, response) => {
@@ -38,8 +39,8 @@ const creaOnePresta = (request, response) => {
             savePresta(presta)
                 .then(newPresta => response.send({ id: newPresta.presta_id }))
                 .catch(err => response.status(500).json(err))
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const updateOnePresta = (request, response) => {
@@ -54,8 +55,8 @@ const updateOnePresta = (request, response) => {
                 })
                 .then(presta => response.send({ id: presta.presta_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 export {

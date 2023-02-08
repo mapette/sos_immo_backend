@@ -47,8 +47,8 @@ const getIncAll = (request, response) => {
                     }
                 })
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getIncByUser = (request, response) => {
@@ -68,8 +68,8 @@ const getIncByUser = (request, response) => {
                 // retourne au front les résultats après filtre ou err(500) 
                 .then(list => response.send(list))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getIncByPresta = (request, response) => {
@@ -84,8 +84,8 @@ const getIncByPresta = (request, response) => {
                         inc.inc_affect_ut === session.uuid)))
                 .then(incList => response.send(incList))
                 .catch(err => response.status(500).json(err))
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getOneInc = (request, response) => {

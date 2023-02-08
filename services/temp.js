@@ -18,8 +18,8 @@ const getAllTemp = (request, response) => {
                 }))
                 .then(list => response.send(list))
                 .catch((err) => console.log(err))
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getOneTemp = (request, response) => {
@@ -42,8 +42,8 @@ const creaOneTemp = (request, response) => {
             saveTemp(temp)
                 .then(temp => response.send({ id: temp.temp_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const updateOneTemp = (request, response) => {
@@ -57,8 +57,8 @@ const updateOneTemp = (request, response) => {
                 })
                 .then(temp => response.send({ id: temp.temp_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 export {

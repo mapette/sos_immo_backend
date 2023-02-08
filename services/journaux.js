@@ -17,8 +17,8 @@ const updateJrnUser = (request, response) => {
                     })
                         .then(line => response.send({ jrn_id: line.insertId }))
                 })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 

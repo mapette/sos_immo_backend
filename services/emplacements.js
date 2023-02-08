@@ -14,8 +14,8 @@ const getAllEmp = (request, response) => {
             empListWithDetails()
                 .then(empList => response.send(empList))
                 .catch((err) => console.log(err))
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const getOneEmp = (request, response) => {
@@ -36,8 +36,8 @@ const getAllEmpAndTinc = (request, response) => {
             empListNewInc()
                 .then(empList => response.send(empList))
                 .catch((err) => console.log(err))
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const creaOneEmp = (request, response) => {
@@ -52,8 +52,8 @@ const creaOneEmp = (request, response) => {
             saveEmp(emp)
                 .then(emp => response.send({ id: emp.emp_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 const updateOneEmp = (request, response) => {
@@ -69,8 +69,8 @@ const updateOneEmp = (request, response) => {
                 })
                 .then(emp => response.send({ id: emp.emp_id }))
                 .catch((err) => { response.status(500).json(err) })
-        } else { throw new ExceptionUtilisateur() }
-    } catch (err) { response.status(666).json(err) }
+        } else { throw new ExceptionUtilisateur(666) }
+    } catch (err) { response.status(err.status).json(err) }
 }
 
 
