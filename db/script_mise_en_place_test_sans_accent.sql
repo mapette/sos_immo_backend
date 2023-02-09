@@ -93,7 +93,7 @@ CREATE TABLE `emplacements` (
   `emp_temp` INT NOT NULL,
   PRIMARY KEY (`emp_id`),
 FOREIGN KEY (`emp_temp`)
-    REFERENCES `sos_immo`.`types_emp` (`temp_id`)  )
+    REFERENCES `types_emp` (`temp_id`)  )
 COMMENT = 'emplacements, salles, lieux succeptible de faire l\'objet d\'un signalement';
 
 CREATE TABLE `incidents` (
@@ -289,7 +289,7 @@ CREATE TABLE `emplacements` (
   `emp_temp` INT NOT NULL,
   PRIMARY KEY (`emp_id`),
 FOREIGN KEY (`emp_temp`)
-    REFERENCES `sos_immo`.`types_emp` (`temp_id`)  )
+    REFERENCES `types_emp` (`temp_id`)  )
 COMMENT = 'emplacements, salles, lieux succeptible de faire l\'objet d\'un signalement';
 
 CREATE TABLE `incidents` (

@@ -32,7 +32,9 @@ const creaOneMapping = (request, response) => {
         })
         saveMapping(mapping)
             .then(map => response.send({ id: map.mapping_id }))
-            .catch((err) => { response.status(500).json(err) })
+            .catch((err) => { 
+                console.log(err)
+                response.status(500).json(err) })
     }
 }
 
