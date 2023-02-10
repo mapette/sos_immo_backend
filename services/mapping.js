@@ -28,7 +28,7 @@ const creaOneMapping = (request, response) => {
     if (session.isId == true & session.profil == 4) {
         const mapping = Mapping.build({
             mapping_temp: body.temp,
-            mapping_tinc: 3,//body.tinc,
+            mapping_tinc: body.tinc,
         })
         saveMapping(mapping)
             .then(map => response.send({ id: map.mapping_id }))

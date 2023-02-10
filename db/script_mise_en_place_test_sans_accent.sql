@@ -487,6 +487,7 @@ DELIMITER ;
 -- mapping temp/tinc
 DROP TRIGGER IF EXISTS after_create_mapping_temp_tinc;
 DROP TRIGGER IF EXISTS after_update_mapping_temp_tinc;
+DROP TRIGGER IF EXISTS  before_delete_mapping_inc_emp;
 DELIMITER //
 CREATE TRIGGER after_create_mapping_temp_tinc AFTER INSERT
 	on mapping_inc_emp FOR EACH ROW
@@ -504,6 +505,13 @@ BEGIN
 		SET mapping_tinc = new.mapping_tinc,
         mapping_temp = new.mapping_temp
         WHERE mapping_id = new.mapping_id;		
+END;
+//
+CREATE TRIGGER before_delete_mapping_inc_emp BEFORE DELETE
+	on mapping_inc_emp FOR EACH ROW
+BEGIN
+	DELETE FROM sos_immo_test_sauv.mapping_inc_emp
+		WHERE mapping_id = old.mapping_id;
 END;
 //
 DELIMITER ;
@@ -746,11 +754,11 @@ INSERT INTO `types_inc` (`tinc_nom`,  `tinc_presta`)
 	('fuite de robinet',2),
 	('WC bouches',2),
 	('distributeur de savon vide',4),
-	('papier toilette à reapprivisionner',4),
-	('poubelle à vider',4),
-	('sol à nettoyer',4),
+	('papier toilette a reapprivisionner',4),
+	('poubelle a vider',4),
+	('sol a nettoyer',4),
 	('store bloque',1),
-	('vitres à nettoyer',4),
+	('vitres a nettoyer',4),
 	('autres (espaces verts)',3),
 	('autres',4),
 	('porte ascenceur bloquee',5),
