@@ -39,8 +39,8 @@ const getIncAll = (request, response) => {
             incListWithDetails()
                 .then(incList => {
                     if (session.profil == 3) {
-                        incList.filter(inc => inc.inc_presta === session.presta)
-                            .then(incList => response.send(incList))
+                        incList = incList.filter(inc => inc.inc_presta === session.presta)
+                        response.send(incList)
                     }
                     else {
                         response.send(incList)
